@@ -107,10 +107,17 @@ export async function createConnectSession(sourceId: string) {
     };
   } catch (error) {
     console.error(`Failed to create session for ${source.name}:`, error);
-    // Return sample data on error
+    
+    // In live mode, throw the real error so the user knows their API keys are invalid
+    if (MODE !== 'sample') {
+      throw error;
+    }
+
+    // Return sample data on error ONLY in sample mode
     const sampleConnectionId = `conn_err_${sourceId}_${Date.now()}`;
     const redirectUrl = encodeURIComponent(`${APP_URL}/connect/return`);
-    const mockUrl = `${APP_URL}/mock-vana-approval?source=${sourceId}&connectionId=${sampleConnectionId}&redirectUrl=${redirectUrl}`;
+    const errorMessage = encodeURIComponent(error instanceof Error ? error.message : String(error));
+    const mockUrl = `${APP_URL}/mock-vana-approval?source=${sourceId}&connectionId=${sampleConnectionId}&redirectUrl=${redirectUrl}&error=${errorMessage}`;
     
     return {
       connectionId: sampleConnectionId,
