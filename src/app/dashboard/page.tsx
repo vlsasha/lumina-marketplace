@@ -308,7 +308,7 @@ export default function DashboardPage() {
                           </span>
                         )}
 
-                        {!conn && (
+                        {(!conn || ['denied', 'error', 'rejected'].includes(conn?.status || '')) && (
                           <button
                             onClick={() => handleConnect(source.source)}
                             disabled={isLoading}
@@ -498,6 +498,7 @@ function StatCard({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+
 
 
 
