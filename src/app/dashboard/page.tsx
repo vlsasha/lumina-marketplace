@@ -282,13 +282,22 @@ export default function DashboardPage() {
                           </button>
                         )}
                         {conn?.status === 'pending' && (
-                          <button
-                            onClick={() => handleCheckStatus(source.source)}
-                            disabled={isLoading}
-                            className="px-4 py-2 text-xs rounded-lg border border-vana-border hover:border-vana-border-hover text-vana-text-secondary font-medium transition-colors disabled:opacity-50"
-                          >
-                            {isLoading ? 'Checking...' : 'Check Status'}
-                          </button>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => handleCheckStatus(source.source)}
+                              disabled={isLoading}
+                              className="px-4 py-2 text-xs rounded-lg border border-vana-border hover:border-vana-border-hover text-vana-text-secondary font-medium transition-colors disabled:opacity-50"
+                            >
+                              {isLoading ? 'Checking...' : 'Check Status'}
+                            </button>
+                            <button
+                              onClick={() => setConnections(prev => prev.filter(c => c.connectionId !== conn.connectionId))}
+                              className="px-3 py-2 text-xs rounded-lg border border-vana-border hover:bg-vana-red/10 text-vana-text-muted hover:text-vana-red transition-colors"
+                              title="Remove connection"
+                            >
+                              Remove
+                            </button>
+                          </div>
                         )}
                         {conn?.status === 'approved' && (
                           <button
