@@ -10,7 +10,7 @@ import { formatUnits } from 'viem';
 import { MARKETPLACE_CONFIG } from '@/lib/config';
 import { luminaMarketplaceAbi } from '@/lib/abi';
 
-type ConnectionStatus = 'idle' | 'pending' | 'approved' | 'denied' | 'error';
+type ConnectionStatus = 'idle' | 'pending' | 'approved' | 'completed' | 'denied' | 'error';
 
 interface ConnectedSource {
   sourceId: string;
@@ -498,6 +498,7 @@ function StatCard({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+
 
 
 
