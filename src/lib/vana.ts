@@ -19,9 +19,9 @@ async function getConnectController(sourceId: string) {
       const { createDirectDataController } = await import('@opendatalabs/vana-sdk/server');
       const { privateKeyToAccount } = await import('viem/accounts');
       
-      const pKey = APP_PRIVATE_KEY.startsWith('0x') ? APP_PRIVATE_KEY : "0x$APP_PRIVATE_KEY";
-      const account = privateKeyToAccount(pKey as "0x${string}");
-      const appId = ODL_APP_ID.startsWith('0x') ? ODL_APP_ID : "0x$ODL_APP_ID";
+      const pKey = APP_PRIVATE_KEY.startsWith('0x') ? APP_PRIVATE_KEY : `0x${APP_PRIVATE_KEY}`;
+      const account = privateKeyToAccount(pKey as `0x${string}`);
+      const appId = ODL_APP_ID.startsWith('0x') ? ODL_APP_ID : `0x${ODL_APP_ID}`;
 
       return createDirectDataController({
         env: 'mainnet',
@@ -45,15 +45,15 @@ async function getConnectController(sourceId: string) {
 
 export async function createConnectSession(sourceId: string) {
   const source = DATA_SOURCES.find((s) => s.id === sourceId);
-  if (!source) throw new Error("Unknown source: $sourceId");
+  if (!source) throw new Error(`Unknown source: ${sourceId}`);
 
   if (!APP_PRIVATE_KEY) {
     if (MODE !== 'sample') {
       throw new Error('APP_PRIVATE_KEY is missing in Vercel Environment Variables. Required by vana-sdk.');
     }
-    const sampleConnectionId = "conn_sample_$sourceId_${Date.now()}";
-    const redirectUrl = encodeURIComponent("$APP_URL/connect/return");
-    const mockUrl = "$APP_URL/mock-vana-approval?source=$sourceId&connectionId=$sampleConnectionId&redirectUrl=$redirectUrl";
+    const sampleConnectionId = `conn_sample_${sourceId}_${Date.now()}`;
+    const redirectUrl = encodeURIComponent(`${APP_URL}/connect/return`);
+    const mockUrl = `${APP_URL}/mock-vana-approval?source=${sourceId}&connectionId=${sampleConnectionId}&redirectUrl=${redirectUrl}`;
     
     return {
       connectionId: sampleConnectionId,
@@ -69,7 +69,7 @@ export async function createConnectSession(sourceId: string) {
     if (!controller) throw new Error("Could not initialize Vana Controller");
 
     const request = await controller.createAccessRequest({
-      returnUrl: "$APP_URL/connect/return?source=$sourceId",
+      returnUrl: `${APP_URL}/connect/return?source=${sourceId}`,
     });
 
     return {
@@ -79,13 +79,13 @@ export async function createConnectSession(sourceId: string) {
       scopes: source.scopes.map((s) => s.id),
     };
   } catch (error) {
-    console.error("Failed to create session for ${source.name}:, error);
+    console.error(`Failed to create session for ${source.name}:`, error);
     if (MODE !== 'sample') throw error;
 
-    const sampleConnectionId = "conn_err_$sourceId_${Date.now()}";
-    const redirectUrl = encodeURIComponent("$APP_URL/connect/return");
+    const sampleConnectionId = `conn_err_${sourceId}_${Date.now()}`;
+    const redirectUrl = encodeURIComponent(`${APP_URL}/connect/return`);
     const errorMessage = encodeURIComponent(error instanceof Error ? error.message : String(error));
-    const mockUrl = "$APP_URL/mock-vana-approval?source=$sourceId&connectionId=$sampleConnectionId&redirectUrl=$redirectUrl&error=$errorMessage";
+    const mockUrl = `${APP_URL}/mock-vana-approval?source=${sourceId}&connectionId=${sampleConnectionId}&redirectUrl=${redirectUrl}&error=${errorMessage}`;
     
     return {
       connectionId: sampleConnectionId,
@@ -99,7 +99,7 @@ export async function createConnectSession(sourceId: string) {
 
 export async function getConnectionStatus(sourceId: string, connectionId: string) {
   const source = DATA_SOURCES.find((s) => s.id === sourceId);
-  if (!source) throw new Error("Unknown source: $sourceId");
+  if (!source) throw new Error(`Unknown source: ${sourceId}`);
 
   if (connectionId.startsWith('conn_err_') || connectionId.startsWith('conn_sample_')) {
     return { status: 'approved', connectionId, scopes: source.scopes.map((s) => s.id) };
@@ -121,7 +121,7 @@ export async function readConnectionData(
   scope?: string
 ) {
   const source = DATA_SOURCES.find((s) => s.id === sourceId);
-  if (!source) throw new Error("Unknown source: $sourceId");
+  if (!source) throw new Error(`Unknown source: ${sourceId}`);
 
   if (MODE === 'sample' || !APP_PRIVATE_KEY || connectionId.startsWith('conn_')) {
     return getSampleData(sourceId, scope);
@@ -176,7 +176,7 @@ function getSampleData(sourceId: string, scope?: string) {
         full_name: 'Lumina User',
         follower_count: 1234,
         following_count: 567,
-        bio: '🚀 Building with Vana',
+        bio: '✨ Building with Vana',
       },
     },
     linkedin: {
@@ -251,9 +251,6 @@ function getSampleData(sourceId: string, scope?: string) {
   return { data, source: sourceId, scope, timestamp: new Date().toISOString() };
 }
 
-/**
- * Network details for display purposes.
- */
 export const NETWORK_INFO = {
   mainnet: {
     name: 'Vana Mainnet',
@@ -269,4 +266,3 @@ export const NETWORK_INFO = {
     faucet: 'https://faucet.vana.com/moksha',
   },
 };
-
