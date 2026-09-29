@@ -38,7 +38,8 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
 
       if (data.approvalUrl) {
         // Open approval flow in new tab (Vana redirects user to approve)
-        window.open(data.approvalUrl, '_blank', 'noopener,noreferrer');
+        localStorage.setItem('vana_pending_' + source.id, data.connectionId);
+        window.location.href = data.approvalUrl;
       }
 
       onConnect?.(source.id);
@@ -152,3 +153,4 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
     </div>
   );
 }
+
