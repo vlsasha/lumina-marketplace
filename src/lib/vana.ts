@@ -5,23 +5,34 @@ const APP_PRIVATE_KEY = process.env.APP_PRIVATE_KEY;
 const ODL_APP_ID = process.env.ODL_APP_ID || 'lumina-marketplace';
 const MODE = process.env.VANA_MODE || 'sample';
 
-let directControllerPromise: Promise<any> | null = null;
+export function getVanaConfig() {
+  return {
+    appId: process.env.ODL_APP_ID || 'lumina-marketplace',
+    mode: process.env.VANA_MODE || 'sample',
+    apiBaseUrl: 'https://api.vana.org/api/v1',
+    network: 'mainnet' as 'mainnet' | 'moksha'
+  };
+}
+
+const controllers = new Map<string, Promise<any>>();
 
 async function getConnectController(sourceId: string) {
   if (!APP_PRIVATE_KEY || !ODL_APP_ID) {
     return null;
   }
   
-  if (directControllerPromise) return directControllerPromise;
+  if (controllers.has(sourceId)) {
+    return controllers.get(sourceId);
+  }
 
-  directControllerPromise = (async () => {
+  const promise = (async () => {
     try {
       const { createDirectDataController } = await import('@opendatalabs/vana-sdk/server');
       const { privateKeyToAccount } = await import('viem/accounts');
       
-      const pKey = APP_PRIVATE_KEY.startsWith('0x') ? APP_PRIVATE_KEY : `0x${APP_PRIVATE_KEY}`;
-      const account = privateKeyToAccount(pKey as `0x${string}`);
-      const appId = ODL_APP_ID.startsWith('0x') ? ODL_APP_ID : `0x${ODL_APP_ID}`;
+      const pKey = APP_PRIVATE_KEY.startsWith('0x') ? APP_PRIVATE_KEY : "0x$APP_PRIVATE_KEY";
+      const account = privateKeyToAccount(pKey as "0x${string}");
+      const appId = ODL_APP_ID.startsWith('0x') ? ODL_APP_ID : "0x$ODL_APP_ID";
 
       return createDirectDataController({
         env: 'production',
@@ -40,9 +51,9 @@ async function getConnectController(sourceId: string) {
     }
   })();
 
-  return directControllerPromise;
+  controllers.set(sourceId, promise);
+  return promise;
 }
-
 export async function createConnectSession(sourceId: string) {
   const source = DATA_SOURCES.find((s) => s.id === sourceId);
   if (!source) throw new Error(`Unknown source: ${sourceId}`);
@@ -275,3 +286,4 @@ export function getVanaConfig() {
     network: 'mainnet' as 'mainnet' | 'moksha'
   };
 }
+
