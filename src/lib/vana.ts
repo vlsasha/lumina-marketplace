@@ -271,6 +271,7 @@ export function getVanaConfig() {
   return {
     appId: process.env.ODL_APP_ID || 'lumina-marketplace',
     mode: process.env.VANA_MODE || 'sample',
-    apiBaseUrl: 'https://api.vana.org/api/v1'
+    apiBaseUrl: 'https://api.vana.org/api/v1',
+    network: 'mainnet' as 'mainnet' | 'moksha'
   };
 }
