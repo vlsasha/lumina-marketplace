@@ -266,3 +266,11 @@ export const NETWORK_INFO = {
     faucet: 'https://faucet.vana.com/moksha',
   },
 };
+
+export function getVanaConfig() {
+  return {
+    appId: process.env.ODL_APP_ID || 'lumina-marketplace',
+    mode: process.env.VANA_MODE || 'sample',
+    apiBaseUrl: 'https://api.vana.org/api/v1'
+  };
+}
