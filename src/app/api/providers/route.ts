@@ -3,13 +3,13 @@ import sql, { initDb } from '@/lib/db';
 
 export async function GET() {
   try {
-    if (!process.env.DATABASE_URL) {
+    if (!sql) {
        // Fallback for local testing without DB
        return NextResponse.json({ providers: ['0xC1d3007A33d86Fd7390B087304AD3083FC87438C'], count: 1 });
     }
 
     await initDb();
-    const result = await sql\SELECT wallet_address FROM vana_users\;
+    const result = await sql`SELECT wallet_address FROM vana_users`;
     const providers = result.map(row => row.wallet_address);
     
     // Always include the Treasury wallet as a fallback so the marketplace doesn't break if DB is empty
@@ -29,7 +29,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    if (!process.env.DATABASE_URL) return NextResponse.json({ success: true });
+    if (!sql) return NextResponse.json({ success: true });
     
     const { wallet_address } = await req.json();
     if (!wallet_address) return NextResponse.json({ error: 'Missing wallet' }, { status: 400 });
@@ -37,11 +37,11 @@ export async function POST(req: Request) {
     await initDb();
     
     // Insert if not exists
-    await sql\
+    await sql`
       INSERT INTO vana_users (wallet_address) 
-      VALUES (\) 
+      VALUES (${wallet_address}) 
       ON CONFLICT (wallet_address) DO NOTHING
-    \;
+    `;
 
     return NextResponse.json({ success: true });
   } catch (error) {
