@@ -216,7 +216,7 @@ export default function DashboardPage() {
           {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
             <StatCard label="Available Sources" value={DATA_SOURCES.length.toString()} />
-            <StatCard label="Connected" value={connections.filter((c) => c.status === 'approved').length.toString()} />
+            <StatCard label="Connected" value={connections.filter((c) => (c.status === 'approved' || c.status === 'completed')).length.toString()} />
             <StatCard label="Pending" value={connections.filter((c) => c.status === 'pending').length.toString()} />
             <StatCard label="Total Scopes" value={DATA_SOURCES.reduce((acc, s) => acc + s.scopes.length, 0).toString()} />
           </div>
@@ -498,6 +498,7 @@ function StatCard({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+
 
 
 
