@@ -44,13 +44,7 @@ export const DATA_SOURCES: DataSource[] = [
         name: 'Conversations',
         description: 'All conversation history including messages with ChatGPT',
         maturity: 'stable',
-      },
-      {
-        id: 'chatgpt.memories',
-        name: 'Memories',
-        description: 'Saved memories that ChatGPT uses to personalize responses',
-        maturity: 'stable',
-      },
+      }
     ],
     status: 'available',
     requiresDesktop: false,
@@ -70,19 +64,7 @@ export const DATA_SOURCES: DataSource[] = [
         name: 'Profile',
         description: 'GitHub profile including bio, company, location, and stats',
         maturity: 'stable',
-      },
-      {
-        id: 'github.repos',
-        name: 'Repositories',
-        description: 'Public and private repositories with details',
-        maturity: 'stable',
-      },
-      {
-        id: 'github.starred',
-        name: 'Starred',
-        description: 'Repositories you have starred on GitHub',
-        maturity: 'stable',
-      },
+      }
     ],
     status: 'available',
     requiresDesktop: false,
@@ -122,37 +104,7 @@ export const DATA_SOURCES: DataSource[] = [
         name: 'Profile',
         description: 'Your LinkedIn profile including name, headline, location, about',
         maturity: 'stable',
-      },
-      {
-        id: 'linkedin.experience',
-        name: 'Experience',
-        description: 'Your work experience including job titles, companies, dates',
-        maturity: 'stable',
-      },
-      {
-        id: 'linkedin.education',
-        name: 'Education',
-        description: 'Your education history including schools, degrees, years',
-        maturity: 'stable',
-      },
-      {
-        id: 'linkedin.skills',
-        name: 'Skills',
-        description: 'Your skills and endorsement counts',
-        maturity: 'stable',
-      },
-      {
-        id: 'linkedin.connections',
-        name: 'Connections',
-        description: 'Your LinkedIn connections with names and headlines',
-        maturity: 'stable',
-      },
-      {
-        id: 'linkedin.languages',
-        name: 'Languages',
-        description: 'Your languages and proficiency levels',
-        maturity: 'stable',
-      },
+      }
     ],
     status: 'available',
     requiresDesktop: false,
@@ -172,19 +124,7 @@ export const DATA_SOURCES: DataSource[] = [
         name: 'Profile',
         description: 'Profile information',
         maturity: 'stable',
-      },
-      {
-        id: 'spotify.savedTracks',
-        name: 'Saved Tracks',
-        description: 'Saved/liked tracks in your library',
-        maturity: 'stable',
-      },
-      {
-        id: 'spotify.playlists',
-        name: 'Playlists',
-        description: 'Playlists and their tracks',
-        maturity: 'stable',
-      },
+      }
     ],
     status: 'available',
     requiresDesktop: false,
@@ -220,17 +160,11 @@ export const DATA_SOURCES: DataSource[] = [
     source: 'amazon',
     scopes: [
       {
-        id: 'amazon.orders',
-        name: 'Orders',
-        description: 'Order history including items, prices, dates, and delivery status',
-        maturity: 'beta',
-      },
-      {
         id: 'amazon.profile',
         name: 'Profile',
         description: 'Account name and Prime membership status',
         maturity: 'beta',
-      },
+      }
     ],
     status: 'available',
     requiresDesktop: false,
@@ -250,13 +184,7 @@ export const DATA_SOURCES: DataSource[] = [
         name: 'Conversations',
         description: 'All Claude conversations with full message threads',
         maturity: 'experimental',
-      },
-      {
-        id: 'claude.projects',
-        name: 'Projects',
-        description: 'Claude projects and their detail',
-        maturity: 'experimental',
-      },
+      }
     ],
     status: 'available',
     requiresDesktop: false,
@@ -276,13 +204,7 @@ export const DATA_SOURCES: DataSource[] = [
         name: 'Notes',
         description: 'Note content, titles, created/modified timestamps, and folder assignment',
         maturity: 'experimental',
-      },
-      {
-        id: 'icloud_notes.folders',
-        name: 'Folders',
-        description: 'Folder structure for organizing notes',
-        maturity: 'experimental',
-      },
+      }
     ],
     status: 'available',
     requiresDesktop: false,
@@ -302,19 +224,7 @@ export const DATA_SOURCES: DataSource[] = [
         name: 'Sleep',
         description: 'Daily sleep scores with duration, stages, heart rate, and HRV',
         maturity: 'stable',
-      },
-      {
-        id: 'oura.activity',
-        name: 'Activity',
-        description: 'Daily activity scores, step counts, calorie burn',
-        maturity: 'stable',
-      },
-      {
-        id: 'oura.readiness',
-        name: 'Readiness',
-        description: 'Daily readiness scores with HRV balance, resting heart rate',
-        maturity: 'stable',
-      },
+      }
     ],
     status: 'available',
     requiresDesktop: false,
@@ -336,12 +246,6 @@ export const DATA_SOURCES: DataSource[] = [
         name: 'Activities',
         description: 'Read detailed activity history and performance data',
         maturity: 'stable',
-      },
-      {
-        id: 'read_routes',
-        name: 'Routes',
-        description: 'Read GPS routes and maps',
-        maturity: 'stable',
       }
     ],
     docsUrl: 'https://docs.vana.org/build-a-vana-app/source-and-scopes',
@@ -361,18 +265,6 @@ export const DATA_SOURCES: DataSource[] = [
         id: 'read_recovery',
         name: 'Recovery',
         description: 'Read daily recovery scores and HRV',
-        maturity: 'stable',
-      },
-      {
-        id: 'read_sleep',
-        name: 'Sleep',
-        description: 'Read detailed sleep stages and performance',
-        maturity: 'stable',
-      },
-      {
-        id: 'read_strain',
-        name: 'Strain',
-        description: 'Read cardiovascular strain and workout data',
         maturity: 'stable',
       }
     ],
@@ -395,4 +287,3 @@ export function getSourcesByCategory(category: string): DataSource[] {
 export function getTotalScopes(): number {
   return DATA_SOURCES.reduce((acc, s) => acc + s.scopes.length, 0);
 }
-
