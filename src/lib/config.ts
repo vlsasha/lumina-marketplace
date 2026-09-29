@@ -1,5 +1,5 @@
 export const MARKETPLACE_CONFIG = {
-  marketplaceAddress: '0x9f4eed635fb364b1b90d68a4e627b88b64f4836d',
+  marketplaceAddress: '0xA89C2D92421B4a3B4d409668AeCC58B464E5fd32',
   platformFeePercentage: 20, // 20% fee
   treasuryAddress: '0xC1d3007A33d86Fd7390B087304AD3083FC87438C', // User's wallet for fees
   paymentToken: {
