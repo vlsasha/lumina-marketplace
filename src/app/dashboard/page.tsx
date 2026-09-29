@@ -286,7 +286,7 @@ export default function DashboardPage() {
                       </div>
 
                       <div className="flex items-center gap-2">
-                        {conn?.status === 'approved' && (
+                        {(conn?.status === 'approved' || conn?.status === 'completed') && (
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() => setPrivacyModalOpen(source.name)}
@@ -335,7 +335,7 @@ export default function DashboardPage() {
                             </button>
                           </div>
                         )}
-                        {conn?.status === 'approved' && (
+                        {(conn?.status === 'approved' || conn?.status === 'completed') && (
                           <button
                             onClick={() => handleReadData(source.source)}
                             disabled={isLoading}
@@ -498,6 +498,7 @@ function StatCard({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+
 
 
 
