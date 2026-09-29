@@ -43,11 +43,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
         const height = 800;
         const left = window.screenX + (window.outerWidth - width) / 2;
         const top = window.screenY + (window.outerHeight - height) / 2;
-        const popup = window.open(
-          data.approvalUrl,
-          'Vana Connect',
-          `width=${width},height=${height},left=${left},top=${top},popup=yes`
-        );
+        const popup = window.open(data.approvalUrl, '_blank');
 
         // Poll for completion
         const pollInterval = setInterval(async () => {
@@ -149,4 +145,5 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
     </div>
   );
 }
+
 
