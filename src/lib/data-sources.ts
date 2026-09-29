@@ -102,25 +102,7 @@ export const DATA_SOURCES: DataSource[] = [
         name: 'Profile',
         description: 'Profile information including bio and follower counts',
         maturity: 'stable',
-      },
-      {
-        id: 'instagram.posts',
-        name: 'Posts',
-        description: 'Published posts from your feed',
-        maturity: 'stable',
-      },
-      {
-        id: 'instagram.following',
-        name: 'Following',
-        description: 'The list of Instagram accounts you follow',
-        maturity: 'stable',
-      },
-      {
-        id: 'instagram.ads',
-        name: 'Ads',
-        description: 'Advertisers and ad topic interests based on activity',
-        maturity: 'stable',
-      },
+      }
     ],
     status: 'available',
     requiresDesktop: false,
@@ -218,41 +200,11 @@ export const DATA_SOURCES: DataSource[] = [
     source: 'youtube',
     scopes: [
       {
-        id: 'youtube.videos',
-        name: 'Published Videos',
-        description: 'Read published videos and Shorts metadata',
+        id: 'youtube.profile',
+        name: 'Profile',
+        description: 'Channel profile and statistics',
         maturity: 'stable',
-      },
-      {
-        id: 'youtube.history',
-        name: 'Watch History',
-        description: 'Raw watch history entries',
-        maturity: 'beta',
-      },
-      {
-        id: 'youtube.likes',
-        name: 'Likes',
-        description: 'Videos you have liked',
-        maturity: 'beta',
-      },
-      {
-        id: 'youtube.subscriptions',
-        name: 'Subscriptions',
-        description: 'Channels you are subscribed to',
-        maturity: 'beta',
-      },
-      {
-        id: 'youtube.playlists',
-        name: 'Playlists',
-        description: 'Playlists visible in your YouTube Library',
-        maturity: 'beta',
-      },
-      {
-        id: 'youtube.watchLater',
-        name: 'Watch Later',
-        description: 'Videos saved to Watch Later',
-        maturity: 'beta',
-      },
+      }
     ],
     status: 'available',
     requiresDesktop: false,
@@ -443,3 +395,4 @@ export function getSourcesByCategory(category: string): DataSource[] {
 export function getTotalScopes(): number {
   return DATA_SOURCES.reduce((acc, s) => acc + s.scopes.length, 0);
 }
+
