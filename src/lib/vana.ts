@@ -278,3 +278,4 @@ export const NETWORK_INFO = {
     faucet: 'https://faucet.vana.com/moksha',
   },
 };
+
