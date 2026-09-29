@@ -66,7 +66,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
               onConnect?.(source.id);
               
               // Save to local storage
-              const saved = localStorage.getItem('databridge_connections');
+              const saved = localStorage.getItem('Lumina_connections');
               const connections = saved ? JSON.parse(saved) : [];
               connections.push({
                 sourceId: source.id,
@@ -74,7 +74,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
                 status: 'approved',
                 connectedAt: new Date().toISOString()
               });
-              localStorage.setItem('databridge_connections', JSON.stringify(connections));
+              localStorage.setItem('Lumina_connections', JSON.stringify(connections));
               
               // Redirect to dashboard to see results
               window.location.href = '/dashboard';
@@ -149,3 +149,4 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
     </div>
   );
 }
+

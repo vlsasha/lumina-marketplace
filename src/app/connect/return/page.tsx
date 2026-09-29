@@ -39,7 +39,7 @@ function ReturnContent() {
 
           // Update localStorage so Dashboard knows it's approved
           try {
-            const saved = localStorage.getItem('databridge_connections');
+            const saved = localStorage.getItem('Lumina_connections');
             if (saved) {
               const connections = JSON.parse(saved);
               const updated = connections.map((c: any) => 
@@ -57,9 +57,9 @@ function ReturnContent() {
                   scopesApproved: data.scopes || [],
                 });
               }
-              localStorage.setItem('databridge_connections', JSON.stringify(updated));
+              localStorage.setItem('Lumina_connections', JSON.stringify(updated));
             } else {
-              localStorage.setItem('databridge_connections', JSON.stringify([{
+              localStorage.setItem('Lumina_connections', JSON.stringify([{
                 sourceId: source,
                 connectionId,
                 status: 'approved',
@@ -157,4 +157,5 @@ export default function ConnectReturnPage() {
     </Suspense>
   );
 }
+
 
