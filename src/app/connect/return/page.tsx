@@ -11,7 +11,7 @@ function ReturnContent() {
   const { address } = useAccount();
 
   const connectionId = searchParams.get('connectionId') || searchParams.get('requestId') || searchParams.get('id') || (typeof window !== 'undefined' ? localStorage.getItem('vana_pending_' + searchParams.get('source')) : null);
-  const source = searchParams.get('source');
+  const source = searchParams.get('source') || (typeof window !== 'undefined' ? localStorage.getItem('vana_pending_last_source') : null);
 
   useEffect(() => {
     if (!connectionId || !source) {
@@ -157,5 +157,6 @@ export default function ConnectReturnPage() {
     </Suspense>
   );
 }
+
 
 
