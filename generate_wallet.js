@@ -1,0 +1,1 @@
+const { ethers } = require('ethers'); const fs = require('fs'); const wallet = ethers.Wallet.createRandom(); const envContent = '\nPRIVATE_KEY=' + wallet.privateKey + '\n'; fs.appendFileSync('.env', envContent); console.log('Deployer Address: ' + wallet.address);

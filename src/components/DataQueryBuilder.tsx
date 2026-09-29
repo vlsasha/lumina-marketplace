@@ -71,10 +71,15 @@ export function DataQueryBuilder() {
     }
     try {
       setIsPending(true);
-      const mockProviders = Array.from({ length: 3 }, (_, i) => `0x111111111111111111111111111111111111111${i}` as `0x${string}`);
+      
+      // Fetch valid providers from our new backend API
+      const response = await fetch('/api/providers');
+      const data = await response.json();
+      const validProviders = data.providers as `0x${string}`[];
+
       const totalAmountParsed = parseUnits(totalCost.toFixed(6), MARKETPLACE_CONFIG.paymentToken.decimals);
-      const amountPerProvider = parseUnits((totalCost / 3).toFixed(6), MARKETPLACE_CONFIG.paymentToken.decimals);
-      const mockAmounts = Array(3).fill(amountPerProvider);
+      const amountPerProvider = parseUnits((totalCost / validProviders.length).toFixed(6), MARKETPLACE_CONFIG.paymentToken.decimals);
+      const amountsArray = Array(validProviders.length).fill(amountPerProvider);
       await writeContractAsync({
         address: MARKETPLACE_CONFIG.paymentToken.address as `0x${string}`,
         abi: erc20Abi,
@@ -85,7 +90,7 @@ export function DataQueryBuilder() {
         address: MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`,
         abi: luminaMarketplaceAbi,
         functionName: 'buyData',
-        args: [mockProviders, mockAmounts],
+        args: [validProviders, amountsArray],
       });
       alert('Dataset purchased successfully!');
     } catch (err) {
