@@ -14,6 +14,20 @@ export function DataQueryBuilder() {
   const { writeContractAsync } = useWriteContract();
   const [isPending, setIsPending] = useState(false);
   
+  const [validProviders, setValidProviders] = useState<`0x${string}`[]>([]);
+  const [totalUsersAvailable, setTotalUsersAvailable] = useState(0);
+
+  useEffect(() => {
+    fetch('/api/providers')
+      .then(res => res.json())
+      .then(data => {
+        setValidProviders(data.providers);
+        // If it's just the Treasury wallet (1), consider real users as 0 for display
+        setTotalUsersAvailable(data.count <= 1 ? 0 : data.count - 1); 
+      })
+      .catch(console.error);
+  }, []);
+  
   const [volume, setVolume] = useState<number>(10);
   const [selectedSources, setSelectedSources] = useState<string[]>([]);
   const [ageRange, setAgeRange] = useState('Any');
@@ -36,7 +50,7 @@ export function DataQueryBuilder() {
 
   // Simulate dynamic database inventory based on filters
   const calculateInventory = () => {
-    let base = 85000; // Base total users
+    let base = totalUsersAvailable; // Base total users from database
     
     // Region penalty
     if (region !== 'Global') base = base * 0.35;

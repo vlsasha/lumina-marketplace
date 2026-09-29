@@ -1,13 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Suspense } from 'react';
+import { useAccount } from 'wagmi';
 
 function ReturnContent() {
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
+  const { address } = useAccount();
 
   const connectionId = searchParams.get('connectionId') || searchParams.get('requestId');
   const source = searchParams.get('source');
@@ -26,6 +27,16 @@ function ReturnContent() {
         const data = await res.json();
         if (data.status === 'approved') {
           setStatus('success');
+          
+          // Register provider in Database if wallet is connected
+          if (address) {
+            await fetch('/api/providers', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ wallet_address: address }),
+            });
+          }
+
           // Update localStorage so Dashboard knows it's approved
           try {
             const saved = localStorage.getItem('databridge_connections');
