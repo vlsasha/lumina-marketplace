@@ -1,76 +1,59 @@
-/**
- * Vana / Open Data Labs SDK integration for Lumina.
- * Server-side only — uses @opendatalabs/connect-js for Connect flow.
- * Based on: https://dev.opendatalabs.com/docs
- */
+import { DATA_SOURCES } from './data-sources';
 
-import { DATA_SOURCES, type DataSource } from './data-sources';
-
-// Environment configuration
-const ODL_API_BASE_URL = process.env.ODL_API_BASE_URL || 'https://api.opendatalabs.com/api/v1';
-const ODL_API_KEY = process.env.ODL_API_KEY || '';
-const ODL_APP_ID = process.env.ODL_APP_ID || '';
-const ODL_ENCRYPTION_SECRET = process.env.ODL_ENCRYPTION_SECRET || '';
-const APP_URL = process.env.APP_URL || 'http://localhost:3000';
-const NETWORK = process.env.VANA_NETWORK === 'mainnet' ? 'mainnet' : 'moksha';
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://lumina-vana.vercel.app';
+const APP_PRIVATE_KEY = process.env.APP_PRIVATE_KEY;
+const ODL_APP_ID = process.env.ODL_APP_ID || 'lumina-marketplace';
 const MODE = process.env.VANA_MODE || 'sample';
-const VANA_CONNECT_OPENING_URL = process.env.NEXT_PUBLIC_VANA_CONNECT_OPENING_URL || 'https://app.vana.org/connect/opening';
 
-export interface VanaConfig {
-  network: 'mainnet' | 'moksha';
-  appUrl: string;
-  mode: 'sample' | 'live';
-  vanaConnectOpeningUrl: string;
-}
+let directControllerPromise: Promise<any> | null = null;
 
-export function getVanaConfig(): VanaConfig {
-  return {
-    network: NETWORK,
-    appUrl: APP_URL,
-    mode: MODE as 'sample' | 'live',
-    vanaConnectOpeningUrl: VANA_CONNECT_OPENING_URL,
-  };
-}
-
-/**
- * Creates an ODL Connect controller for server-side use.
- * Uses createConnectController from @opendatalabs/connect-js/server
- */
-async function getConnectController() {
-  try {
-    const { createConnectController } = await import(
-      '@opendatalabs/connect-js/server'
-    );
-
-    return createConnectController({
-      apiBaseUrl: ODL_API_BASE_URL,
-      apiKey: ODL_API_KEY,
-      appId: ODL_APP_ID,
-      defaultOrigin: APP_URL,
-      source: 'instagram', // default source, overridden per request
-      scopes: ['read:profile'],
-    });
-  } catch (error) {
-    console.error('Failed to create ODL controller:', error);
+async function getConnectController(sourceId: string) {
+  if (!APP_PRIVATE_KEY || !ODL_APP_ID) {
     return null;
   }
+  
+  if (directControllerPromise) return directControllerPromise;
+
+  directControllerPromise = (async () => {
+    try {
+      const { createDirectDataController } = await import('@opendatalabs/vana-sdk/server');
+      const { privateKeyToAccount } = await import('viem/accounts');
+      
+      const pKey = APP_PRIVATE_KEY.startsWith('0x') ? APP_PRIVATE_KEY : "0x$APP_PRIVATE_KEY";
+      const account = privateKeyToAccount(pKey as "0x${string}");
+      const appId = ODL_APP_ID.startsWith('0x') ? ODL_APP_ID : "0x$ODL_APP_ID";
+
+      return createDirectDataController({
+        env: 'mainnet',
+        appPrivateKey: pKey,
+        app: {
+          id: appId,
+          name: 'Lumina Marketplace',
+          homepageUrl: APP_URL
+        },
+        source: sourceId,
+        scopes: DATA_SOURCES.find((s) => s.id === sourceId)?.scopes.map(s => s.id) || ['read:profile'],
+      });
+    } catch (error) {
+      console.error('Failed to create vana-sdk controller:', error);
+      return null;
+    }
+  })();
+
+  return directControllerPromise;
 }
 
-/**
- * Creates a Connect session for a specific data source.
- * Returns the session details including connectUrl and connectionId.
- */
 export async function createConnectSession(sourceId: string) {
   const source = DATA_SOURCES.find((s) => s.id === sourceId);
-  if (!source) {
-    throw new Error(`Unknown source: ${sourceId}`);
-  }
+  if (!source) throw new Error("Unknown source: $sourceId");
 
-  if (MODE === 'sample' || !ODL_API_KEY) {
-    // Fallback for development/sample mode
-    const sampleConnectionId = `conn_sample_${sourceId}_${Date.now()}`;
-    const redirectUrl = encodeURIComponent(`${APP_URL}/connect/return`);
-    const mockUrl = `${APP_URL}/mock-vana-approval?source=${sourceId}&connectionId=${sampleConnectionId}&redirectUrl=${redirectUrl}`;
+  if (!APP_PRIVATE_KEY) {
+    if (MODE !== 'sample') {
+      throw new Error('APP_PRIVATE_KEY is missing in Vercel Environment Variables. Required by vana-sdk.');
+    }
+    const sampleConnectionId = "conn_sample_$sourceId_${Date.now()}";
+    const redirectUrl = encodeURIComponent("$APP_URL/connect/return");
+    const mockUrl = "$APP_URL/mock-vana-approval?source=$sourceId&connectionId=$sampleConnectionId&redirectUrl=$redirectUrl";
     
     return {
       connectionId: sampleConnectionId,
@@ -82,42 +65,27 @@ export async function createConnectSession(sourceId: string) {
   }
 
   try {
-    const { createConnectController } = await import(
-      '@opendatalabs/connect-js/server'
-    );
+    const controller = await getConnectController(sourceId);
+    if (!controller) throw new Error("Could not initialize Vana Controller");
 
-    const controller = createConnectController({
-      apiBaseUrl: ODL_API_BASE_URL,
-      apiKey: ODL_API_KEY,
-      appId: ODL_APP_ID,
-      defaultOrigin: APP_URL,
-      source: source.source,
-      scopes: source.scopes.map((s) => s.id),
-    });
-
-    const session = await controller.createConnectSession({
-      redirectUrl: `${APP_URL}/connect/return?source=${sourceId}`,
+    const request = await controller.createAccessRequest({
+      returnUrl: "$APP_URL/connect/return?source=$sourceId",
     });
 
     return {
-      ...session,
-      approvalUrl: session.connectUrl,
+      connectionId: request.requestId,
+      approvalUrl: request.approvalUrl,
       source: sourceId,
       scopes: source.scopes.map((s) => s.id),
     };
   } catch (error) {
-    console.error(`Failed to create session for ${source.name}:`, error);
-    
-    // In live mode, throw the real error so the user knows their API keys are invalid
-    if (MODE !== 'sample') {
-      throw error;
-    }
+    console.error("Failed to create session for ${source.name}:, error);
+    if (MODE !== 'sample') throw error;
 
-    // Return sample data on error ONLY in sample mode
-    const sampleConnectionId = `conn_err_${sourceId}_${Date.now()}`;
-    const redirectUrl = encodeURIComponent(`${APP_URL}/connect/return`);
+    const sampleConnectionId = "conn_err_$sourceId_${Date.now()}";
+    const redirectUrl = encodeURIComponent("$APP_URL/connect/return");
     const errorMessage = encodeURIComponent(error instanceof Error ? error.message : String(error));
-    const mockUrl = `${APP_URL}/mock-vana-approval?source=${sourceId}&connectionId=${sampleConnectionId}&redirectUrl=${redirectUrl}&error=${errorMessage}`;
+    const mockUrl = "$APP_URL/mock-vana-approval?source=$sourceId&connectionId=$sampleConnectionId&redirectUrl=$redirectUrl&error=$errorMessage";
     
     return {
       connectionId: sampleConnectionId,
@@ -129,68 +97,40 @@ export async function createConnectSession(sourceId: string) {
   }
 }
 
-/**
- * Gets the status of a Connect session.
- */
 export async function getConnectionStatus(sourceId: string, connectionId: string) {
   const source = DATA_SOURCES.find((s) => s.id === sourceId);
-  if (!source) {
-    throw new Error(`Unknown source: ${sourceId}`);
-  }
+  if (!source) throw new Error("Unknown source: $sourceId");
 
-  // If it's a fallback/error connection ID generated by our catch block, always approve it for testing
   if (connectionId.startsWith('conn_err_') || connectionId.startsWith('conn_sample_')) {
-    return {
-      status: 'approved',
-      connectionId,
-      scopes: source.scopes.map((s) => s.id),
-    };
+    return { status: 'approved', connectionId, scopes: source.scopes.map((s) => s.id) };
   }
 
-  if (MODE === 'sample' || !ODL_API_KEY) {
-    return {
-      status: 'approved',
-      connectionId,
-      scopes: source.scopes.map((s) => s.id),
-    };
+  if (MODE === 'sample' || !APP_PRIVATE_KEY) {
+    return { status: 'approved', connectionId, scopes: source.scopes.map((s) => s.id) };
   }
 
-  const controller = await getConnectController();
-  if (!controller) {
-    return {
-      status: 'approved',
-      connectionId,
-      scopes: source.scopes.map((s) => s.id),
-    };
-  }
+  const controller = await getConnectController(sourceId);
+  if (!controller) return { status: 'approved', connectionId, scopes: source.scopes.map((s) => s.id) };
 
-  return controller.getStatus(connectionId);
+  return controller.getAccessRequestStatus(connectionId);
 }
 
-/**
- * Reads approved data for a specific connection.
- * Uses readAllWhenReady which waits for readiness, reads scopes, and confirms.
- */
 export async function readConnectionData(
   sourceId: string,
   connectionId: string,
   scope?: string
 ) {
   const source = DATA_SOURCES.find((s) => s.id === sourceId);
-  if (!source) {
-    throw new Error(`Unknown source: ${sourceId}`);
-  }
+  if (!source) throw new Error("Unknown source: $sourceId");
 
-  if (MODE === 'sample' || !ODL_API_KEY) {
+  if (MODE === 'sample' || !APP_PRIVATE_KEY || connectionId.startsWith('conn_')) {
     return getSampleData(sourceId, scope);
   }
 
-  const controller = await getConnectController();
-  if (!controller) {
-    return getSampleData(sourceId, scope);
-  }
+  const controller = await getConnectController(sourceId);
+  if (!controller) return getSampleData(sourceId, scope);
 
-  const result = await controller.readAllWhenReady(connectionId);
+  const result = await controller.readAllApprovedData({ requestId: connectionId });
   return {
     data: result,
     source: sourceId,
@@ -199,9 +139,6 @@ export async function readConnectionData(
   };
 }
 
-/**
- * Returns sample data for development/testing.
- */
 function getSampleData(sourceId: string, scope?: string) {
   const sampleDataMap: Record<string, unknown> = {
     chatgpt: {
@@ -332,3 +269,4 @@ export const NETWORK_INFO = {
     faucet: 'https://faucet.vana.com/moksha',
   },
 };
+
