@@ -24,7 +24,7 @@ async function getConnectController(sourceId: string) {
       const appId = ODL_APP_ID.startsWith('0x') ? ODL_APP_ID : `0x${ODL_APP_ID}`;
 
       return createDirectDataController({
-        env: 'mainnet',
+        env: 'production',
         appPrivateKey: pKey,
         app: {
           id: appId,
