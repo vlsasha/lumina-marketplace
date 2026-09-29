@@ -14,7 +14,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
 
   const statusConfig = {
     available: { label: 'Available', color: 'text-vana-green', bg: 'bg-vana-green/10', border: 'border-vana-green/20' },
-    connected: { label: '? Connected', color: 'text-vana-green', bg: 'bg-vana-green/10', border: 'border-vana-green/20' },
+    connected: { label: '✓ Connected', color: 'text-vana-green', bg: 'bg-vana-green/10', border: 'border-vana-green/20' },
     public_only: { label: 'Public Only', color: 'text-vana-amber', bg: 'bg-vana-amber/10', border: 'border-vana-amber/20' },
     desktop_required: { label: 'Desktop Required', color: 'text-vana-amber', bg: 'bg-vana-amber/10', border: 'border-vana-amber/20' },
   };
@@ -32,7 +32,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
       const data = await res.json();
 
       if (!res.ok || data.error) {
-        alert(\Vana Error: \\);
+        alert(`Vana Error: ${data.error || 'Unknown error'}`);
         setIsConnecting(false);
         return;
       }
@@ -46,20 +46,20 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
         const popup = window.open(
           data.approvalUrl,
           'Vana Connect',
-          \width=\,height=\,left=\,top=\,popup=yes\
+          `width=${width},height=${height},left=${left},top=${top},popup=yes`
         );
 
         // Poll for completion
         const pollInterval = setInterval(async () => {
           try {
-            const statusRes = await fetch(\/api/vana/status?source=\&connectionId=\\);
+            const statusRes = await fetch(`/api/vana/status?source=${source.id}&connectionId=${data.connectionId}`);
             const statusData = await statusRes.json();
             
             if (statusData.status === 'approved' || statusData.status === 'completed') {
               clearInterval(pollInterval);
               
               // Trigger data read which will acknowledge and close the Vana popup
-              await fetch(\/api/vana/data?source=\&connectionId=\\);
+              await fetch(`/api/vana/data?source=${source.id}&connectionId=${data.connectionId}`);
               
               if (popup && !popup.closed) popup.close();
               setIsConnecting(false);
@@ -103,7 +103,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
       <div className="p-6 flex flex-col h-full relative z-10">
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex items-center gap-4 min-w-0">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-500 group-hover:scale-110 p-2 overflow-hidden shadow-inner border border-[#333] group-hover:border-[#555]" style={{ background: \\15\ }}>
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-500 group-hover:scale-110 p-2 overflow-hidden shadow-inner border border-[#333] group-hover:border-[#555]" style={{ background: `${source.color}15` }}>
               {source.icon.startsWith('http') ? (
                 <img src={source.icon} alt={source.name} className="w-full h-full object-contain filter drop-shadow-md" />
               ) : (
@@ -115,7 +115,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
               <span className="text-[11px] uppercase tracking-wider font-semibold text-gray-500">{source.category}</span>
             </div>
           </div>
-          <span className={\shrink-0 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest \ \ border \ shadow-sm\}>
+          <span className={`shrink-0 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${status.bg} ${status.color} border ${status.border} shadow-sm`}>
             {status.label}
           </span>
         </div>
