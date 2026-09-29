@@ -31,6 +31,11 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
       });
       const data = await res.json();
 
+      if (!res.ok || data.error) {
+        alert(`Vana Error: ${data.error || 'Unknown error'}`);
+        return;
+      }
+
       if (data.approvalUrl) {
         // Open approval flow in new tab (Vana redirects user to approve)
         window.open(data.approvalUrl, '_blank', 'noopener,noreferrer');
