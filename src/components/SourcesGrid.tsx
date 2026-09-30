@@ -1,13 +1,41 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DATA_SOURCES } from '@/lib/data-sources';
+import { useAccount } from 'wagmi';
 import { SourceCard } from './SourceCard';
 
 export function SourcesGrid() {
   const [activeCategory, setActiveCategory] = useState<string>('All');
   
-  const availableSources = DATA_SOURCES;
+  const { address } = useAccount();
+  const [connections, setConnections] = useState<any[]>([]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('vana_connections');
+    if (saved) {
+      setConnections(JSON.parse(saved));
+    }
+    
+    if (address) {
+      fetch(`/api/connections?wallet=${address}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.connections) {
+            setConnections(data.connections);
+          }
+        })
+        .catch(console.error);
+    }
+  }, [address]);
+
+  const availableSources = DATA_SOURCES.map(source => {
+    const conn = connections.find(c => c.sourceId === source.id);
+    if (conn && (conn.status === 'completed' || conn.status === 'approved')) {
+      return { ...source, status: 'connected' as const };
+    }
+    return source;
+  });
 
   // Extract unique categories
   const categories = ['All', ...Array.from(new Set(availableSources.map(s => s.category)))];
