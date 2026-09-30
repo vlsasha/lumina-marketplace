@@ -81,7 +81,7 @@ export default function DashboardPage() {
     // Sync with DB if wallet is connected
   useEffect(() => {
     if (address) {
-      fetch(/api/connections?wallet=&t=)
+      fetch(`/api/connections?wallet=${address}&t=${Date.now()}`)
         .then(res => res.json())
         .then(data => {
           if (data.connections && data.connections.length > 0) {
@@ -329,8 +329,8 @@ export default function DashboardPage() {
                               </span>
                               {conn.qualityScore != null && (
                                 <span className="shrink-0 px-2 py-0.5 rounded text-[10px] font-bold bg-[#111] text-amber-400 border border-[#333]" title="Data Quality Score">
-                                  💎 Tier {conn.qualityScore >= 80 ? 'S' : conn.qualityScore >= 60 ? 'A' : conn.qualityScore >= 40 ? 'B' : 'C'} ({conn.qualityScore}/100)
-                                </span>
+  &#128142; Tier {conn.qualityScore >= 80 ? 'S' : conn.qualityScore >= 60 ? 'A' : conn.qualityScore >= 40 ? 'B' : 'C'} ({conn.qualityScore}/100)
+</span>
                               )}
                             </div>
                           </div>
