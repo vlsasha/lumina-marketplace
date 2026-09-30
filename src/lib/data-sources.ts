@@ -135,14 +135,44 @@ export const DATA_SOURCES: DataSource[] = [
     name: 'YouTube',
     icon: 'https://www.google.com/s2/favicons?domain=youtube.com&sz=128',
     color: '#FF0000',
-    description: 'Published videos, Shorts, watch history, subscriptions, and channel profile.',
+    description: 'Watch history, likes, subscriptions, playlists, and channel profile.',
     category: 'Entertainment',
     source: 'youtube',
     scopes: [
       {
+        id: 'youtube.history',
+        name: 'Watch History',
+        description: 'Complete history of watched videos',
+        maturity: 'stable',
+      },
+      {
+        id: 'youtube.likes',
+        name: 'Likes',
+        description: 'Videos you have liked',
+        maturity: 'stable',
+      },
+      {
+        id: 'youtube.playlists',
+        name: 'Playlists',
+        description: 'Saved and created playlists',
+        maturity: 'stable',
+      },
+      {
         id: 'youtube.profile',
         name: 'Profile',
         description: 'Channel profile and statistics',
+        maturity: 'stable',
+      },
+      {
+        id: 'youtube.subscriptions',
+        name: 'Subscriptions',
+        description: 'Channels you are subscribed to',
+        maturity: 'stable',
+      },
+      {
+        id: 'youtube.watchLater',
+        name: 'Watch Later',
+        description: 'Videos saved to Watch Later',
         maturity: 'stable',
       }
     ],
