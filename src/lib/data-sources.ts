@@ -60,11 +60,35 @@ export const DATA_SOURCES: DataSource[] = [
     source: 'github',
     scopes: [
       {
-        id: 'github.profile',
-        name: 'Profile',
-        description: 'GitHub profile including bio, company, location, and stats',
-        maturity: 'stable',
-      }
+          id: 'github.profile',
+          name: 'Profile',
+          description: 'GitHub profile including bio, company, location, and stats',
+          maturity: 'stable',
+        },
+        {
+          id: 'github.repositories',
+          name: 'Repositories',
+          description: 'Public and private repositories you own or contribute to',
+          maturity: 'stable',
+        },
+        {
+          id: 'github.contributions',
+          name: 'Contributions',
+          description: 'Your contribution graph and commit history',
+          maturity: 'stable',
+        },
+        {
+          id: 'github.starred',
+          name: 'Starred Projects',
+          description: 'Repositories you have starred',
+          maturity: 'stable',
+        },
+        {
+          id: 'github.history',
+          name: 'History',
+          description: 'Your browsing history on GitHub',
+          maturity: 'stable',
+        }
     ],
     status: 'available',
     requiresDesktop: false,
