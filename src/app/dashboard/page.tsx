@@ -298,10 +298,17 @@ export default function DashboardPage() {
                               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                               Privacy
                             </button>
-                            <span className="flex items-center gap-1 text-xs text-vana-green px-2 py-1 rounded-lg bg-vana-green/10">
-                              <span className="w-1.5 h-1.5 rounded-full bg-vana-green" />
-                              Connected
-                            </span>
+                            <div className="flex flex-col items-end gap-1">
+                              <span className="flex items-center gap-1 text-xs text-vana-green px-2 py-1 rounded-lg bg-vana-green/10">
+                                <span className="w-1.5 h-1.5 rounded-full bg-vana-green" />
+                                Connected
+                              </span>
+                              {conn.qualityScore != null && (
+                                <span className="shrink-0 px-2 py-0.5 rounded text-[10px] font-bold bg-[#111] text-amber-400 border border-[#333]" title="Data Quality Score">
+                                  💎 Tier {conn.qualityScore >= 80 ? 'S' : conn.qualityScore >= 60 ? 'A' : conn.qualityScore >= 40 ? 'B' : 'C'} ({conn.qualityScore}/100)
+                                </span>
+                              )}
+                            </div>
                           </div>
                         )}
                         {conn?.status === 'pending' && (
