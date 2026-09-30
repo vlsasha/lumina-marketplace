@@ -2283,3 +2283,28 @@ pm run build compiles successfully with 0 TypeScript errors
 - All 'DataBridge' references eliminated from codebase
 - Smart contract renamed to LuminaMarketplace.sol`n
 ### Full audit report saved to: lumina_audit_report.md (in artifacts directory)
+
+
+## UPDATE 4 (SEP 30, 2026): Phase 5 - Vana Integration & Quality Scoring Engine
+
+### 1. Vana Connect Integration
+- Implemented full OAuth-style flow with Vana Connect via Open Data Labs (ODL) API.
+- Built backend routes: POST /api/vana/request (creates DCR), GET /api/vana/status (polls DCR status), GET /api/vana/data (fetches signed S3 URL and downloads archive).
+- Integrated 5 GitHub scopes: github.profile, github.repositories, github.contributions, github.starred, github.history.
+
+### 2. Vercel Postgres Data Lake
+- Configured @neondatabase/serverless for edge-compatible PostgreSQL connection.
+- Created two key tables: user_connections (active UI state with wallet & quality score) and downloaded_data (immutable historical data lake storing the raw JSON payloads).
+
+### 3. Dynamic Quality Scoring Engine
+- Built a backend parser in pi/connections/route.ts that calculates 'Trust Tiers' dynamically:
+  - **YouTube:** Checks join year (pre-2016 = +40pts, pre-2021 = +20pts), watch history (>20 = +20pts), and subscriptions (>10 = +40pts).
+  - **ChatGPT:** Checks volume (>100 convos = +50pts) and message density (>1000 msgs = +50pts).
+  - **GitHub:** Checks repo count (>50 = +30pts), followers (>100 = +30pts), and yearly contributions (>1000 = +40pts).
+- Created a retroactive recalculation script (/api/restore) capable of looping through historical downloaded_data to recalculate scores for all users when rules change.
+
+### 4. Anti-Sybil Defense (Duplicate Account Prevention)
+- Added a strict UNIQUE (source_id, provider_account_id) constraint in PostgreSQL.
+- The parser extracts the true hidden ID from within the JSON payload (e.g., github.profile.items[0].username or YouTube channelId).
+- If a user attempts to upload an already-registered dataset from a new Web3 wallet, the database throws 409 Conflict.
+- Added a responsive UI Toast notification system in dashboard/page.tsx to handle these errors gracefully and revert the UI state, preventing zombie connection loops.
