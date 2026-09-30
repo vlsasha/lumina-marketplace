@@ -192,10 +192,25 @@ export default function DashboardPage() {
                         status: previewData.error ? 'approved' : 'completed',
                         scopesApproved: statusData.scopes || []
                       }
-                    })
-                  });
-                  
-                  // Immediately re-fetch from DB to get the calculated qualityScore
+                    }
+                    });
+                    
+                    if (!postRes.ok) {
+                      const errData = await postRes.json();
+                      showToast(errData.error || 'Failed to sync database', 'error');
+                      setConnections(prev => {
+                        const filtered = prev.filter(c => c.sourceId !== sourceId);
+                        localStorage.setItem('Lumina_connections', JSON.stringify(filtered));
+                        return filtered;
+                      });
+                      clearInterval(pollInterval);
+                      setLoading(null);
+                      return;
+                    } else {
+                      showToast('Account connected and verified!', 'success');
+                    }
+                    
+                    // Immediately re-fetch from DB to get the calculated qualityScore
                   const refreshRes = await fetch(`/api/connections?wallet=${address}&t=${Date.now()}`);
                   const refreshData = await refreshRes.json();
                   if (refreshData.connections && refreshData.connections.length > 0) {
@@ -281,10 +296,22 @@ export default function DashboardPage() {
                 status: data.error ? 'approved' : 'completed',
                 scopesApproved: connection.scopesApproved || []
               }
-            })
-          });
-          
-          // Re-fetch from DB
+            }
+            });
+            
+            if (!postRes.ok) {
+              const errData = await postRes.json();
+              showToast(errData.error || 'Failed to sync database', 'error');
+              setConnections(prev => {
+                const filtered = prev.filter(c => c.sourceId !== sourceId);
+                localStorage.setItem('Lumina_connections', JSON.stringify(filtered));
+                return filtered;
+              });
+              setLoading(null);
+              return;
+            }
+            
+            // Re-fetch from DB
           const refreshRes = await fetch(`/api/connections?wallet=${address}&t=${Date.now()}`);
           const refreshData = await refreshRes.json();
           if (refreshData.connections && refreshData.connections.length > 0) {
