@@ -21,8 +21,16 @@ export function SourcesGrid() {
       fetch(`/api/connections?wallet=${address}`)
         .then(res => res.json())
         .then(data => {
-          if (data.connections) {
-            setConnections(data.connections);
+          if (data.connections && data.connections.length > 0) {
+            setConnections(prev => {
+              const merged = [...data.connections];
+              prev.forEach(p => {
+                if (!merged.find(m => m.sourceId === p.sourceId)) {
+                  merged.push(p);
+                }
+              });
+              return merged;
+            });
           }
         })
         .catch(console.error);
