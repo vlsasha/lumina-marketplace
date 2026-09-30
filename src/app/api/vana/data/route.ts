@@ -52,8 +52,8 @@ export async function GET(request: NextRequest) {
       try {
         await sql`
           INSERT INTO downloaded_data (connection_id, data) 
-          VALUES (${connectionId}, ${result as any}) 
-          ON CONFLICT (connection_id) DO UPDATE SET data = ${result as any}
+          VALUES (${connectionId}, ${JSON.stringify(result)}) 
+          ON CONFLICT (connection_id) DO UPDATE SET data = ${JSON.stringify(result)}
         `;
       } catch (err) {
         console.error('DB write error', err);
