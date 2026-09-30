@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { DataSource } from '@/lib/data-sources';
+import { useAccount } from 'wagmi';
 
 interface SourceCardProps {
   source: DataSource;
@@ -11,6 +12,7 @@ interface SourceCardProps {
 export function SourceCard({ source, onConnect }: SourceCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
+  const { address } = useAccount();
 
   const statusConfig = {
     available: { label: 'Available', color: 'text-vana-green', bg: 'bg-vana-green/10', border: 'border-vana-green/20' },
@@ -62,15 +64,27 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
               onConnect?.(source.id);
               
               // Save to local storage
-              const saved = localStorage.getItem('Lumina_connections');
+              const saved = localStorage.getItem('vana_connections');
               const connections = saved ? JSON.parse(saved) : [];
-              connections.push({
+              const newConn = {
                 sourceId: source.id,
                 connectionId: data.connectionId,
-                status: 'approved',
-                connectedAt: new Date().toISOString()
-              });
-              localStorage.setItem('Lumina_connections', JSON.stringify(connections));
+                status: 'completed',
+                scopesApproved: source.scopes.map(s => s.id)
+              };
+              connections.push(newConn);
+              localStorage.setItem('vana_connections', JSON.stringify(connections));
+              
+              if (address) {
+                await fetch('/api/connections', {
+                  method: 'POST',
+                  body: JSON.stringify({ wallet: address, connection: newConn })
+                });
+                await fetch('/api/providers', {
+                  method: 'POST',
+                  body: JSON.stringify({ wallet_address: address })
+                });
+              }
               
               // Redirect to dashboard to see results
               window.location.href = '/dashboard';
@@ -116,7 +130,17 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
           </span>
         </div>
 
-        <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed flex-grow">{source.description}</p>
+        <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed">{source.description}</p>
+        
+        {source.scopes && source.scopes.length > 0 && (
+          <div className="flex flex-wrap gap-1 mt-3 mb-1 flex-grow items-start content-start">
+            {source.scopes.map(s => (
+              <span key={s.id} className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#111] text-gray-400 border border-[#222]">
+                {s.name}
+              </span>
+            ))}
+          </div>
+        )}
 
         <div className="mt-4 flex items-center gap-2">
           {source.status === 'connected' ? (
