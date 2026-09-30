@@ -131,6 +131,9 @@ export default function DashboardPage() {
               const dataRes = await fetch(`/api/vana/data?source=${sourceId}&connectionId=${data.connectionId}`);
               const previewData = await dataRes.json();
               setDataPreview(previewData);
+              if (!previewData.error) {
+                localStorage.setItem(`vana_data_${data.connectionId}`, JSON.stringify(previewData));
+              }
 
               // Try to close the popup if browser allows it
               if (popup && !popup.closed) popup.close();
