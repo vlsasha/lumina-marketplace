@@ -4,8 +4,8 @@ import sql, { initDb } from '@/lib/db';
 export async function GET() {
   try {
     if (!sql) {
-       // Fallback for local testing without DB
-       return NextResponse.json({ providers: ['0xC1d3007A33d86Fd7390B087304AD3083FC87438C'], count: 1 });
+       // Fallback for local testing without DB - return count: 2 so the UI shows 1 real user available (after subtracting treasury)
+       return NextResponse.json({ providers: ['0xC1d3007A33d86Fd7390B087304AD3083FC87438C', '0xMockUser123'], count: 2 });
     }
 
     await initDb();
