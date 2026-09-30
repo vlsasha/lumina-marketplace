@@ -57,6 +57,12 @@ export default function DashboardPage() {
   const displayBalance = balanceData ? Number(formatUnits(balanceData as bigint, MARKETPLACE_CONFIG.paymentToken.decimals)).toFixed(2) : "0.00";
   const displayPoC = pocScoreData ? Number(pocScoreData) : 0;
   const [connections, setConnections] = useState<ConnectedSource[]>([]);
+    const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+    const showToast = (message: string, type: 'success' | 'error') => {
+      setToast({ message, type });
+      setTimeout(() => setToast(null), 8000);
+    };
   const [loading, setLoading] = useState<string | null>(null);
   const [dataPreview, setDataPreview] = useState<Record<string, unknown> | null>(null);
   const [privacyModalOpen, setPrivacyModalOpen] = useState<string | null>(null);
