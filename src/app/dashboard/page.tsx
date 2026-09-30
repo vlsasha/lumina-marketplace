@@ -552,6 +552,16 @@ export default function DashboardPage() {
         </div>
       </main>
 
+      {/* Toast Notification */}
+      {toast && (
+        <div className={`fixed top-24 right-4 p-4 rounded-xl shadow-2xl z-50 animate-fade-in border text-sm font-bold flex items-center gap-3 ${
+          toast.type === 'error' ? 'bg-[#2a0e0e] border-[#ff4444] text-[#ff6666]' : 'bg-[#0e2a14] border-[#44ff66] text-[#66ff88]'
+        }`}>
+          <span className="text-xl">{toast.type === 'error' ? '🚫' : '✅'}</span>
+          {toast.message}
+        </div>
+      )}
+
       {/* Privacy Sandbox Modal */}
       {privacyModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
