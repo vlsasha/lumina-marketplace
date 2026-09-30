@@ -7,25 +7,45 @@ export async function GET() {
   try {
     await initDb();
     
-    // We know the wallet and connection_id from the screenshots
-    const wallet = '0xC1d3007A33d86Fd7390B087304AD3083FC87438C';
-    const sourceId = 'youtube';
+    // We know the connectionId from before
     const connectionId = 'dcr_240fc368f424458e844a59fa0b49bd65';
     
-    // Some mock scopes for youtube since we don't know exactly what they approved, but they approved all 6
-    const scopesStr = JSON.stringify(['youtube.history', 'youtube.likes', 'youtube.playlists', 'youtube.profile', 'youtube.subscriptions', 'youtube.watchLater']);
+    // 1. Fetch the JSON from downloaded_data
+    const dbResult = await sql`SELECT data FROM downloaded_data WHERE connection_id = ${connectionId}`;
+    if (!dbResult || dbResult.length === 0) {
+      return NextResponse.json({ error: 'Data not found in downloaded_data' });
+    }
+    
+    const json = dbResult[0].data;
+    let qualityScore = 0;
+    
+    // 2. Recalculate score
+    const profile = json?.data?.results?.['youtube.profile']?.data?.data;
+    if (profile?.joinedDate) {
+      const year = parseInt(profile.joinedDate.split(', ')[1]);
+      if (year && year <= 2016) qualityScore += 40;
+      else if (year && year <= 2021) qualityScore += 20;
+    }
+    
+    const history = json?.data?.results?.['youtube.history']?.data?.data?.history;
+    if (history && history.length >= 20) qualityScore += 20;
+    
+    const subs = json?.data?.results?.['youtube.subscriptions']?.data?.data?.subscriptions;
+    if (subs && subs.length >= 10) qualityScore += 40;
 
+    // 3. Update the user_connections table
     await sql`
-      INSERT INTO user_connections (wallet_address, source_id, connection_id, status, scopes_approved) 
-      VALUES (${wallet}, ${sourceId}, ${connectionId}, 'completed', ${scopesStr}) 
-      ON CONFLICT (wallet_address, source_id) 
-      DO UPDATE SET 
-        connection_id = ${connectionId}, 
-        status = 'completed', 
-        scopes_approved = ${scopesStr}
+      UPDATE user_connections 
+      SET quality_score = ${qualityScore} 
+      WHERE connection_id = ${connectionId}
     `;
 
-    return NextResponse.json({ success: true, message: 'Restored YouTube connection to your wallet!' });
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Quality score recalculated successfully!',
+      newScore: qualityScore,
+      tier: qualityScore >= 80 ? 'S' : qualityScore >= 60 ? 'A' : qualityScore >= 40 ? 'B' : 'C'
+    });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: err }, { status: 500 });
