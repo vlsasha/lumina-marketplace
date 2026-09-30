@@ -62,7 +62,8 @@ export function DataQueryBuilder() {
     // E.g. finding someone with Oura AND Github AND Strava is rare
     const sourcePenalty = Math.pow(0.8, selectedSources.length);
     
-    return Math.floor(base * sourcePenalty);
+    const rawInventory = Math.floor(base * sourcePenalty);
+    return base > 0 ? Math.max(1, rawInventory) : 0;
   };
 
   const availableInventory = calculateInventory();
