@@ -27,6 +27,25 @@ export async function initDb() {
       UNIQUE(wallet_address, source_id)
     )
   `;
+  
+  // Migration: Add provider_account_id and quality_score
+  try {
+    await sql`ALTER TABLE user_connections ADD COLUMN provider_account_id VARCHAR(255)`;
+  } catch (e) {
+    // Column might already exist, ignore error
+  }
+  
+  try {
+    await sql`ALTER TABLE user_connections ADD COLUMN quality_score INTEGER`;
+  } catch (e) {
+    // Column might already exist, ignore error
+  }
+  
+  try {
+    await sql`ALTER TABLE user_connections ADD CONSTRAINT unique_provider_account UNIQUE(source_id, provider_account_id)`;
+  } catch (e) {
+    // Constraint might already exist, ignore error
+  }
   await sql`
     CREATE TABLE IF NOT EXISTS downloaded_data (
       id SERIAL PRIMARY KEY,
