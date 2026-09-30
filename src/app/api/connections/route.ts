@@ -95,25 +95,28 @@ export async function POST(req: Request) {
         console.error('Error parsing JSON for quality score', e);
       }
       
-      // Fallback or explicit check for github since it might not be in downloaded_data yet if parsing raw
+      // Fallback or explicit check for github
       if (connection.sourceId === 'github') {
         try {
           const dbResult = await sql`SELECT data FROM downloaded_data WHERE connection_id = ${connection.connectionId}`;
           let json = null;
           if (dbResult && dbResult.length > 0) json = dbResult[0].data;
           
-          const profile = json?.data?.results?.['github.profile']?.data?.data || json;
-          if (profile?.username) {
-            providerAccountId = 'github_' + profile.username;
-            const repoCount = profile.repositoryCount || 0;
+          const profileItem = json?.data?.results?.['github.profile']?.data?.data?.items?.[0] || {};
+          if (profileItem?.username) {
+            providerAccountId = 'github_' + profileItem.username;
+            
+            const repos = json?.data?.results?.['github.repositories']?.data?.data?.repositories || [];
+            const repoCount = repos.length;
             if (repoCount >= 50) qualityScore += 30;
             else if (repoCount >= 10) qualityScore += 15;
             
-            const followers = profile.followers || 0;
+            const followers = profileItem.followers || 0;
             if (followers >= 100) qualityScore += 30;
             else if (followers >= 10) qualityScore += 15;
             
-            const contribs = profile.contributionsLastYear || 0;
+            const contribData = json?.data?.results?.['github.contributions']?.data?.data;
+            const contribs = contribData?.totalContributionsLastYear || 0;
             if (contribs >= 1000) qualityScore += 40;
             else if (contribs >= 100) qualityScore += 20;
           }
