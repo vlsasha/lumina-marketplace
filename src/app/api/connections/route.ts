@@ -70,7 +70,7 @@ export async function POST(req: Request) {
           const subs = json?.data?.results?.['youtube.subscriptions']?.data?.data?.subscriptions;
           if (subs && subs.length >= 10) qualityScore += 40;
         } else if (connection.sourceId === 'chatgpt') {
-          const convos = json?.conversations;
+          const convos = json?.data?.results?.['chatgpt.conversations']?.data?.data?.conversations || json?.conversations;
           if (Array.isArray(convos)) {
             // Assign unique ID based on first conversation UUID as proxy
             if (convos.length > 0 && convos[0].id) {
