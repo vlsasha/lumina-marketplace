@@ -1,50 +1,51 @@
 const fs = require('fs');
-const content = import { NextResponse } from 'next/server';
-import sql, { initDb } from '@/lib/db';
+let content = fs.readFileSync('src/app/dashboard/page.tsx', 'utf8');
 
-export async function GET() {
-  try {
-    if (!process.env.DATABASE_URL) {
-       return NextResponse.json({ providers: ['0xC1d3007A33d86Fd7390B087304AD3083FC87438C'], count: 1 });
-    }
+const target = `// Redirect to Vana DCR page
+        window.open(data.approvalUrl || data.connectUrl, '_blank', 'noopener,noreferrer');
+      }`;
 
-    await initDb();
-    const result = await sql\SELECT wallet_address FROM vana_users\;
-    const providers = result.map(row => row.wallet_address);
-    
-    if (providers.length === 0) {
-      providers.push('0xC1d3007A33d86Fd7390B087304AD3083FC87438C');
-    }
+const replacement = `// Open Vana in a new tab
+        const popup = window.open(data.approvalUrl || data.connectUrl, '_blank', 'noopener,noreferrer');
 
-    return NextResponse.json({
-      providers,
-      count: providers.length
-    });
-  } catch (error) {
-    console.error('Failed to fetch providers', error);
-    return NextResponse.json({ providers: ['0xC1d3007A33d86Fd7390B087304AD3083FC87438C'], count: 1 });
-  }
-}
+        // Poll for completion automatically
+        const pollInterval = setInterval(async () => {
+          try {
+            const statusRes = await fetch(\`/api/vana/status?source=\${sourceId}&connectionId=\${data.connectionId}\`);
+            const statusData = await statusRes.json();
+            
+            if (statusData.status === 'approved' || statusData.status === 'completed') {
+              clearInterval(pollInterval);
+              
+              // Trigger data read which will acknowledge and allow Vana to redirect/close
+              await fetch(\`/api/vana/data?source=\${sourceId}&connectionId=\${data.connectionId}\`);
+              
+              // Update UI state
+              setConnections((prev) =>
+                prev.map((c) =>
+                  c.sourceId === sourceId
+                    ? { ...c, status: 'approved', connectedAt: new Date().toISOString(), scopesApproved: statusData.scopes || [] }
+                    : c
+                )
+              );
 
-export async function POST(req) {
-  try {
-    if (!process.env.DATABASE_URL) return NextResponse.json({ success: true });
-    
-    const { wallet_address } = await req.json();
-    if (!wallet_address) return NextResponse.json({ error: 'Missing wallet' }, { status: 400 });
+              // Fetch data preview automatically
+              const dataRes = await fetch(\`/api/vana/data?source=\${sourceId}&connectionId=\${data.connectionId}\`);
+              const previewData = await dataRes.json();
+              setDataPreview(previewData);
 
-    await initDb();
-    
-    await sql\
-      INSERT INTO vana_users (wallet_address) 
-      VALUES (\) 
-      ON CONFLICT (wallet_address) DO NOTHING
-    \;
+              // Try to close the popup if browser allows it
+              if (popup && !popup.closed) popup.close();
+            } else if (statusData.status === 'rejected' || (popup && popup.closed)) {
+              clearInterval(pollInterval);
+            }
+          } catch (e) {
+            console.error('Polling error', e);
+          }
+        }, 2000);
+      }`;
 
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error('Failed to add provider', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-  }
-};
-fs.writeFileSync('src/app/api/providers/route.ts', content);
+content = content.replace(/\/\/ Open Vana in a new tab[\s\S]+?}, 2000\);\n      }/, target); // revert previous broken
+content = content.replace(target, replacement);
+
+fs.writeFileSync('src/app/dashboard/page.tsx', content);

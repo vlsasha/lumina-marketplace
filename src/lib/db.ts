@@ -15,6 +15,26 @@ export async function initDb() {
       connected_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS user_connections (
+      id SERIAL PRIMARY KEY,
+      wallet_address VARCHAR(255) NOT NULL,
+      source_id VARCHAR(50) NOT NULL,
+      connection_id VARCHAR(255) NOT NULL,
+      status VARCHAR(50) NOT NULL,
+      scopes_approved TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(wallet_address, source_id)
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS downloaded_data (
+      id SERIAL PRIMARY KEY,
+      connection_id VARCHAR(255) UNIQUE NOT NULL,
+      data JSONB NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `;
 }
 
 export default sql;
