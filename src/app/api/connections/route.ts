@@ -68,6 +68,26 @@ export async function POST(req: Request) {
           
           const subs = json?.data?.results?.['youtube.subscriptions']?.data?.data?.subscriptions;
           if (subs && subs.length >= 10) qualityScore += 40;
+        } else if (connection.sourceId === 'chatgpt') {
+          const convos = json?.conversations;
+          if (Array.isArray(convos)) {
+            // Assign unique ID based on first conversation UUID as proxy
+            if (convos.length > 0 && convos[0].id) {
+              providerAccountId = 'chatgpt_' + convos[0].id;
+            }
+            
+            // Calculate quality score based on volume
+            if (convos.length > 100) qualityScore += 50;
+            else if (convos.length > 50) qualityScore += 30;
+            else if (convos.length > 10) qualityScore += 10;
+            
+            // Calculate based on message density
+            let totalMsgs = 0;
+            convos.forEach((c: any) => { totalMsgs += (c.message_count || 0); });
+            if (totalMsgs > 1000) qualityScore += 50;
+            else if (totalMsgs > 300) qualityScore += 30;
+            else if (totalMsgs > 50) qualityScore += 10;
+          }
         }
       }
     } catch (e) {
