@@ -171,7 +171,37 @@ export default function DashboardPage() {
               setDataPreview(previewData);
               if (!previewData.error) {
                 localStorage.setItem(`vana_data_${data.connectionId}`, JSON.stringify(previewData));
-              }
+                }
+                
+                // Sync to our DB
+                if (address) {
+                  await fetch('/api/connections', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      wallet: address,
+                      connection: {
+                        sourceId,
+                        connectionId: data.connectionId,
+                        status: previewData.error ? 'approved' : 'completed',
+                        scopesApproved: statusData.scopes || []
+                      }
+                    })
+                  });
+                  
+                  // Immediately re-fetch from DB to get the calculated qualityScore
+                  const refreshRes = await fetch(`/api/connections?wallet=${address}&t=${Date.now()}`);
+                  const refreshData = await refreshRes.json();
+                  if (refreshData.connections && refreshData.connections.length > 0) {
+                    setConnections(prev => {
+                      const merged = [...refreshData.connections];
+                      prev.forEach(p => {
+                        if (!merged.find(m => m.sourceId === p.sourceId)) merged.push(p);
+                      });
+                      return merged;
+                    });
+                  }
+                }
 
               // Try to close the popup if browser allows it
               if (popup && !popup.closed) popup.close();
