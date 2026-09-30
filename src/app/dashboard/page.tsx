@@ -181,7 +181,7 @@ export default function DashboardPage() {
                 
                 // Sync to our DB
                 if (address) {
-                  await fetch('/api/connections', {
+                  const postRes = await fetch('/api/connections', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -270,7 +270,7 @@ export default function DashboardPage() {
         
         // Self-heal: Sync this connection to DB to calculate qualityScore if missing
         if (address && connection.qualityScore == null) {
-          await fetch('/api/connections', {
+          const postRes = await fetch('/api/connections', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
