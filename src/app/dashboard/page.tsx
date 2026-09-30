@@ -18,6 +18,7 @@ interface ConnectedSource {
   status: ConnectionStatus;
   connectedAt: string | null;
   scopesApproved: string[];
+  qualityScore?: number;
 }
 
 export default function DashboardPage() {
