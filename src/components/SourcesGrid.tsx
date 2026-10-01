@@ -64,7 +64,7 @@ export function SourcesGrid() {
 
   return (
     <section id="sources" className="pt-6 pb-16 sm:pt-8 sm:pb-20">
-      <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full 2xl:px-12 mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center mb-10">
