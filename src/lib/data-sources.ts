@@ -104,11 +104,29 @@ export const DATA_SOURCES: DataSource[] = [
     source: 'instagram',
     scopes: [
       {
-        id: 'instagram.profile',
-        name: 'Profile',
-        description: 'Profile information including bio and follower counts',
-        maturity: 'stable',
-      }
+          id: 'instagram.profile',
+          name: 'Profile',
+          description: 'Profile information including bio and follower counts',
+          maturity: 'stable',
+        },
+        {
+          id: 'instagram.posts',
+          name: 'Posts',
+          description: 'Your photos, videos, and reels',
+          maturity: 'stable',
+        },
+        {
+          id: 'instagram.following',
+          name: 'Following',
+          description: 'Accounts you follow',
+          maturity: 'stable',
+        },
+        {
+          id: 'instagram.ads',
+          name: 'Ads & Interests',
+          description: 'Ad topics and advertisers you interact with',
+          maturity: 'stable',
+        }
     ],
     status: 'available',
     requiresDesktop: false,
