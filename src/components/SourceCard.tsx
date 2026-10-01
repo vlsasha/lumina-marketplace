@@ -144,7 +144,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
                   </span>
                 )}
               </div>
-              <span className="text-[11px] uppercase tracking-wider font-semibold text-gray-500">{source.category}</span>
+              <span className="block truncate text-[11px] uppercase tracking-wider font-semibold text-gray-500">{source.category}</span>
             </div>
           </div>
           <span className={`shrink-0 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${status.bg} ${status.color} border ${status.border} shadow-sm`}>
