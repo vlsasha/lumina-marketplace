@@ -56,14 +56,12 @@ export function HeroSection() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
             </svg>
           </Link>
-          <a
-            href="https://docs.vana.org"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/docs"
             className="group flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl border border-[#333] bg-[#111]/50 backdrop-blur-sm hover:border-vana-primary/50 text-white font-semibold text-base transition-all hover:bg-[#1a1a1a]"
           >
             Read Documentation
-          </a>
+          </Link>
         </div>
 
         {/* Fake Code/API Window visual */}
