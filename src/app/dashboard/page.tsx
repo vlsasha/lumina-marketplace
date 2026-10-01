@@ -398,11 +398,8 @@ export default function DashboardPage() {
                     <span className="text-xl text-vana-text-secondary mb-1">USDC / mo</span>
                   </div>
                 </div>
-              </div>
-              
-            </div>
-            
-            <div className="shrink-0 flex flex-col items-start md:items-end gap-4">
+                </div>
+              <div className="shrink-0 flex flex-col items-start md:items-end gap-4">
               {/* Proof of Contribution Badge */}
               <div className="flex flex-col items-start md:items-end">
                 <span className="text-xs font-semibold uppercase tracking-wider text-vana-green/80 mb-1">Data Quality Score</span>
