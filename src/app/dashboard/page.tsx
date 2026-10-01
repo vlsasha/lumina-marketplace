@@ -436,7 +436,7 @@ export default function DashboardPage() {
                                     +${(conn.qualityScore * 0.15).toFixed(2)} USDC</span></>)}
                             </div>
                             <p className="text-xs text-vana-text-muted">
-                            {source.scopes.length} scope{source.scopes.length !== 1 ? 's' : ''}
+                            {(conn?.status === 'approved' || conn?.status === 'completed') ? (conn.scopesApproved?.length || 0) : source.scopes.length} scope{((conn?.status === 'approved' || conn?.status === 'completed') ? (conn.scopesApproved?.length || 0) : source.scopes.length) !== 1 ? 's' : ''}
                             {source.requiresDesktop && ' · Desktop required'}
                           </p>
                         </div>
