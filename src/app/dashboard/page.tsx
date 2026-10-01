@@ -552,34 +552,7 @@ export default function DashboardPage() {
               </div>
               </div>
 
-              {/* Connection log */}
-              {connections.length > 0 && (
-                <>
-                  <h3 className="text-sm font-semibold text-vana-text">Activity Log</h3>
-                  <div className="space-y-2">
-                    {connections.map((conn) => {
-                      const source = DATA_SOURCES.find((s) => s.source === conn.sourceId);
-                      return (
-                        <div key={conn.connectionId} className="p-3 rounded-lg border border-vana-border bg-vana-card text-xs">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span>{source?.icon}</span>
-                            <span className="text-vana-text font-medium">{source?.name}</span>
-                          </div>
-                          <code className="text-vana-text-muted block truncate">{conn.connectionId}</code>
-                          <span className={`text-[10px] font-medium ${
-                            conn.status === 'approved' ? 'text-vana-green' :
-                            conn.status === 'pending' ? 'text-vana-amber' :
-                            conn.status === 'denied' ? 'text-vana-red' :
-                            'text-vana-text-muted'
-                          }`}>
-                            {conn.status.toUpperCase()}
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </>
-              )}
+              
             </div>
           </div>
         </div>
