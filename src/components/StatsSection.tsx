@@ -38,8 +38,8 @@ export function StatsSection() {
       <div className="w-full 2xl:px-12 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">Built for the future of AI</h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">Lumina provides the enterprise-grade infrastructure needed to securely route private user data into LLM training pipelines.</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">Built for the future of data ownership</h2>
+          <p className="text-gray-400 max-w-2xl mx-auto">Lumina provides the enterprise-grade infrastructure needed to securely connect, validate, and route private user data directly to researchers and brands.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-7xl mx-auto">
