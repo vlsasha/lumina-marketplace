@@ -30,7 +30,7 @@ export function StatsSection() {
   ];
 
   return (
-    <section className="py-24 border-t border-[#111] bg-transparent relative overflow-hidden">
+    <section className="py-24 bg-transparent relative overflow-hidden">
       {/* Background glow for stats */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-white/5 blur-[120px] pointer-events-none rounded-[100%]" />
       <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-purple-500/5 blur-[100px] pointer-events-none rounded-full" />

@@ -44,7 +44,7 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className="antialiased safe-top safe-bottom">
         <Providers>
-          <div className="min-h-screen grid-pattern">
+          <div className="min-h-screen">
             {children}
           </div>
         </Providers>
