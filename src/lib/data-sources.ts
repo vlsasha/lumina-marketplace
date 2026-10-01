@@ -320,11 +320,17 @@ export const DATA_SOURCES: DataSource[] = [
     source: 'icloud_notes',
     scopes: [
       {
-        id: 'icloud_notes.notes',
-        name: 'Notes',
-        description: 'Note content, titles, created/modified timestamps, and folder assignment',
-        maturity: 'experimental',
-      }
+          id: 'icloud.folders',
+          name: 'Folders',
+          description: 'Folder structure and names',
+          maturity: 'stable',
+        },
+        {
+          id: 'icloud.notes',
+          name: 'Notes',
+          description: 'Note content and metadata',
+          maturity: 'stable',
+        }
     ],
     status: 'available',
     requiresDesktop: false,
