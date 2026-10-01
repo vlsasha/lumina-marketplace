@@ -65,8 +65,17 @@ export default function DashboardPage() {
     const multiplier = (conn.qualityScore || 0) / 100;
     return acc + (rate * multiplier);
   }, 0);
+
+  const totalYield = connections.reduce((acc, conn) => {
+    if (conn.status !== 'approved' && conn.status !== 'completed') return acc;
+    // @ts-ignore - TS might not know about monthlyYield yet if not fully recompiled
+    const rate = EARNINGS_RATES.find(r => r.id === conn.sourceId)?.monthlyYield || 0;
+    const multiplier = (conn.qualityScore || 0) / 100;
+    return acc + (rate * multiplier);
+  }, 0);
   
   const displayBalance = totalEarnings.toFixed(2);
+  const displayYield = totalYield.toFixed(2);
   const displayPoC = pocScoreData ? Number(pocScoreData) : totalQualityScore;
     const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
@@ -369,11 +378,26 @@ export default function DashboardPage() {
 
           {/* Earnings & PoC Panel */}
           <div className="mb-10 bg-gradient-to-br from-vana-primary/10 to-transparent border border-vana-primary/20 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 overflow-hidden">
-            <div>
-              <h2 className="text-sm font-semibold text-vana-text-secondary uppercase tracking-wider mb-1">Your Accumulated Earnings</h2>
-              <div className="flex items-end gap-2">
-                <span className="text-4xl sm:text-5xl font-bold text-vana-text">{displayBalance}</span>
-                <span className="text-xl text-vana-text-secondary mb-1">USDC.e</span>
+            <div className="flex flex-col sm:flex-row gap-8 sm:gap-16">
+                <div>
+                  <h2 className="text-sm font-semibold text-vana-text-secondary uppercase tracking-wider mb-1">Initial Sync Earnings</h2>
+                  <div className="flex items-end gap-2">
+                    <span className="text-4xl sm:text-5xl font-bold text-vana-text">{displayBalance}</span>
+                    <span className="text-xl text-vana-text-secondary mb-1">USDC</span>
+                  </div>
+                </div>
+                
+                <div className="relative">
+                  <div className="absolute -left-8 top-2 bottom-2 w-px bg-vana-border hidden sm:block"></div>
+                  <h2 className="text-sm font-semibold text-vana-green uppercase tracking-wider mb-1 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-vana-green animate-pulse"></span>
+                    Monthly Passive Yield
+                  </h2>
+                  <div className="flex items-end gap-2">
+                    <span className="text-4xl sm:text-5xl font-bold text-white">+{displayYield}</span>
+                    <span className="text-xl text-vana-text-secondary mb-1">USDC / mo</span>
+                  </div>
+                </div>
               </div>
               
             </div>
