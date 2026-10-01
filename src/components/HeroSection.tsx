@@ -26,9 +26,9 @@ export function HeroSection() {
 
 
         {/* Title */}
-        <div className="text-center max-w-5xl mx-auto mb-8 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-gray-500 pb-2">
-            Turn your personal data <br className="hidden sm:block" />
+        <div className="text-center w-full mx-auto mb-8 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+          <h1 className="text-5xl sm:text-7xl lg:text-[90px] xl:text-[110px] font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-gray-500 pb-2 leading-[1.1]">
+            Turn your personal data <br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-vana-primary via-[#b9ff42] to-[#7fdb00]">into a valuable asset</span>
           </h1>
         </div>
