@@ -1,18 +1,18 @@
 import { DATA_SOURCES } from '@/lib/data-sources';
 
 const EARNINGS_RATES = [
-  { id: 'youtube', metric: 'Published Video', price: 0.06 },
-  { id: 'github', metric: 'Repository', price: 0.50 },
-  { id: 'linkedin', metric: 'Profile + Conn.', price: 1.50 },
-  { id: 'oura', metric: 'Day (Biometrics)', price: 0.07 },
-  { id: 'whoop', metric: 'Day (Recovery)', price: 0.07 },
-  { id: 'amazon', metric: 'Purchase', price: 0.12 },
-  { id: 'strava', metric: 'Activity', price: 0.08 },
-  { id: 'claude', metric: 'Project Dialogue', price: 0.04 },
-  { id: 'chatgpt', metric: 'Conversation', price: 0.03 },
-  { id: 'icloud_notes', metric: 'Note', price: 0.03 },
-  { id: 'instagram', metric: 'Post / Reel', price: 0.02 },
-  { id: 'spotify', metric: 'Streamed Track', price: 0.004 }
+  { id: 'github', metric: 'Verified Developer Export', price: 25.00 },
+  { id: 'linkedin', metric: 'Professional CV Graph', price: 15.00 },
+  { id: 'oura', metric: 'Biometrics & Sleep Log', price: 12.00 },
+  { id: 'whoop', metric: 'Recovery & Strain Log', price: 12.00 },
+  { id: 'chatgpt', metric: 'AI Reasoning Trace', price: 5.00 },
+  { id: 'claude', metric: 'AI Project Context', price: 5.00 },
+  { id: 'youtube', metric: 'Watch History Profile', price: 3.50 },
+  { id: 'icloud_notes', metric: 'Personal Knowledge Base', price: 3.00 },
+  { id: 'instagram', metric: 'Social Engagement Graph', price: 2.50 },
+  { id: 'strava', metric: 'Endurance & Route Log', price: 2.00 },
+  { id: 'spotify', metric: 'Audio Affinity Profile', price: 1.50 },
+  { id: 'amazon', metric: 'Basic Prime Demographic', price: 0.50 }
 ];
 
 export function EarningsTable() {
@@ -23,7 +23,7 @@ export function EarningsTable() {
           Estimated Earnings
         </h2>
         <p className="text-xs text-vana-text-muted">
-          Current market rates per verified unit of data.
+          Current market rates per verified profile export.
         </p>
       </div>
 
@@ -32,7 +32,7 @@ export function EarningsTable() {
           <thead className="bg-[#1a1a1a] text-vana-text-secondary border-b border-vana-border">
             <tr>
               <th className="py-2.5 px-3 font-medium">Source</th>
-              <th className="py-2.5 px-3 font-medium">Metric</th>
+              <th className="py-2.5 px-3 font-medium">Metric (Export Type)</th>
               <th className="py-2.5 px-3 font-medium text-right">Price</th>
             </tr>
           </thead>
@@ -55,7 +55,7 @@ export function EarningsTable() {
                     {rate.metric}
                   </td>
                   <td className="py-2.5 px-3 text-vana-text font-mono text-right">
-                    ${rate.price.toFixed(3).replace(/0$/, '')}
+                    ${rate.price.toFixed(2)}
                   </td>
                 </tr>
               );
