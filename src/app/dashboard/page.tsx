@@ -54,8 +54,10 @@ export default function DashboardPage() {
     query: { enabled: !!address },
   });
 
-  const displayBalance = balanceData ? Number(formatUnits(balanceData as bigint, MARKETPLACE_CONFIG.paymentToken.decimals)).toFixed(2) : "0.00";
-  const displayPoC = pocScoreData ? Number(pocScoreData) : 0;
+  // Calculate projected earnings based on data quality scores
+  const totalQualityScore = connections.reduce((acc, c) => acc + (c.qualityScore || 0), 0);
+  const displayBalance = (totalQualityScore * 0.15).toFixed(2);
+  const displayPoC = pocScoreData ? Number(pocScoreData) : totalQualityScore;
   const [connections, setConnections] = useState<ConnectedSource[]>([]);
     const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
