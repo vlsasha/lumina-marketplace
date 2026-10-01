@@ -174,11 +174,23 @@ export const DATA_SOURCES: DataSource[] = [
     source: 'spotify',
     scopes: [
       {
-        id: 'spotify.profile',
-        name: 'Profile',
-        description: 'Profile information',
-        maturity: 'stable',
-      }
+          id: 'spotify.profile',
+          name: 'Profile',
+          description: 'Profile information',
+          maturity: 'stable',
+        },
+        {
+          id: 'spotify.playlists',
+          name: 'Playlists',
+          description: 'Your created and saved playlists',
+          maturity: 'stable',
+        },
+        {
+          id: 'spotify.savedTracks',
+          name: 'Saved Tracks',
+          description: 'Your Liked Songs',
+          maturity: 'stable',
+        }
     ],
     status: 'available',
     requiresDesktop: false,
