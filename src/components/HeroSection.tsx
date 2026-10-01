@@ -13,7 +13,7 @@ export function HeroSection() {
         <div className="absolute top-1/3 right-1/4 w-[300px] h-[300px] bg-vana-primary-light/3 rounded-full blur-[80px]" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 sm:pt-28 sm:pb-24">
+      <div className="relative w-full 2xl:px-12 mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 sm:pt-28 sm:pb-24">
         <div className="text-center max-w-4xl mx-auto">
 
           {/* Title */}

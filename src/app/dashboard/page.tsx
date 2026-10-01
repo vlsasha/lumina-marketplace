@@ -341,7 +341,7 @@ export default function DashboardPage() {
     <>
       <Header />
       <main className="pt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="w-full 2xl:px-12 mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           {/* Header */}
           <div className="mb-10">
             <h1 className="text-3xl sm:text-4xl font-bold text-vana-text mb-2">Dashboard</h1>
