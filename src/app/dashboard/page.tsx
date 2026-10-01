@@ -366,9 +366,7 @@ export default function DashboardPage() {
                 <span className="text-4xl sm:text-5xl font-bold text-vana-text">{displayBalance}</span>
                 <span className="text-xl text-vana-text-secondary mb-1">USDC.e</span>
               </div>
-              <p className="text-sm text-vana-text-muted mt-2 max-w-lg">
-                Your datasets passed the Proof of Contribution check with high authenticity. Buyers accessed your data 53 times this month.
-              </p>
+              
             </div>
             
             <div className="shrink-0 flex flex-col items-start md:items-end gap-4">
