@@ -395,7 +395,19 @@ export default function DashboardPage() {
             {/* Sources list */}
             <div className="lg:col-span-2 space-y-3">
               <h2 className="text-lg font-semibold text-vana-text mb-4">Data Sources</h2>
-              {DATA_SOURCES.map((source) => {
+              {
+                [...DATA_SOURCES].sort((a, b) => {
+                  const connA = getConnection(a.source);
+                  const connB = getConnection(b.source);
+                  const aConnected = connA?.status === 'approved' || connA?.status === 'completed';
+                  const bConnected = connB?.status === 'approved' || connB?.status === 'completed';
+                  if (aConnected && !bConnected) return -1;
+                  if (!aConnected && bConnected) return 1;
+                  if (aConnected && bConnected) {
+                     return (connB?.qualityScore || 0) - (connA?.qualityScore || 0);
+                  }
+                  return 0;
+                }).map((source) => {
                 const conn = getConnection(source.source);
                 const isLoading = loading === source.source;
 
