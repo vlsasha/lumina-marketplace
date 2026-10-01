@@ -412,7 +412,8 @@ export default function DashboardPage() {
                 return (
                   <div
                     key={source.id}
-                    className="p-5 rounded-xl border border-vana-border bg-vana-card hover:bg-vana-card-hover transition-colors"
+                    id={`source-${source.id}`}
+                    className="p-5 rounded-xl border border-vana-border bg-vana-card hover:bg-vana-card-hover transition-colors scroll-mt-24"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
