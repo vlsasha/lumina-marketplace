@@ -17,10 +17,10 @@ const getTierStyle = (score: number) => {
   return 'bg-gray-500/15 text-gray-400 border-gray-500/40';
 };
 const getTierLabel = (score: number) => {
-  if (score >= 80) return 'S';
-  if (score >= 60) return 'A';
-  if (score >= 40) return 'B';
-  return 'C';
+  if (score >= 80) return 'A';
+  if (score >= 60) return 'B';
+  if (score >= 40) return 'C';
+  return 'D';
 };
 
 export function SourceCard({ source, onConnect }: SourceCardProps) {

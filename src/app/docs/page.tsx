@@ -290,22 +290,22 @@ dataset = response.json()<br/>
                       </thead>
                       <tbody className="text-gray-300">
                         <tr className="border-b border-[#222]">
-                          <td className="py-3"><span className="text-amber-400 font-bold">💎 Tier S (Premium)</span></td>
+                          <td className="py-3"><span className="text-amber-400 font-bold">💎 Tier A (Premium)</span></td>
                           <td className="py-3 font-mono">80 - 100</td>
                           <td className="py-3 font-mono text-vana-primary">$5.00</td>
                         </tr>
                         <tr className="border-b border-[#222]">
-                          <td className="py-3"><span className="text-gray-200 font-bold">Tier A (High Quality)</span></td>
+                          <td className="py-3"><span className="text-gray-200 font-bold">Tier B (High Quality)</span></td>
                           <td className="py-3 font-mono">60 - 79</td>
                           <td className="py-3 font-mono text-vana-primary">$2.00</td>
                         </tr>
                         <tr className="border-b border-[#222]">
-                          <td className="py-3"><span className="text-gray-400 font-bold">Tier B (Standard)</span></td>
+                          <td className="py-3"><span className="text-gray-400 font-bold">Tier C (Standard)</span></td>
                           <td className="py-3 font-mono">40 - 59</td>
                           <td className="py-3 font-mono text-vana-primary">$0.50</td>
                         </tr>
                         <tr>
-                          <td className="py-3"><span className="text-gray-500 font-bold">Tier C (Low / Any)</span></td>
+                          <td className="py-3"><span className="text-gray-500 font-bold">Tier D (Low / Any)</span></td>
                           <td className="py-3 font-mono">0 - 39</td>
                           <td className="py-3 font-mono text-vana-primary">$0.10</td>
                         </tr>

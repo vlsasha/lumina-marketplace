@@ -29,10 +29,10 @@ const getTierStyle = (score: number) => {
 };
 
 const getTierLabel = (score: number) => {
-  if (score >= 80) return 'S';
-  if (score >= 60) return 'A';
-  if (score >= 40) return 'B';
-  return 'C';
+  if (score >= 80) return 'A';
+  if (score >= 60) return 'B';
+  if (score >= 40) return 'C';
+  return 'D';
 };
 
 export default function DashboardPage() {
