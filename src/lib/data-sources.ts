@@ -124,11 +124,41 @@ export const DATA_SOURCES: DataSource[] = [
     source: 'linkedin',
     scopes: [
       {
-        id: 'linkedin.profile',
-        name: 'Profile',
-        description: 'Your LinkedIn profile including name, headline, location, about',
-        maturity: 'stable',
-      }
+          id: 'linkedin.profile',
+          name: 'Profile',
+          description: 'Your LinkedIn profile including name, headline, location, about',
+          maturity: 'stable',
+        },
+        {
+          id: 'linkedin.connections',
+          name: 'Connections',
+          description: 'Your professional network and connections list',
+          maturity: 'stable',
+        },
+        {
+          id: 'linkedin.education',
+          name: 'Education',
+          description: 'Your educational background and degrees',
+          maturity: 'stable',
+        },
+        {
+          id: 'linkedin.experience',
+          name: 'Experience',
+          description: 'Your work history and positions',
+          maturity: 'stable',
+        },
+        {
+          id: 'linkedin.languages',
+          name: 'Languages',
+          description: 'Languages you speak',
+          maturity: 'stable',
+        },
+        {
+          id: 'linkedin.skills',
+          name: 'Skills',
+          description: 'Your professional skills and endorsements',
+          maturity: 'stable',
+        }
     ],
     status: 'available',
     requiresDesktop: false,
