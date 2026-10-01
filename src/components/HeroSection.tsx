@@ -28,8 +28,8 @@ export function HeroSection() {
         {/* Title */}
         <div className="text-center max-w-5xl mx-auto mb-8 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
           <h1 className="text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-gray-500 pb-2">
-            The liquidity layer for <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-vana-primary via-[#b9ff42] to-[#7fdb00]">user-owned AI data</span>
+            Monetize your digital life. <br className="hidden sm:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-vana-primary via-[#b9ff42] to-[#7fdb00]">Power the future of AI.</span>
           </h1>
         </div>
 
