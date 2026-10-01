@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { DATA_SOURCES } from '@/lib/data-sources';
+import { DATA_SOURCES, EARNINGS_RATES } from '@/lib/data-sources';
 import { EarningsTable } from '@/components/EarningsTable';
 import { useAccount, useWriteContract, useReadContract } from 'wagmi';
 import { formatUnits } from 'viem';
@@ -57,7 +57,16 @@ export default function DashboardPage() {
   const [connections, setConnections] = useState<ConnectedSource[]>([]);
   // Calculate projected earnings based on data quality scores
   const totalQualityScore = connections.reduce((acc, c) => acc + (c.qualityScore || 0), 0);
-  const displayBalance = (totalQualityScore * 0.15).toFixed(2);
+  
+  // Calculate earnings based on specific sources and their quality score multiplier (Score / 100)
+  const totalEarnings = connections.reduce((acc, conn) => {
+    if (conn.status !== 'approved' && conn.status !== 'completed') return acc;
+    const rate = EARNINGS_RATES.find(r => r.id === conn.sourceId)?.price || 0;
+    const multiplier = (conn.qualityScore || 0) / 100;
+    return acc + (rate * multiplier);
+  }, 0);
+  
+  const displayBalance = totalEarnings.toFixed(2);
   const displayPoC = pocScoreData ? Number(pocScoreData) : totalQualityScore;
     const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
@@ -434,7 +443,7 @@ export default function DashboardPage() {
                                   <span className="opacity-60 font-medium text-[9px] ml-0.5">({conn.qualityScore})</span>
                                   </span>
                                   <span className="ml-2 text-[11px] font-semibold text-vana-green/90 bg-vana-green/10 px-2 py-0.5 rounded-md border border-vana-green/20">
-                                    +${(conn.qualityScore * 0.15).toFixed(2)} USDC</span></>)}
+                                    +${((EARNINGS_RATES.find(r => r.id === conn.sourceId)?.price || 0) * (conn.qualityScore / 100)).toFixed(2)} USDC</span></>)}
                             </div>
                             <p className="text-xs text-vana-text-muted">
                             {(conn?.status === 'approved' || conn?.status === 'completed') ? (conn.scopesApproved?.length || 0) : source.scopes.length} scope{((conn?.status === 'approved' || conn?.status === 'completed') ? (conn.scopesApproved?.length || 0) : source.scopes.length) !== 1 ? 's' : ''}
