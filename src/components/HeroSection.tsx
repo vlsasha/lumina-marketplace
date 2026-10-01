@@ -20,7 +20,7 @@ export function HeroSection() {
         <div className="absolute -bottom-32 left-1/4 w-[500px] h-[300px] bg-blue-500/10 rounded-full blur-[120px]" />
       </div>
 
-      <div className="relative w-full 2xl:px-12 mx-auto px-4 sm:px-6 lg:px-8 z-10 py-20 flex flex-col items-center">
+      <div className="relative max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 z-10 py-20 flex flex-col items-center">
         
 
 

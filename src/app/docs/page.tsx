@@ -24,7 +24,7 @@ export default function DocsPage() {
     <div className="min-h-screen bg-vana-dark text-white flex flex-col">
       <Header />
       
-      <div className="flex-1 w-full 2xl:px-12 mx-auto w-full px-4 sm:px-6 lg:px-8 py-24 flex gap-12">
+      <div className="flex-1 max-w-[1440px] w-full mx-auto w-full px-4 sm:px-6 lg:px-8 py-24 flex gap-12">
         
         {/* Sidebar Navigation */}
         <aside className="hidden lg:block w-64 shrink-0 fixed h-[calc(100vh-120px)] overflow-y-auto pr-6 border-r border-vana-border">

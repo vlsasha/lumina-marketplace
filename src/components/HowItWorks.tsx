@@ -52,7 +52,7 @@ export function HowItWorks() {
     <section id="how-it-works" className="py-16 sm:py-24 relative overflow-hidden bg-transparent">
       <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] bg-blue-500/10 blur-[120px] pointer-events-none rounded-full" />
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-500/10 blur-[120px] pointer-events-none rounded-full" />
-      <div className="w-full 2xl:px-12 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-bold text-vana-text">
             How It Works

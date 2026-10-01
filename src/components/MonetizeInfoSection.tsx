@@ -34,7 +34,7 @@ export function MonetizeInfoSection() {
       <div className="absolute top-1/3 right-1/3 w-[600px] h-[600px] bg-purple-500/10 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-vana-primary/10 blur-[120px] pointer-events-none rounded-full" />
 
-      <div className="w-full 2xl:px-12 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Turn Your Digital Footprint Into an Asset

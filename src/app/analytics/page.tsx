@@ -8,7 +8,7 @@ export default function AnalyticsPage() {
     <div className="min-h-screen bg-vana-dark text-white flex flex-col">
       <Header />
       
-      <main className="flex-1 w-full 2xl:px-12 mx-auto w-full px-4 sm:px-6 lg:px-8 py-16 animate-fade-in">
+      <main className="flex-1 max-w-[1440px] w-full mx-auto w-full px-4 sm:px-6 lg:px-8 py-16 animate-fade-in">
         
         <div className="mb-12">
           <h1 className="text-3xl sm:text-4xl font-bold text-vana-text mb-4">Network Analytics</h1>

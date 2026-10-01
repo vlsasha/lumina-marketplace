@@ -37,7 +37,7 @@ export default function AccountPage() {
     <>
       <Header />
       <main className="pt-24 pb-16 min-h-[85vh] flex flex-col">
-        <div className="w-full 2xl:px-12 mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1">
+        <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1">
           
           {!isLoggedIn ? (
             /* Login Screen */
