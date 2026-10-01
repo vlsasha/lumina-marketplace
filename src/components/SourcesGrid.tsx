@@ -63,8 +63,6 @@ export function SourcesGrid() {
   });
 
   return (
-    
-  return (
     <section id="sources" className="pt-6 pb-16 sm:pt-8 sm:pb-20">
       <div className="w-full 2xl:px-12 mx-auto px-4 sm:px-6 lg:px-8">
         
