@@ -192,7 +192,7 @@ export default function DashboardPage() {
                         status: previewData.error ? 'approved' : 'completed',
                         scopesApproved: statusData.scopes || []
                       }
-                    }
+                      })
                     });
                     
                     if (!postRes.ok) {
@@ -296,7 +296,7 @@ export default function DashboardPage() {
                 status: data.error ? 'approved' : 'completed',
                 scopesApproved: connection.scopesApproved || []
               }
-            }
+              })
             });
             
             if (!postRes.ok) {
