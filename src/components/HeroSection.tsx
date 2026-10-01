@@ -9,11 +9,10 @@ export function HeroSection() {
   useEffect(() => setMounted(true), []);
 
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-[#050505]">
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-transparent">
       {/* Background Gradients & Grid */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Animated grid */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgc3Ryb2tlPSIjMUUxRTFFIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiPjxwYXRoIGQ9Ik0wIDBoNjB2NjBIMHoiLz48L2c+PC9zdmc+')] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_80%)] opacity-40" />
+        
         
         {/* Glow orbs */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-vana-primary/10 rounded-[100%] blur-[100px] animate-pulse" style={{ animationDuration: '4s' }} />
