@@ -234,11 +234,17 @@ export const DATA_SOURCES: DataSource[] = [
     source: 'claude',
     scopes: [
       {
-        id: 'claude.conversations',
-        name: 'Conversations',
-        description: 'All Claude conversations with full message threads',
-        maturity: 'experimental',
-      }
+          id: 'claude.conversations',
+          name: 'Conversations',
+          description: 'All Claude conversations with full message threads',
+          maturity: 'experimental',
+        },
+        {
+          id: 'claude.projects',
+          name: 'Projects',
+          description: 'Claude Projects, including system prompts and context',
+          maturity: 'experimental',
+        }
     ],
     status: 'available',
     requiresDesktop: false,
