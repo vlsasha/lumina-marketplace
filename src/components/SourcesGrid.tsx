@@ -134,7 +134,7 @@ export function SourcesGrid() {
                   </div>
                   <div className="pb-4">
                     <h4 className="text-sm font-semibold text-white mb-1">Install Vana Desktop</h4>
-                    <p className="text-xs text-gray-400 leading-relaxed">Most data sources require the official <a href="https://vana.org/desktop" target="_blank" rel="noreferrer" className="text-vana-primary hover:underline">Vana Desktop application</a> to securely run local algorithms without exposing your data.</p>
+                    <p className="text-xs text-gray-400 leading-relaxed">Most data sources require the official <a href="https://app.vana.org/download" target="_blank" rel="noreferrer" className="text-vana-primary hover:underline">Vana Desktop application</a> to securely run local algorithms without exposing your data.</p>
                   </div>
                 </div>
 
