@@ -54,11 +54,11 @@ export default function DashboardPage() {
     query: { enabled: !!address },
   });
 
+  const [connections, setConnections] = useState<ConnectedSource[]>([]);
   // Calculate projected earnings based on data quality scores
   const totalQualityScore = connections.reduce((acc, c) => acc + (c.qualityScore || 0), 0);
   const displayBalance = (totalQualityScore * 0.15).toFixed(2);
   const displayPoC = pocScoreData ? Number(pocScoreData) : totalQualityScore;
-  const [connections, setConnections] = useState<ConnectedSource[]>([]);
     const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
     const showToast = (message: string, type: 'success' | 'error') => {
