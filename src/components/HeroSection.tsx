@@ -35,7 +35,7 @@ export function HeroSection() {
 
         {/* Subtitle */}
         <p className="text-center text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-10 animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
-          Connect, validate, and monetize data from Web2 platforms through a unified decentralized API. Built natively on the Vana protocol.
+          Connect your digital accounts once, and let your data work for you. Secure, private, and fully decentralized on the Vana protocol.
         </p>
 
         {/* CTA Buttons */}
