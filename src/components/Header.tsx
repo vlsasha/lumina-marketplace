@@ -59,10 +59,11 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
+            <NavLink href="/">Home</NavLink>
             <NavLink href="/sources">Sources</NavLink>
             <NavLink href="/dashboard">Dashboard</NavLink>
             <NavLink href="/pricing">Pricing</NavLink>
-            <NavLink href="/analytics">Analytics</NavLink>
+            
             <NavLink href="/docs">Docs</NavLink>
           </nav>
 
@@ -123,10 +124,11 @@ export function Header() {
       {isMenuOpen && (
         <div className="md:hidden border-t border-vana-border animate-fade-in">
           <div className="px-4 py-4 space-y-1">
-            <MobileNavLink href="/sources" onClick={() => setIsMenuOpen(false)}>Sources</MobileNavLink>
+            <MobileNavLink href="/" onClick={() => setIsMenuOpen(false)}>Home</MobileNavLink>
+              <MobileNavLink href="/sources" onClick={() => setIsMenuOpen(false)}>Sources</MobileNavLink>
             <MobileNavLink href="/dashboard" onClick={() => setIsMenuOpen(false)}>Dashboard</MobileNavLink>
             <MobileNavLink href="/pricing" onClick={() => setIsMenuOpen(false)}>Pricing</MobileNavLink>
-            <MobileNavLink href="/analytics" onClick={() => setIsMenuOpen(false)}>Analytics</MobileNavLink>
+            
             <MobileNavLink href="/docs" onClick={() => setIsMenuOpen(false)}>Docs</MobileNavLink>
             <div className="pt-3 border-t border-vana-border">
               <div className="flex items-center gap-2 px-3 py-2 text-sm text-vana-text-secondary">
