@@ -35,7 +35,7 @@ export const DATA_SOURCES: DataSource[] = [
     name: 'ChatGPT',
     icon: 'https://www.google.com/s2/favicons?domain=chatgpt.com&sz=128',
     color: '#10A37F',
-    description: 'AI conversation history, memories, and interaction patterns from OpenAI\'s ChatGPT.',
+    description: 'Monetize your AI interaction patterns, prompt engineering techniques, and conversational logic securely.',
     category: 'AI & Productivity',
     source: 'chatgpt',
     scopes: [
@@ -55,7 +55,7 @@ export const DATA_SOURCES: DataSource[] = [
     name: 'GitHub',
     icon: 'https://www.google.com/s2/favicons?domain=github.com&sz=128',
     color: '#ffffff',
-    description: 'Development activity, repositories, contributions, and starred projects from GitHub.',
+    description: 'Share your coding habits, tech stack preferences, and open-source contribution patterns.',
     category: 'Developer',
     source: 'github',
     scopes: [
@@ -99,7 +99,7 @@ export const DATA_SOURCES: DataSource[] = [
     name: 'Instagram',
     icon: 'https://www.google.com/s2/favicons?domain=instagram.com&sz=128',
     color: '#E4405F',
-    description: 'Social media profile, posts, following, and advertising data from Instagram.',
+    description: 'Unlock the value of your visual content engagement, brand interactions, and audience demographics.',
     category: 'Social Media',
     source: 'instagram',
     scopes: [
@@ -137,7 +137,7 @@ export const DATA_SOURCES: DataSource[] = [
     name: 'LinkedIn',
     icon: 'https://www.google.com/s2/favicons?domain=linkedin.com&sz=128',
     color: '#0A66C2',
-    description: 'Professional profile, work experience, skills, education, and network connections.',
+    description: 'Turn your professional trajectory, industry networking, and skill endorsements into a valuable asset.',
     category: 'Professional',
     source: 'linkedin',
     scopes: [
@@ -187,7 +187,7 @@ export const DATA_SOURCES: DataSource[] = [
     name: 'Spotify',
     icon: 'https://www.google.com/s2/favicons?domain=spotify.com&sz=128',
     color: '#1DB954',
-    description: 'Music preferences, saved tracks, playlists, and listening profile from Spotify.',
+    description: 'Share your unique audio taste profile, genre affinities, and listening habits with researchers.',
     category: 'Entertainment',
     source: 'spotify',
     scopes: [
@@ -219,7 +219,7 @@ export const DATA_SOURCES: DataSource[] = [
     name: 'YouTube',
     icon: 'https://www.google.com/s2/favicons?domain=youtube.com&sz=128',
     color: '#FF0000',
-    description: 'Watch history, likes, subscriptions, playlists, and channel profile.',
+    description: 'Monetize your video consumption behavior, content preferences, and creator engagement metrics.',
     category: 'Entertainment',
     source: 'youtube',
     scopes: [
@@ -269,7 +269,7 @@ export const DATA_SOURCES: DataSource[] = [
     name: 'Amazon',
     icon: 'https://www.google.com/s2/favicons?domain=amazon.com&sz=128',
     color: '#FF9900',
-    description: 'Order history, purchase details, and account profile from Amazon.',
+    description: 'Provide high-value consumer insights, purchasing habits, and product category preferences.',
     category: 'E-commerce',
     source: 'amazon',
     scopes: [
@@ -289,7 +289,7 @@ export const DATA_SOURCES: DataSource[] = [
     name: 'Claude',
     icon: 'https://www.google.com/s2/favicons?domain=claude.ai&sz=128',
     color: '#D97706',
-    description: 'AI conversation history and projects from Anthropic\'s Claude assistant.',
+    description: 'Extract value from your structured AI workflows, complex prompt engineering, and project context.',
     category: 'AI & Productivity',
     source: 'claude',
     scopes: [
@@ -315,7 +315,7 @@ export const DATA_SOURCES: DataSource[] = [
     name: 'iCloud Notes',
     icon: 'https://www.google.com/s2/favicons?domain=icloud.com&sz=128',
     color: '#FFD60A',
-    description: 'Notes content, folder structure, and organization from Apple iCloud Notes.',
+    description: 'Monetize your organizational habits, thought structuring, and personal productivity workflows.',
     category: 'Productivity',
     source: 'icloud_notes',
     scopes: [
@@ -341,7 +341,7 @@ export const DATA_SOURCES: DataSource[] = [
     name: 'Oura Ring',
     icon: 'https://www.google.com/s2/favicons?domain=ouraring.com&sz=128',
     color: '#A855F7',
-    description: 'Health and wellness data: sleep, activity, and readiness from Oura Ring.',
+    description: 'Contribute high-fidelity biometric signals, sleep architecture, and physiological recovery trends.',
     category: 'Health & Fitness',
     source: 'oura',
     scopes: [
@@ -361,7 +361,7 @@ export const DATA_SOURCES: DataSource[] = [
     name: 'Strava',
     icon: 'https://www.google.com/s2/favicons?domain=strava.com&sz=128',
     color: '#FC4C02',
-    description: 'Fitness activities, GPS routes, heart rate, and performance metrics from Strava.',
+    description: 'Share your athletic endurance metrics, geospatial training routes, and physical performance data.',
     category: 'Health & Fitness',
     source: 'strava',
     status: 'available',
@@ -381,7 +381,7 @@ export const DATA_SOURCES: DataSource[] = [
     name: 'WHOOP',
     icon: 'https://www.google.com/s2/favicons?domain=whoop.com&sz=128',
     color: '#000000',
-    description: '24/7 biometric data, recovery scores, sleep, and strain metrics from WHOOP.',
+    description: 'Monetize your continuous physiological monitoring, cardiovascular strain, and metabolic activity.',
     category: 'Health & Fitness',
     source: 'whoop',
     status: 'available',
