@@ -5,9 +5,23 @@ import type { DataSource } from '@/lib/data-sources';
 import { useAccount } from 'wagmi';
 
 interface SourceCardProps {
-  source: DataSource;
+  source: DataSource & { status?: string, qualityScore?: number };
   onConnect?: (sourceId: string) => void;
 }
+
+
+const getTierStyle = (score: number) => {
+  if (score >= 80) return 'bg-amber-500/15 text-amber-400 border-amber-500/40';
+  if (score >= 60) return 'bg-purple-500/15 text-purple-400 border-purple-500/40';
+  if (score >= 40) return 'bg-blue-500/15 text-blue-400 border-blue-500/40';
+  return 'bg-gray-500/15 text-gray-400 border-gray-500/40';
+};
+const getTierLabel = (score: number) => {
+  if (score >= 80) return 'S';
+  if (score >= 60) return 'A';
+  if (score >= 40) return 'B';
+  return 'C';
+};
 
 export function SourceCard({ source, onConnect }: SourceCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -121,7 +135,15 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
               )}
             </div>
             <div className="min-w-0">
-              <h3 className="text-white font-bold text-lg tracking-tight truncate group-hover:text-vana-primary transition-colors duration-300">{source.name}</h3>
+              <div className="flex items-center gap-2">
+                <h3 className="text-white font-bold text-lg tracking-tight truncate group-hover:text-vana-primary transition-colors duration-300">{source.name}</h3>
+                {source.qualityScore != null && (
+                  <span className={`shrink-0 px-2 py-0.5 rounded-full text-[10px] font-bold border flex items-center gap-1 backdrop-blur-sm transition-all ${getTierStyle(source.qualityScore)}`}>
+                    <span className="text-[9px]">&#128142;</span>
+                    <span className="tracking-wide">TIER {getTierLabel(source.qualityScore)}</span>
+                  </span>
+                )}
+              </div>
               <span className="text-[11px] uppercase tracking-wider font-semibold text-gray-500">{source.category}</span>
             </div>
           </div>
@@ -166,9 +188,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
             </button>
           )}
 
-          <button className="p-2.5 rounded-xl border border-vana-border hover:border-vana-border-hover text-vana-text-muted hover:text-vana-text transition-all" title="View API documentation">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><line x1="10" y1="9" x2="8" y2="9" /></svg>
-          </button>
+          
         </div>
       </div>
     </div>

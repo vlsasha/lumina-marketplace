@@ -38,11 +38,11 @@ export function SourcesGrid() {
   }, [address]);
 
   const availableSources = DATA_SOURCES.map(source => {
-    const conn = connections.find(c => c.sourceId === source.id);
+    const conn = connections.find(c => c.sourceId === source.source || c.sourceId === source.id);
     if (conn && (conn.status === 'completed' || conn.status === 'approved')) {
-      return { ...source, status: 'connected' as const };
+      return { ...source, status: 'connected' as const, qualityScore: conn.qualityScore };
     }
-    return source;
+    return { ...source, qualityScore: conn?.qualityScore };
   });
 
   // Extract unique categories
@@ -52,6 +52,15 @@ export function SourcesGrid() {
   const filteredSources = activeCategory === 'All' 
     ? availableSources 
     : availableSources.filter(s => s.category === activeCategory);
+
+  const sortedFilteredSources = [...filteredSources].sort((a, b) => {
+    if (a.status === 'connected' && b.status !== 'connected') return -1;
+    if (a.status !== 'connected' && b.status === 'connected') return 1;
+    if (a.status === 'connected' && b.status === 'connected') {
+       return (b.qualityScore || 0) - (a.qualityScore || 0);
+    }
+    return 0;
+  });
 
   return (
     <section id="sources" className="pt-6 pb-16 sm:pt-8 sm:pb-20">
@@ -85,7 +94,7 @@ export function SourcesGrid() {
 
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 animate-fade-in">
-          {filteredSources.map((source) => (
+          {sortedFilteredSources.map((source) => (
             <SourceCard key={source.id} source={source} />
           ))}
         </div>
