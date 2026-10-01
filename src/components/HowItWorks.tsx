@@ -49,7 +49,9 @@ export function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="py-16 sm:py-24 border-t border-vana-border">
+    <section id="how-it-works" className="py-16 sm:py-24 border-t border-[#111] relative overflow-hidden bg-transparent">
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-white/5 blur-[120px] pointer-events-none rounded-full" />
+      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-vana-primary/5 blur-[100px] pointer-events-none rounded-full" />
       <div className="w-full 2xl:px-12 mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-bold text-vana-text">
