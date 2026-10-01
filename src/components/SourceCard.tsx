@@ -144,7 +144,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
                   </span>
                 )}
               </div>
-              <span className="block truncate text-[11px] uppercase tracking-wider font-semibold text-gray-500">{source.category}</span>
+              <span className="text-[11px] uppercase tracking-wider font-semibold text-gray-500">{source.category}</span>
             </div>
           </div>
           <span className={`shrink-0 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${status.bg} ${status.color} border ${status.border} shadow-sm`}>
@@ -152,7 +152,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
           </span>
         </div>
 
-        <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed">{source.description}</p>
+        <p className="text-sm text-gray-400 leading-relaxed">{source.description}</p>
         
         {source.scopes && source.scopes.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-3 mb-1 flex-grow items-start content-start">
