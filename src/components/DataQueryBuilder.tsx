@@ -61,10 +61,10 @@ export function DataQueryBuilder() {
   
   const getTierMultiplier = (tier: string) => {
     if (tier === 'A') return 1.0; // Premium (100% of max price)
-    if (tier === 'B') return 0.5; // High (50% of max price)
-    if (tier === 'C') return 0.2; // Standard (20% of max price)
-    if (tier === 'D') return 0.05; // Basic (5% of max price)
-    return 0.5; // Any (Blended average)
+    if (tier === 'B') return 0.75; // High
+    if (tier === 'C') return 0.50; // Standard
+    if (tier === 'D') return 0.25; // Basic
+    return 1.0; // Any (Base rate)
   };
   
   const tierMultiplier = getTierMultiplier(selectedTier);
