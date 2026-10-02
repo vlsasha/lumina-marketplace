@@ -20,7 +20,7 @@ export function DataQueryBuilder() {
 
 
   
-  const [volume, setVolume] = useState<number>(1);
+  const [volume, setVolume] = useState<number>(0);
   const [selectedSources, setSelectedSources] = useState<string[]>([]);
   const [selectedTier, setSelectedTier] = useState('Any');
 
@@ -69,7 +69,7 @@ export function DataQueryBuilder() {
   // Ensure volume doesn't exceed inventory
   useEffect(() => {
     if (volume > availableInventory) {
-      setVolume(Math.max(1, availableInventory));
+      setVolume(Math.max(0, availableInventory));
     }
   }, [availableInventory, volume]);
 
@@ -186,15 +186,16 @@ export function DataQueryBuilder() {
                 </div>
                 <input 
                   type="range" 
-                  min="1" 
-                  max={Math.max(1, availableInventory)} 
+                  min="0" 
+                  max={Math.max(0, availableInventory)} 
                   step="1"
                   value={volume} 
                   onChange={(e) => setVolume(parseInt(e.target.value))}
                   className="w-full h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-vana-primary"
+                  disabled={availableInventory === 0}
                 />
                 <div className="flex justify-between mt-2 text-[10px] text-gray-600 font-mono">
-                  <span>1</span>
+                  <span>0</span>
                   <span>{availableInventory.toLocaleString()}</span>
                 </div>
               </div>
