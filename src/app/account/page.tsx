@@ -13,6 +13,9 @@ export default function AccountPage() {
   const [role, setRole] = useState<Role>('provider');
   const [authStep, setAuthStep] = useState<'login' | 'otp'>('login');
   const [email, setEmail] = useState('');
+  const [otpCode, setOtpCode] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   // Handle mock Google/Wallet login
   const handleDirectLogin = (e: React.MouseEvent) => {
@@ -21,16 +24,47 @@ export default function AccountPage() {
   };
 
   // Handle mock Email submit
-  const handleEmailSubmit = (e: React.FormEvent) => {
+  const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-    setAuthStep('otp'); // Move to code verification step
+    setIsSubmitting(true);
+    setErrorMsg('');
+    try {
+      const res = await fetch('/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to send code');
+      setAuthStep('otp');
+    } catch (err: any) {
+      setErrorMsg(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Handle mock OTP verification
-  const handleVerifyCode = (e: React.FormEvent) => {
+  const handleVerifyCode = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoggedIn(true);
+    if (!otpCode) return;
+    setIsSubmitting(true);
+    setErrorMsg('');
+    try {
+      const res = await fetch('/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, code: otpCode })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Invalid code');
+      setIsLoggedIn(true);
+    } catch (err: any) {
+      setErrorMsg(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -83,10 +117,10 @@ export default function AccountPage() {
                       />
                       <button 
                         type="submit"
-                        className="w-full py-3 px-4 bg-vana-primary hover:bg-opacity-90 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-vana-primary/25"
-                      >
-                        Continue with Email
+                        disabled={isSubmitting} className="w-full py-3 px-4 bg-vana-primary hover:bg-opacity-90 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-vana-primary/25 disabled:opacity-50">
+                        {isSubmitting ? 'Sending...' : 'Continue with Email'}
                       </button>
+                      {errorMsg && <p className="text-red-400 text-sm mt-2 text-center">{errorMsg}</p>}
                     </form>
 
                     {isConnected && (
@@ -127,24 +161,15 @@ export default function AccountPage() {
 
                   <form onSubmit={handleVerifyCode} className="space-y-6">
                     <div className="flex justify-center gap-2">
-                      {/* OTP mock inputs */}
-                      {[1, 2, 3, 4, 5, 6].map((i) => (
-                        <input 
-                          key={i}
-                          type="text" 
-                          maxLength={1}
-                          className="w-10 h-12 text-center bg-black border border-[#333] rounded-lg text-lg text-white font-mono focus:outline-none focus:border-vana-primary transition-colors"
-                          required
-                        />
-                      ))}
+                      <input type="text" maxLength={6} value={otpCode} onChange={(e) => setOtpCode(e.target.value)} placeholder="123456" className="w-32 tracking-[0.5em] h-12 text-center bg-black border border-[#333] rounded-lg text-xl text-white font-mono focus:outline-none focus:border-vana-primary transition-colors" required />
                     </div>
                     
                     <button 
                       type="submit"
-                      className="w-full py-3 px-4 bg-vana-primary hover:bg-opacity-90 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-vana-primary/25"
-                    >
-                      Verify & Continue
-                    </button>
+                      disabled={isSubmitting} className="w-full py-3 px-4 bg-vana-primary hover:bg-opacity-90 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-vana-primary/25 disabled:opacity-50">
+                        {isSubmitting ? 'Verifying...' : 'Verify & Continue'}
+                      </button>
+                      {errorMsg && <p className="text-red-400 text-sm mt-2 text-center">{errorMsg}</p>}
                   </form>
                   
                   <div className="mt-6 text-center text-xs text-gray-500">

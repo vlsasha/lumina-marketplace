@@ -8,6 +8,18 @@ export const sql = process.env.DATABASE_URL
 // Helper to initialize the DB table if it doesn't exist
 export async function initDb() {
   if (!sql) return;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS auth_codes (
+      id SERIAL PRIMARY KEY,
+      email VARCHAR(255) NOT NULL,
+      code VARCHAR(10) NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      expires_at TIMESTAMP NOT NULL,
+      used BOOLEAN DEFAULT FALSE
+    )
+  `;
+
   await sql`
     CREATE TABLE IF NOT EXISTS vana_users (
       id SERIAL PRIMARY KEY,
