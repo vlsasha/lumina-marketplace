@@ -43,6 +43,7 @@ export function Footer() {
             </div>
           </div>
 
+          <div className="flex gap-12 md:gap-16">
           {/* Product */}
           <div>
             <h3 className="text-sm font-semibold text-vana-text mb-4">Product</h3>
@@ -62,6 +63,7 @@ export function Footer() {
               <FooterLink href="https://github.com/vana-com" external>GitHub</FooterLink>
             </ul>
           </div>
+        </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-vana-border flex flex-col sm:flex-row items-center justify-between gap-4">
