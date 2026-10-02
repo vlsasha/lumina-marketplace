@@ -23,12 +23,12 @@ export function DataQueryBuilder() {
       .then(data => {
         setValidProviders(data.providers);
         // If it's just the Treasury wallet (1), consider real users as 0 for display
-        setTotalUsersAvailable(data.count <= 1 ? 0 : data.count - 1); 
+        setTotalUsersAvailable(data.count); 
       })
       .catch(console.error);
   }, []);
   
-  const [volume, setVolume] = useState<number>(10);
+  const [volume, setVolume] = useState<number>(1);
   const [selectedSources, setSelectedSources] = useState<string[]>([]);
   const [ageRange, setAgeRange] = useState('Any');
   const [region, setRegion] = useState('Global');
@@ -70,7 +70,7 @@ export function DataQueryBuilder() {
   // Ensure volume doesn't exceed inventory
   useEffect(() => {
     if (volume > availableInventory) {
-      setVolume(Math.max(10, availableInventory));
+      setVolume(Math.max(1, availableInventory));
     }
   }, [availableInventory, volume]);
 
@@ -181,15 +181,15 @@ export function DataQueryBuilder() {
                 </div>
                 <input 
                   type="range" 
-                  min="10" 
-                  max={availableInventory > 10 ? availableInventory : 10} 
-                  step="10"
+                  min="1" 
+                  max={Math.max(1, availableInventory)} 
+                  step="1"
                   value={volume} 
                   onChange={(e) => setVolume(parseInt(e.target.value))}
                   className="w-full h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-vana-primary"
                 />
                 <div className="flex justify-between mt-2 text-[10px] text-gray-600 font-mono">
-                  <span>10</span>
+                  <span>1</span>
                   <span>{availableInventory.toLocaleString()}</span>
                 </div>
               </div>
