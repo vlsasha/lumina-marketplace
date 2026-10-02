@@ -14,36 +14,12 @@ export async function GET(request: Request) {
 
     await initDb();
 
-    // Build dynamic where clause for JSONB filtering
-    let jsonbFilter = sql``;
+        let sqlFilter = sql``;
     if (regionParam && regionParam !== 'Global') {
-      jsonbFilter = sql`
-        AND EXISTS (
-          SELECT 1 FROM downloaded_data dd 
-          WHERE dd.connection_id = user_connections.connection_id
-          AND (dd.data::text ILIKE ${'%' + regionParam + '%'})
-        )
-      `;
+      sqlFilter = sql` AND region = ${regionParam}`;
     }
-
     if (ageParam && ageParam !== 'Any') {
-      let ageKeyword = '';
-      if (ageParam === '18-24') ageKeyword = '200';
-      if (ageParam === '25-31') ageKeyword = '199';
-      if (ageParam === '32-38') ageKeyword = '198';
-      if (ageParam === '39-45') ageKeyword = '198';
-      if (ageParam === '45+') ageKeyword = '197';
-      
-      if (ageKeyword) {
-        jsonbFilter = sql`
-          ${jsonbFilter}
-          AND EXISTS (
-            SELECT 1 FROM downloaded_data dd 
-            WHERE dd.connection_id = user_connections.connection_id
-            AND (dd.data::text ILIKE ${'%' + ageKeyword + '%'})
-          )
-        `;
-      }
+      sqlFilter = sql` ${sqlFilter} AND age_group = ${ageParam}`;
     }
     
     // We count rows in user_connections to match the 'Datasets Available' logic.
@@ -52,7 +28,7 @@ export async function GET(request: Request) {
       SELECT source_id, COUNT(*) as count 
       FROM user_connections 
       WHERE status IN ('approved', 'completed')
-      ${jsonbFilter}
+      ${sqlFilter}
       GROUP BY source_id
     `;
     

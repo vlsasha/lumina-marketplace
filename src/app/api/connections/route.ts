@@ -44,6 +44,8 @@ export async function POST(req: Request) {
     // Try to parse the unique ID and calculate quality score from the downloaded JSON
     let providerAccountId = null;
     let qualityScore = 0;
+      let region = 'Global';
+      let ageGroup = 'Any';
     
     try {
       const dbResult = await sql`SELECT data FROM downloaded_data WHERE connection_id = ${connection.connectionId}`;
@@ -54,8 +56,11 @@ export async function POST(req: Request) {
           // Extract provider ID
           const profile = json?.data?.results?.['youtube.profile']?.data?.data;
           if (profile?.channelId) {
-            providerAccountId = profile.channelId;
-          }
+              providerAccountId = profile.channelId;
+            }
+            if (profile?.country) {
+              region = profile.country;
+            }
           
           // Calculate quality score
           if (profile?.joinedDate) {
@@ -222,8 +227,21 @@ export async function POST(req: Request) {
           const profile = json?.data?.results?.['spotify.profile']?.data?.data || json;
           if (profile?.id) {
             providerAccountId = 'spotify_' + profile.id;
-            
-            // Score based on followers
+          }
+          if (profile?.country) region = profile.country;
+          if (profile?.birthdate) {
+            const birthYear = parseInt(profile.birthdate.split('-')[0]);
+            if (!isNaN(birthYear)) {
+              const currentYear = new Date().getFullYear();
+              const age = currentYear - birthYear;
+              if (age >= 18 && age <= 24) ageGroup = '18-24';
+              else if (age >= 25 && age <= 31) ageGroup = '25-31';
+              else if (age >= 32 && age <= 38) ageGroup = '32-38';
+              else if (age >= 39 && age <= 45) ageGroup = '39-45';
+              else if (age > 45) ageGroup = '45+';
+            }
+          }
+          // Score based on followers
             const followers = profile.followers || 0;
             if (followers >= 100) qualityScore += 30;
             else if (followers >= 10) qualityScore += 15;
@@ -239,7 +257,6 @@ export async function POST(req: Request) {
             const playlists = playlistData?.total || playlistData?.playlists?.length || 0;
             if (playlists >= 10) qualityScore += 30;
             else if (playlists >= 3) qualityScore += 15;
-          }
         } catch (e) {
           console.error(e);
         }
@@ -313,15 +330,17 @@ export async function POST(req: Request) {
 
     try {
       await sql`
-        INSERT INTO user_connections (wallet_address, source_id, connection_id, status, scopes_approved, provider_account_id, quality_score) 
-        VALUES (${wallet}, ${connection.sourceId}, ${connection.connectionId}, ${connection.status}, ${scopesStr}, ${providerAccountId}, ${qualityScore}) 
+        INSERT INTO user_connections (wallet_address, source_id, connection_id, status, scopes_approved, provider_account_id, quality_score, region, age_group) 
+        VALUES (${wallet}, ${connection.sourceId}, ${connection.connectionId}, ${connection.status}, ${scopesStr}, ${providerAccountId}, ${qualityScore}, ${region}, ${ageGroup}) 
         ON CONFLICT (wallet_address, source_id) 
         DO UPDATE SET 
           connection_id = ${connection.connectionId}, 
           status = ${connection.status}, 
           scopes_approved = ${scopesStr},
-          provider_account_id = ${providerAccountId},
-          quality_score = ${qualityScore}
+          provider_account_id = ${providerAccountId}, 
+          quality_score = ${qualityScore},
+          region = ${region},
+          age_group = ${ageGroup}
       `;
     } catch (e: any) {
       if (e.message && e.message.includes('unique constraint "unique_provider_account"')) {

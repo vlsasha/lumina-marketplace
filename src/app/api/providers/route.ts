@@ -18,43 +18,12 @@ export async function GET(request: Request) {
     let providers: string[] = [];
     let count = 0;
 
-    // Build dynamic where clause for JSONB filtering
-    let jsonbFilter = sql``;
+        let sqlFilter = sql``;
     if (regionParam && regionParam !== 'Global') {
-      // Look inside the downloaded_data JSON for a country/location match.
-      // This uses PostgreSQL JSONB operators to search various paths depending on the provider.
-      // Using ILIKE for case-insensitive matching if it was text, but with JSONB we cast to text.
-      jsonbFilter = sql`
-        AND EXISTS (
-          SELECT 1 FROM downloaded_data dd 
-          WHERE dd.connection_id = user_connections.connection_id
-          AND (
-            (dd.data::text ILIKE ${'%' + regionParam + '%'})
-          )
-        )
-      `;
+      sqlFilter = sql` AND region = ${regionParam}`;
     }
-
     if (ageParam && ageParam !== 'Any') {
-      // Simulating age extraction. In reality, most providers don't give age in raw JSON.
-      // This will just scan the text for keywords as a placeholder MVP implementation.
-      let ageKeyword = '';
-      if (ageParam === '18-24') ageKeyword = '200'; // born in 200x
-      if (ageParam === '25-31') ageKeyword = '199'; // born in 199x
-      if (ageParam === '32-38') ageKeyword = '198';
-      if (ageParam === '39-45') ageKeyword = '198';
-      if (ageParam === '45+') ageKeyword = '197';
-      
-      if (ageKeyword) {
-        jsonbFilter = sql`
-          ${jsonbFilter}
-          AND EXISTS (
-            SELECT 1 FROM downloaded_data dd 
-            WHERE dd.connection_id = user_connections.connection_id
-            AND (dd.data::text ILIKE ${'%' + ageKeyword + '%'})
-          )
-        `;
-      }
+      sqlFilter = sql` ${sqlFilter} AND age_group = ${ageParam}`;
     }
 
     if (sourcesParam) {
@@ -65,7 +34,7 @@ export async function GET(request: Request) {
           FROM user_connections 
           WHERE status IN ('approved', 'completed') 
             AND source_id = ANY(${sources})
-            ${jsonbFilter}
+            ${sqlFilter}
           GROUP BY wallet_address
           HAVING COUNT(DISTINCT source_id) = ${sources.length}
         `;
@@ -77,7 +46,7 @@ export async function GET(request: Request) {
         SELECT wallet_address 
         FROM user_connections 
         WHERE status IN ('approved', 'completed')
-        ${jsonbFilter}
+        ${sqlFilter}
       `;
       providers = allConnectionsResult.map(row => row.wallet_address);
       count = providers.length;
