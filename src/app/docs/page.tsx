@@ -163,7 +163,7 @@ dataset = response.json()<br/>
               
               <div className="space-y-4">
                 <div className="p-4 border-l-4 border-vana-primary bg-vana-card">
-                  <h4 className="font-mono font-bold text-white mb-1">LuminaMarketplace.sol</h4>
+                  <h4 className="font-mono font-bold text-white mb-1 flex items-center gap-2">LuminaMarketplace.sol <a href="https://iscan.vana.org/address/0xA89C2D92421B4a3B4d409668AeCC58B464E5fd32" target="_blank" rel="noopener noreferrer" className="text-xs font-normal text-vana-primary hover:underline bg-vana-primary/10 px-2 py-0.5 rounded-full flex items-center gap-1">View on VanaScan <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg></a></h4>
                   <p className="text-sm text-vana-text-secondary">
                     The core escrow and settlement contract deployed on Vana Mainnet. It handles <code>buyData()</code> execution, automatic 80/20 revenue splitting, and the <code>claimEarnings()</code> withdrawal mechanic.
                   </p>
