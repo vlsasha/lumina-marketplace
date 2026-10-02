@@ -419,9 +419,9 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 lg:gap-10">
             {/* Sources list */}
-            <div className="lg:col-span-2 space-y-3">
+            <div className="xl:col-span-7 space-y-3">
               <h2 className="text-lg font-semibold text-vana-text mb-4">Data Sources</h2>
               {
                 [...DATA_SOURCES].sort((a, b) => {
@@ -558,7 +558,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Data Preview */}
-            <div className="space-y-4">
+            <div className="xl:col-span-5 space-y-4">
               <EarningsTable />
               
               <div className="mt-8">
