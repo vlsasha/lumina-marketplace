@@ -251,7 +251,7 @@ export function DataQueryBuilder() {
                         <div className={`text-xs font-semibold truncate ${isSelected ? 'text-white' : 'text-gray-400'}`}>
                           {source.name}
                         </div>
-                        <div className="flex items-center gap-1.5 bg-black/60 px-2 py-0.5 rounded text-[11px] font-mono font-bold text-white">
+                        <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-bold ${(sourceCounts[source.id] || 0) > 0 ? "bg-vana-green/15 border border-vana-green/30 text-vana-green" : "bg-black/60 text-white"}`}>
                           <svg className="w-2.5 h-2.5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" fillRule="evenodd" /></svg>
                           {sourceCounts[source.id] || 0}
                         </div>
