@@ -206,7 +206,7 @@ export function DataQueryBuilder() {
                   className="w-full h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-vana-primary"
                   disabled={availableInventory === 0}
                 />
-                <div className="flex justify-between mt-2 text-[10px] text-gray-600 font-mono">
+                <div className="flex justify-between mt-2 text-xs text-gray-400 font-mono font-medium">
                   <span>0</span>
                   <span>{availableInventory.toLocaleString()}</span>
                 </div>
@@ -243,7 +243,7 @@ export function DataQueryBuilder() {
                         <div className={`text-xs font-semibold truncate ${isSelected ? 'text-white' : 'text-gray-400'}`}>
                           {source.name}
                         </div>
-                        <div className="flex items-center gap-1 bg-black/40 px-1.5 py-0.5 rounded text-[9px] font-mono text-gray-500">
+                        <div className="flex items-center gap-1.5 bg-black/60 px-2 py-0.5 rounded text-[11px] font-mono font-bold text-white">
                           <svg className="w-2.5 h-2.5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" fillRule="evenodd" /></svg>
                           {sourceCounts[source.id] || 0}
                         </div>
