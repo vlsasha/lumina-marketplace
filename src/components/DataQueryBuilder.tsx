@@ -147,9 +147,9 @@ export function DataQueryBuilder() {
                   className="w-full bg-black border border-[#333] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-vana-primary transition-colors appearance-none"
                 >
                   <option value="18-24">18-24</option>
-                  <option value="25-34">25-34</option>
-                  <option value="30-40">30-40</option>
-                  <option value="35-44">35-44</option>
+                  <option value="25-31">25-31</option>
+                  <option value="32-38">32-38</option>
+                  <option value="39-45">39-45</option>
                   <option value="45+">45+</option>
                   <option value="Any">Any Age</option>
                 </select>

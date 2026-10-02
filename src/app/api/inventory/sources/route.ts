@@ -29,8 +29,9 @@ export async function GET(request: Request) {
     if (ageParam && ageParam !== 'Any') {
       let ageKeyword = '';
       if (ageParam === '18-24') ageKeyword = '200';
-      if (ageParam === '25-34') ageKeyword = '199';
-      if (ageParam === '35-44') ageKeyword = '198';
+      if (ageParam === '25-31') ageKeyword = '199';
+      if (ageParam === '32-38') ageKeyword = '198';
+      if (ageParam === '39-45') ageKeyword = '198';
       if (ageParam === '45+') ageKeyword = '197';
       
       if (ageKeyword) {
