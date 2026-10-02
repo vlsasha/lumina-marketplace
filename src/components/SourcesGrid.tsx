@@ -15,10 +15,7 @@ export function SourcesGrid() {
   const [connections, setConnections] = useState<any[]>([]);
 
   useEffect(() => {
-    const saved = localStorage.getItem('vana_connections');
-    if (saved) {
-      setConnections(JSON.parse(saved));
-    }
+    
     
     if (address) {
       fetch(`/api/connections?wallet=${address}`)

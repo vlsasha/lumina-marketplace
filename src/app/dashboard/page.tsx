@@ -109,16 +109,10 @@ export default function DashboardPage() {
     );
   };
 
+  // Ensure mock data is fully wiped
   useEffect(() => {
-    // Load from localStorage on mount
-    const saved = localStorage.getItem('Lumina_connections');
-    if (saved) {
-      try {
-        setConnections(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to parse saved connections');
-      }
-    }
+    localStorage.removeItem('Lumina_connections');
+    localStorage.removeItem('vana_connections');
   }, []);
 
     // Sync with DB if wallet is connected
@@ -135,7 +129,7 @@ export default function DashboardPage() {
                   merged.push(p);
                 }
               });
-              localStorage.setItem('Lumina_connections', JSON.stringify(merged));
+              
               return merged;
             });
           }
@@ -144,10 +138,7 @@ export default function DashboardPage() {
     }
   }, [address]);
 
-  // Save to localStorage whenever connections change
-  useEffect(() => {
-    localStorage.setItem('Lumina_connections', JSON.stringify(connections));
-  }, [connections]);
+  
 
   const handleConnect = async (sourceId: string) => {
     setLoading(sourceId);
@@ -199,7 +190,7 @@ export default function DashboardPage() {
               const previewData = await dataRes.json();
               setDataPreview(previewData);
               if (!previewData.error) {
-                localStorage.setItem(`vana_data_${data.connectionId}`, JSON.stringify(previewData));
+                
                 }
                 
                 // Sync to our DB
@@ -223,7 +214,7 @@ export default function DashboardPage() {
                       showToast(errData.error || 'Failed to sync database', 'error');
                       setConnections(prev => {
                         const filtered = prev.filter(c => c.sourceId !== sourceId);
-                        localStorage.setItem('Lumina_connections', JSON.stringify(filtered));
+                        
                         return filtered;
                       });
                       clearInterval(pollInterval);
@@ -327,7 +318,7 @@ export default function DashboardPage() {
               showToast(errData.error || 'Failed to sync database', 'error');
               setConnections(prev => {
                 const filtered = prev.filter(c => c.sourceId !== sourceId);
-                localStorage.setItem('Lumina_connections', JSON.stringify(filtered));
+                
                 return filtered;
               });
               setLoading(null);
@@ -343,7 +334,7 @@ export default function DashboardPage() {
               prev.forEach(p => {
                 if (!merged.find(m => m.sourceId === p.sourceId)) merged.push(p);
               });
-              localStorage.setItem('Lumina_connections', JSON.stringify(merged));
+              
               return merged;
             });
           }
