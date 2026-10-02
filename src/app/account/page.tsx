@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 type Role = 'provider' | 'buyer';
 
 export default function AccountPage() {
-  const { isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
   const sessionObj = useSession();
   const status = sessionObj?.status;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -222,7 +222,7 @@ export default function AccountPage() {
                 </div>
               </div>
 
-              {role === 'provider' ? <ProviderWorkspace /> : <BuyerWorkspace userId={session?.user?.email || address || ''} />}
+              {role === 'provider' ? <ProviderWorkspace /> : <BuyerWorkspace userId={sessionObj?.data?.user?.email || address || ''} />}
 
             </div>
           )}
