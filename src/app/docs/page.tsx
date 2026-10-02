@@ -137,7 +137,7 @@ export default function DocsPage() {
                   <pre className="text-sm font-mono text-gray-300">
 <code className="text-vana-green">import</code> requests<br/><br/>
 API_KEY = <span className="text-yellow-300">"db_live_7x89gkqj1p2m4m2p"</span><br/>
-ENDPOINT = <span className="text-yellow-300">"https://api.Lumina.vana/v1/data/query"</span><br/><br/>
+ENDPOINT = <span className="text-yellow-300">"https://lumina-marketplace.vercel.app/api/download"</span><br/><br/>
 headers = &#123;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-yellow-300">"Authorization"</span>: <span className="text-yellow-300">f"Bearer &#123;API_KEY&#125;"</span>,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-yellow-300">"Content-Type"</span>: <span className="text-yellow-300">"application/json"</span><br/>
@@ -271,7 +271,7 @@ dataset = response.json()<br/>
                       Dynamic Pricing Engine (The Multiplier)
                     </h3>
                     <p className="text-sm text-gray-400 mb-3">
-                      The Quality Score acts as a direct multiplier on the base price of the dataset (for both the Initial Sync and the Monthly Yield). This ensures data buyers get exactly the quality they pay for, and high-quality data providers receive premium payouts.
+                      The Quality Score acts as a direct multiplier on the base price of the dataset to calculate its <strong>Estimated Value</strong>. When B2B buyers purchase data from your category, the smart contract distributes the revenue to you based on this multiplier. This ensures data buyers get exactly the quality they pay for, and high-quality data providers receive premium payouts.
                     </p>
                     <div className="overflow-x-auto">
                       <table className="w-full text-sm text-left border-collapse">
@@ -311,9 +311,9 @@ dataset = response.json()<br/>
                       <div>
                         <h4 className="text-sm font-bold text-white mb-1">Example Calculation</h4>
                         <p className="text-xs text-gray-400 leading-relaxed">
-                          If you connect a GitHub Developer Profile (Base Price: <span className="text-white">$15.00</span> Initial + <span className="text-white">$5.00/mo</span>), and the Oracle assigns you a Quality Score of <span className="text-vana-green font-bold">90 (Tier A)</span>:<br/><br/>
-                          Initial Sync Earning = $15.00 × 0.90 = <span className="text-vana-primary font-bold">$13.50</span><br/>
-                          Monthly Passive Yield = $5.00 × 0.90 = <span className="text-vana-primary font-bold">$4.50 / mo</span>
+                          If you connect a GitHub Developer Profile (Base Dataset Value: <span className="text-white">$15.00</span>), and the Oracle assigns you a Quality Score of <span className="text-vana-green font-bold">90 (Tier A)</span>:<br/><br/>
+                          Estimated Value = $15.00 × 0.90 = <span className="text-vana-primary font-bold">$13.50</span><br/>
+                          When a buyer purchases your data, <span className="text-vana-primary font-bold">$13.50</span> is instantly credited to your <strong>Available Balance</strong> via the smart contract, ready to be claimed to your wallet.
                         </p>
                       </div>
                     </div>
