@@ -16,6 +16,7 @@ export function DataQueryBuilder() {
   
   const [validProviders, setValidProviders] = useState<`0x${string}`[]>([]);
   const [totalUsersAvailable, setTotalUsersAvailable] = useState(0);
+  const [sourceCounts, setSourceCounts] = useState<Record<string, number>>({});
 
 
   
@@ -34,6 +35,14 @@ export function DataQueryBuilder() {
       })
       .catch(console.error);
   }, [selectedSources]);
+
+  // Fetch individual source counts
+  useEffect(() => {
+    fetch('/api/inventory/sources')
+      .then(res => res.json())
+      .then(data => setSourceCounts(data.counts || {}))
+      .catch(console.error);
+  }, []);
 
   
 
@@ -207,14 +216,20 @@ export function DataQueryBuilder() {
                       <img src={source.icon} alt={source.name} className="w-full h-full object-contain" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className={`text-xs font-semibold truncate ${isSelected ? 'text-white' : 'text-gray-400'}`}>
-                        {source.name}
+                      <div className="flex justify-between items-center gap-2">
+                        <div className={`text-xs font-semibold truncate ${isSelected ? 'text-white' : 'text-gray-400'}`}>
+                          {source.name}
+                        </div>
+                        <div className="flex items-center gap-1 bg-black/40 px-1.5 py-0.5 rounded text-[9px] font-mono text-gray-500">
+                          <svg className="w-2.5 h-2.5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" fillRule="evenodd" /></svg>
+                          {sourceCounts[source.id] || 0}
+                        </div>
                       </div>
-                      <div className={`text-[10px] font-mono ${isSelected ? 'text-vana-primary' : 'text-gray-600'}`}>
+                      <div className={`text-[10px] font-mono mt-0.5 ${isSelected ? 'text-vana-primary' : 'text-gray-500'}`}>
                         +${price.toFixed(2)}
                       </div>
-                    </div>
-                    <div className={`w-3 h-3 rounded-full border shrink-0 flex items-center justify-center ${
+                      </div>
+                      <div className={`w-3 h-3 rounded-full border shrink-0 flex items-center justify-center ${
                       isSelected ? 'border-vana-primary bg-vana-primary' : 'border-gray-700'
                     }`}>
                       {isSelected && <svg viewBox="0 0 14 14" fill="none" className="w-2 h-2 text-black"><path d="M11.6666 3.5L5.24992 9.91667L2.33325 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
