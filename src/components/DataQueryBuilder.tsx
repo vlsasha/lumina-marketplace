@@ -42,11 +42,15 @@ export function DataQueryBuilder() {
 
   // Fetch individual source counts
   useEffect(() => {
-    fetch('/api/inventory/sources')
+    const queryParams = new URLSearchParams();
+    if (region !== 'Global') queryParams.append('region', region);
+    if (ageRange !== 'Any') queryParams.append('age', ageRange);
+    
+    fetch(`/api/inventory/sources?${queryParams.toString()}`)
       .then(res => res.json())
       .then(data => setSourceCounts(data.counts || {}))
       .catch(console.error);
-  }, []);
+  }, [region, ageRange]);
 
   
 
