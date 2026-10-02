@@ -17,6 +17,13 @@ export function DataQueryBuilder() {
   const [validProviders, setValidProviders] = useState<`0x${string}`[]>([]);
   const [totalUsersAvailable, setTotalUsersAvailable] = useState(0);
 
+
+  
+  const [volume, setVolume] = useState<number>(1);
+  const [selectedSources, setSelectedSources] = useState<string[]>([]);
+  const [ageRange, setAgeRange] = useState('Any');
+  const [region, setRegion] = useState('Global');
+
   useEffect(() => {
     const query = selectedSources.length > 0 ? `?sources=${selectedSources.join(',')}` : '';
     fetch(`/api/providers${query}`)
@@ -27,11 +34,6 @@ export function DataQueryBuilder() {
       })
       .catch(console.error);
   }, [selectedSources]);
-  
-  const [volume, setVolume] = useState<number>(1);
-  const [selectedSources, setSelectedSources] = useState<string[]>([]);
-  const [ageRange, setAgeRange] = useState('Any');
-  const [region, setRegion] = useState('Global');
 
   
 
