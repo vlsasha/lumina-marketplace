@@ -58,10 +58,11 @@ export function DataQueryBuilder() {
   const basePrice = selectedSource ? (EARNINGS_RATES.find(r => r.id === selectedSource)?.price || 0) : 0;
   
   const getTierMultiplier = (tier: string) => {
-    if (tier === 'A') return 2.0; // Premium (+100%)
-    if (tier === 'B') return 1.5; // High (+50%)
-    if (tier === 'D') return 0.5; // Basic (-50%)
-    return 1.0; // Standard / Any
+    if (tier === 'A') return 1.0; // Premium (100% of max price)
+    if (tier === 'B') return 0.5; // High (50% of max price)
+    if (tier === 'C') return 0.2; // Standard (20% of max price)
+    if (tier === 'D') return 0.05; // Basic (5% of max price)
+    return 0.5; // Any (Blended average)
   };
   
   const tierMultiplier = getTierMultiplier(selectedTier);
@@ -289,13 +290,13 @@ export function DataQueryBuilder() {
               </div>
               
               <div className="flex justify-between items-center text-sm border-t border-[#222] pt-4 mt-4">
-                <span className="text-gray-400">Base Price</span>
+                <span className="text-gray-400">Premium Price (Tier A)</span>
                 <span className="text-white font-mono">${basePrice.toFixed(2)}</span>
               </div>
               <div className="flex justify-between items-center text-sm mt-3">
                 <span className="text-gray-400">Quality Multiplier</span>
-                <span className={`font-mono font-medium ${tierMultiplier > 1 ? 'text-vana-green' : tierMultiplier < 1 ? 'text-red-400' : 'text-gray-400'}`}>
-                  x{tierMultiplier.toFixed(1)}
+                <span className={`font-mono font-medium ${tierMultiplier === 1.0 ? 'text-vana-green' : 'text-gray-400'}`}>
+                  x{tierMultiplier.toFixed(2)}
                 </span>
               </div>
               <div className="flex justify-between items-center text-sm mt-3">
