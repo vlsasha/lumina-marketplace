@@ -181,7 +181,7 @@ export function DataQueryBuilder() {
               
               <div className="bg-black border border-[#333] rounded-xl p-5">
                 <div className="flex justify-between items-end mb-4">
-                  <span className="text-xs text-gray-500">Number of Users to Acquire</span>
+                  <span className="text-xs text-gray-500">Datasets to Acquire</span>
                   <input
                     type="number"
                     min="0"
@@ -279,11 +279,11 @@ export function DataQueryBuilder() {
                 <span className="text-white font-medium">{selectedSources.length} sources</span>
               </div>
               <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-400">Users Volume</span>
-                <span className="text-white font-medium">{volume.toLocaleString()} users</span>
+                <span className="text-gray-400">Datasets Volume</span>
+                <span className="text-white font-medium">{volume.toLocaleString()} datasets</span>
               </div>
               <div className="flex justify-between items-center text-sm border-t border-[#222] pt-4">
-                <span className="text-gray-400">Cost per User</span>
+                <span className="text-gray-400">Cost per Dataset</span>
                 <span className="text-white font-mono">${costPerUser.toFixed(2)}</span>
               </div>
             </div>
