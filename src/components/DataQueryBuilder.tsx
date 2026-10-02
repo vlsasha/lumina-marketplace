@@ -203,6 +203,7 @@ export function DataQueryBuilder() {
                   />
                 </div>
                 <input 
+                  key={`slider-${availableInventory}`}
                   type="range" 
                   min="0" 
                   max={Math.max(0, availableInventory)} 
