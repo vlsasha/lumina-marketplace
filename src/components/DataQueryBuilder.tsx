@@ -21,12 +21,12 @@ export function DataQueryBuilder() {
 
   
   const [volume, setVolume] = useState<number>(0);
-  const [selectedSources, setSelectedSources] = useState<string[]>([]);
+  const [selectedSource, setSelectedSource] = useState<string | null>(null);
   const [selectedTier, setSelectedTier] = useState('Any');
 
   useEffect(() => {
     const queryParams = new URLSearchParams();
-    if (selectedSources.length > 0) queryParams.append('sources', selectedSources.join(','));
+    if (selectedSource) queryParams.append('sources', selectedSource);
     if (selectedTier !== 'Any') queryParams.append('tier', selectedTier);
     
     fetch(`/api/providers?${queryParams.toString()}`)
@@ -36,7 +36,7 @@ export function DataQueryBuilder() {
         setTotalUsersAvailable(data.count); 
       })
       .catch(console.error);
-  }, [selectedSources, selectedTier]);
+  }, [selectedSource, selectedTier]);
 
   // Fetch individual source counts
   useEffect(() => {
@@ -52,15 +52,10 @@ export function DataQueryBuilder() {
   
 
   const handleSourceToggle = (id: string) => {
-    setSelectedSources(prev => 
-      prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
-    );
+    setSelectedSource(prev => prev === id ? null : id);
   };
 
-  const costPerUser = selectedSources.reduce((sum, id) => {
-    const rate = EARNINGS_RATES.find(r => r.id === id);
-    return sum + (rate ? rate.price : 0);
-  }, 0);
+  const costPerUser = selectedSource ? (EARNINGS_RATES.find(r => r.id === selectedSource)?.price || 0) : 0;
   const totalCost = costPerUser * volume;
 
   // Real inventory from database
@@ -78,8 +73,8 @@ export function DataQueryBuilder() {
       alert('Please connect your wallet first!');
       return;
     }
-    if (selectedSources.length === 0) {
-      alert('Please select at least one data source to acquire.');
+    if (!selectedSource) {
+      alert('Please select a data source to acquire.');
       return;
     }
     try {
@@ -87,7 +82,7 @@ export function DataQueryBuilder() {
       
       // Fetch valid providers from our new backend API
       const queryParams = new URLSearchParams();
-      if (selectedSources.length > 0) queryParams.append('sources', selectedSources.join(','));
+      if (selectedSource) queryParams.append('sources', selectedSource);
       if (selectedTier !== 'Any') queryParams.append('tier', selectedTier);
       const response = await fetch(`/api/providers?${queryParams.toString()}`);
       const data = await response.json();
@@ -217,14 +212,14 @@ export function DataQueryBuilder() {
           {/* Sources Selection */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Required Data Sources</h3>
-              <span className="text-xs text-gray-500">{selectedSources.length} selected</span>
+              <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Required Data Source</h3>
+              <span className="text-xs text-gray-500">{selectedSource ? '1 selected' : '0 selected'}</span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {DATA_SOURCES.map(source => {
                 const rate = EARNINGS_RATES.find(r => r.id === source.id);
                 const price = rate ? rate.price : 0;
-                const isSelected = selectedSources.includes(source.id);
+                const isSelected = selectedSource === source.id;
                 return (
                   <button
                     key={source.id}
@@ -275,8 +270,8 @@ export function DataQueryBuilder() {
                 <span className="text-white font-medium">{selectedTier === 'Any' ? 'All Data' : 'Tier ' + selectedTier}</span>
               </div>
               <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-400">Selected Sources</span>
-                <span className="text-white font-medium">{selectedSources.length} sources</span>
+                <span className="text-gray-400">Selected Source</span>
+                <span className="text-white font-medium">{selectedSource ? DATA_SOURCES.find(s=>s.id===selectedSource)?.name : 'None'}</span>
               </div>
               <div className="flex justify-between items-center text-sm">
                 <span className="text-gray-400">Datasets Volume</span>
