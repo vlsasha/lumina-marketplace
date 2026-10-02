@@ -89,7 +89,8 @@ const CustomAvatar = ({ address, ensImage, size }: any) => {
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <WagmiProvider config={config}>
+    <SessionProvider>
+      <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
           locale="en-US"
@@ -108,5 +109,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
+    </SessionProvider>
   );
 }
