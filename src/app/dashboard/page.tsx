@@ -675,36 +675,29 @@ export default function DashboardPage() {
             </div>
             
             <div className="p-6">
-              <div className="space-y-4 font-mono text-sm">
-                <div className="flex justify-between items-center p-3 bg-black border border-[#222] rounded-lg">
-                  <span className="text-gray-500">First Name</span>
-                  <span className="px-2 py-1 bg-green-900/30 text-green-400 border border-green-900/50 rounded text-xs">Redacted [Hidden]</span>
+              <div className="space-y-4">
+                  <div className="bg-black border border-[#222] rounded-lg p-4 font-mono text-xs overflow-auto max-h-[400px]">
+                    {isSandboxLoading ? (
+                      <div className="text-gray-500 flex items-center justify-center py-8">
+                        <svg className="animate-spin h-5 w-5 mr-3 text-vana-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Decrypting data from your Personal Server...
+                      </div>
+                    ) : sandboxData ? (
+                      <pre className="text-vana-green leading-relaxed whitespace-pre-wrap">
+                        {JSON.stringify(sandboxData, null, 2)}
+                      </pre>
+                    ) : (
+                      <div className="text-gray-500 text-center py-8">No data found</div>
+                    )}
+                  </div>
                 </div>
-                <div className="flex justify-between items-center p-3 bg-black border border-[#222] rounded-lg">
-                  <span className="text-gray-500">Last Name</span>
-                  <span className="px-2 py-1 bg-green-900/30 text-green-400 border border-green-900/50 rounded text-xs">Redacted [Hidden]</span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-black border border-[#222] rounded-lg">
-                  <span className="text-gray-500">Email Address</span>
-                  <span className="px-2 py-1 bg-green-900/30 text-green-400 border border-green-900/50 rounded text-xs">Hash: 8f4a...2c91</span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-[#1a1a1a] border border-vana-primary/30 rounded-lg">
-                  <span className="text-gray-300">Age Range</span>
-                  <span className="text-white">30-40</span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-[#1a1a1a] border border-vana-primary/30 rounded-lg">
-                  <span className="text-gray-300">Region</span>
-                  <span className="text-white">North America</span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-[#1a1a1a] border border-vana-primary/30 rounded-lg">
-                  <span className="text-gray-300">Behavioral Data</span>
-                  <span className="text-white">Preserved (Anonymized)</span>
-                </div>
-              </div>
-              
-              <p className="text-xs text-gray-500 mt-6 leading-relaxed">
-                * Lumina uses strict zero-knowledge redaction. Personally Identifiable Information (PII) never leaves your Personal Server in plaintext. B2B Buyers only receive the aggregated demographic and behavioral patterns.
-              </p>
+                
+                <p className="text-xs text-gray-500 mt-6 leading-relaxed">
+                  * Lumina automatically intercepts raw JSON payloads from your data sources and applies zero-knowledge redaction. PII like emails and precise names are obfuscated before being packaged for B2B buyers.
+                </p>
             </div>
             
             <div className="p-4 border-t border-[#222] bg-black/50 text-right">
