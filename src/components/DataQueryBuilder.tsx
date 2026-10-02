@@ -24,7 +24,7 @@ export function DataQueryBuilder() {
   
   const [volume, setVolume] = useState<number>(0);
   const [selectedSource, setSelectedSource] = useState<string | null>(null);
-  const [selectedTier, setSelectedTier] = useState('Any');
+  const [selectedTier, setSelectedTier] = useState('A');
 
   useEffect(() => {
     const queryParams = new URLSearchParams();
@@ -60,11 +60,11 @@ export function DataQueryBuilder() {
   const basePrice = selectedSource ? (EARNINGS_RATES.find(r => r.id === selectedSource)?.price || 0) : 0;
   
   const getTierMultiplier = (tier: string) => {
-    if (tier === 'A') return 1.0; // Premium (100% of max price)
-    if (tier === 'B') return 0.75; // High
-    if (tier === 'C') return 0.50; // Standard
-    if (tier === 'D') return 0.25; // Basic
-    return 1.0; // Any (Base rate)
+    if (tier === 'A') return 1.0; 
+    if (tier === 'B') return 0.50;
+    if (tier === 'C') return 0.20;
+    if (tier === 'D') return 0.05;
+    return 1.0; 
   };
   
   const tierMultiplier = getTierMultiplier(selectedTier);
@@ -145,7 +145,6 @@ export function DataQueryBuilder() {
               
               <div className="space-y-2">
                 {[
-                  { id: 'Any', name: 'All Data', desc: 'No filters', icon: '🌐', activeClass: 'border-vana-primary bg-vana-primary/10 text-white' },
                   { id: 'A', name: 'Tier A', desc: 'Premium (>80 pts)', icon: '💎', activeClass: 'border-yellow-400 bg-yellow-400/10 text-yellow-400' },
                   { id: 'B', name: 'Tier B', desc: 'High (50-79 pts)', icon: '✨', activeClass: 'border-purple-400 bg-purple-400/10 text-purple-400' },
                   { id: 'C', name: 'Tier C', desc: 'Standard (20-49 pts)', icon: '⚡', activeClass: 'border-blue-400 bg-blue-400/10 text-blue-400' },
@@ -281,7 +280,7 @@ export function DataQueryBuilder() {
             <div className="space-y-4 mb-6">
               <div className="flex justify-between items-center text-sm">
                 <span className="text-gray-400">Quality Tier</span>
-                <span className="text-white font-medium">{selectedTier === 'Any' ? 'All Data' : 'Tier ' + selectedTier}</span>
+                <span className="text-white font-medium">{'Tier ' + selectedTier}</span>
               </div>
               <div className="flex justify-between items-center text-sm">
                 <span className="text-gray-400">Selected Source</span>
@@ -387,9 +386,9 @@ export function DataQueryBuilder() {
                   <p className="text-xs text-gray-400 leading-relaxed mb-3">The AI Oracle scores data from 0-100. Lower quality tiers apply a discount multiplier to the base value:</p>
                   <ul className="text-xs text-gray-400 space-y-2 bg-[#111] p-3 rounded-lg border border-[#222]">
                     <li className="flex justify-between items-center"><span className="text-white">Tier A (80-100 pts)</span> <span className="text-vana-green font-mono font-bold bg-vana-green/10 px-2 py-0.5 rounded">x 1.00</span></li>
-                    <li className="flex justify-between items-center"><span className="text-white">Tier B (50-79 pts)</span> <span className="text-amber-400 font-mono font-bold bg-amber-400/10 px-2 py-0.5 rounded">x 0.75</span></li>
-                    <li className="flex justify-between items-center"><span className="text-white">Tier C (20-49 pts)</span> <span className="text-orange-400 font-mono font-bold bg-orange-400/10 px-2 py-0.5 rounded">x 0.50</span></li>
-                    <li className="flex justify-between items-center"><span className="text-white">Tier D (0-19 pts)</span> <span className="text-red-400 font-mono font-bold bg-red-400/10 px-2 py-0.5 rounded">x 0.25</span></li>
+                    <li className="flex justify-between items-center"><span className="text-white">Tier B (50-79 pts)</span> <span className="text-amber-400 font-mono font-bold bg-amber-400/10 px-2 py-0.5 rounded">x 0.50</span></li>
+                    <li className="flex justify-between items-center"><span className="text-white">Tier C (20-49 pts)</span> <span className="text-orange-400 font-mono font-bold bg-orange-400/10 px-2 py-0.5 rounded">x 0.20</span></li>
+                    <li className="flex justify-between items-center"><span className="text-white">Tier D (0-19 pts)</span> <span className="text-red-400 font-mono font-bold bg-red-400/10 px-2 py-0.5 rounded">x 0.05</span></li>
                   </ul>
                 </div>
               </div>
