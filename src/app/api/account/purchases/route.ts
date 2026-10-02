@@ -23,3 +23,30 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
+export async function POST(req: Request) {
+  try {
+    if (!sql) return NextResponse.json({ error: 'Database not connected' }, { status: 500 });
+    await initDb();
+    
+    const body = await req.json();
+    const { buyerId, datasetId, transactionHash, sizeBytes } = body;
+    
+    if (!buyerId || !datasetId) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    const format = 'JSONL, CSV'; // Default formats available
+    
+    const result = await sql`
+      INSERT INTO purchases (buyer_id, dataset_id, transaction_hash, format, size_bytes)
+      VALUES (${buyerId}, ${datasetId}, ${transactionHash}, ${format}, ${sizeBytes})
+      RETURNING *
+    `;
+    
+    return NextResponse.json({ success: true, purchase: result[0] });
+  } catch (error) {
+    console.error('Failed to create purchase:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}

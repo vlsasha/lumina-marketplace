@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { DATA_SOURCES, EARNINGS_RATES } from '@/lib/data-sources';
 import { useAccount, useWriteContract } from 'wagmi';
+import { useSession } from 'next-auth/react';
 import { MARKETPLACE_CONFIG } from '@/lib/config';
 import { luminaMarketplaceAbi } from '@/lib/abi';
 import { parseUnits } from 'viem';
@@ -10,7 +11,8 @@ import { parseUnits } from 'viem';
 const erc20Abi = [{type: 'function', name: 'approve', inputs: [{ name: 'spender', type: 'address' }, { name: 'amount', type: 'uint256' }], outputs: [{ type: 'bool' }], stateMutability: 'nonpayable'}] as const;
 
 export function DataQueryBuilder() {
-  const { isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
+  const sessionObj = useSession();
   const { writeContractAsync } = useWriteContract();
   const [isPending, setIsPending] = useState(false);
   
