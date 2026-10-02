@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { DATA_SOURCES } from '@/lib/data-sources';
+import { DATA_SOURCES, EARNINGS_RATES } from '@/lib/data-sources';
 import { useAccount, useWriteContract } from 'wagmi';
 import { MARKETPLACE_CONFIG } from '@/lib/config';
 import { luminaMarketplaceAbi } from '@/lib/abi';
@@ -33,11 +33,7 @@ export function DataQueryBuilder() {
   const [ageRange, setAgeRange] = useState('Any');
   const [region, setRegion] = useState('Global');
 
-  const EARNINGS_RATES: Record<string, number> = {
-    youtube: 0.06, github: 0.50, linkedin: 1.50, oura: 0.07, whoop: 0.07,
-    amazon: 0.12, strava: 0.08, claude: 0.04, chatgpt: 0.03, icloud_notes: 0.03,
-    instagram: 0.02, spotify: 0.004
-  };
+  
 
   const handleSourceToggle = (id: string) => {
     setSelectedSources(prev => 
@@ -45,7 +41,10 @@ export function DataQueryBuilder() {
     );
   };
 
-  const costPerUser = selectedSources.reduce((sum, id) => sum + (EARNINGS_RATES[id] || 0), 0);
+  const costPerUser = selectedSources.reduce((sum, id) => {
+    const rate = EARNINGS_RATES.find(r => r.id === id);
+    return sum + (rate ? rate.price : 0);
+  }, 0);
   const totalCost = costPerUser * volume;
 
   // Simulate dynamic database inventory based on filters
@@ -205,7 +204,8 @@ export function DataQueryBuilder() {
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {DATA_SOURCES.map(source => {
-                const price = EARNINGS_RATES[source.id] || 0;
+                const rate = EARNINGS_RATES.find(r => r.id === source.id);
+                const price = rate ? rate.price : 0;
                 const isSelected = selectedSources.includes(source.id);
                 return (
                   <button
@@ -225,7 +225,7 @@ export function DataQueryBuilder() {
                         {source.name}
                       </div>
                       <div className={`text-[10px] font-mono ${isSelected ? 'text-vana-primary' : 'text-gray-600'}`}>
-                        +${price.toFixed(3)}
+                        +${price.toFixed(2)}
                       </div>
                     </div>
                     <div className={`w-3 h-3 rounded-full border shrink-0 flex items-center justify-center ${
@@ -260,7 +260,7 @@ export function DataQueryBuilder() {
               </div>
               <div className="flex justify-between items-center text-sm border-t border-[#222] pt-4">
                 <span className="text-gray-400">Cost per User</span>
-                <span className="text-white font-mono">${costPerUser.toFixed(3)}</span>
+                <span className="text-white font-mono">${costPerUser.toFixed(2)}</span>
               </div>
             </div>
 
