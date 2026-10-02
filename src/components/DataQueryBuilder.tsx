@@ -165,7 +165,7 @@ export function DataQueryBuilder() {
                 <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Volume</h3>
                 <div className="flex items-center gap-2 bg-vana-primary/10 border border-vana-primary/20 px-2 py-1 rounded-md">
                   <span className="w-1.5 h-1.5 rounded-full bg-vana-primary status-pulse" />
-                  <span className="text-xs text-vana-primary font-mono font-bold">{availableInventory.toLocaleString()} Profiles Available</span>
+                  <span className="text-xs text-vana-primary font-mono font-bold">{availableInventory.toLocaleString()} Datasets Available</span>
                 </div>
               </div>
               
