@@ -123,7 +123,7 @@ export default function DashboardPage() {
     }
   }, [privacyModalOpen, address]);
   
-  const handleClaim = () => {
+  const handleClaim = () => { if (displayBalance === "0.00") { showToast("No earnings available to claim yet.", "error"); return; }
     writeContract(
       {
         address: MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`,
@@ -464,7 +464,7 @@ export default function DashboardPage() {
 
               <button 
                 onClick={handleClaim}
-                disabled={isPending}
+                disabled={isPending || displayBalance === "0.00"}
                 className="px-8 py-3 bg-vana-green hover:bg-opacity-90 text-black font-bold rounded-xl transition-all shadow-lg shadow-vana-green/20 hover:shadow-vana-green/40 hover:-translate-y-0.5 disabled:opacity-50 w-full md:w-auto"
               >
                 {isPending ? 'Claiming...' : 'Claim to Wallet'}
