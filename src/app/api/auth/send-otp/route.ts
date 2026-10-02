@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     // Send email via Resend if configured, else print to console (development mode)
     if (resend) {
       await resend.emails.send({
-        from: 'Lumina Marketplace <noreply@lumina.market>', // Fallback placeholder if custom domain not verified
+        from: 'onboarding@resend.dev', // Default testing email for Resend
         to: email,
         subject: 'Lumina Verification Code',
         html: `
