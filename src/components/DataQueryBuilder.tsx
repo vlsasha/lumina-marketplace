@@ -182,7 +182,19 @@ export function DataQueryBuilder() {
               <div className="bg-black border border-[#333] rounded-xl p-5">
                 <div className="flex justify-between items-end mb-4">
                   <span className="text-xs text-gray-500">Number of Users to Acquire</span>
-                  <span className="text-2xl font-bold text-white">{volume.toLocaleString()}</span>
+                  <input
+                    type="number"
+                    min="0"
+                    max={Math.max(0, availableInventory)}
+                    value={volume}
+                    onChange={(e) => {
+                      let val = parseInt(e.target.value) || 0;
+                      if (val > availableInventory) val = availableInventory;
+                      if (val < 0) val = 0;
+                      setVolume(val);
+                    }}
+                    className="w-28 bg-black/50 border border-[#333] hover:border-[#555] rounded-xl px-3 py-1.5 text-right text-xl font-bold text-white focus:outline-none focus:border-vana-primary transition-colors [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [-moz-appearance:textfield] appearance-none"
+                  />
                 </div>
                 <input 
                   type="range" 
