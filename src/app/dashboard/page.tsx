@@ -358,6 +358,23 @@ export default function DashboardPage() {
   const getConnection = (sourceId: string) =>
     connections.find((c) => c.sourceId === sourceId);
 
+    // Auth check
+  if (!isAuthenticated) {
+    return (
+      <>
+        <Header />
+        <main className="pt-32 pb-16 min-h-[85vh] flex items-center justify-center flex-col">
+          <h2 className="text-2xl font-bold text-white mb-4">You are not logged in</h2>
+          <p className="text-gray-400 mb-8 text-center max-w-md">Please connect your wallet or sign in with Google to view your dashboard and manage connections.</p>
+          <a href="/account" className="px-6 py-3 bg-vana-primary hover:bg-opacity-90 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-vana-primary/25">
+            Go to Sign In
+          </a>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
   return (
     <>
       <Header />
