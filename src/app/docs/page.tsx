@@ -73,10 +73,10 @@ export default function DocsPage() {
               <h2 className="text-2xl font-bold border-b border-vana-border pb-2 mb-6">For Data Providers</h2>
               <h3 className="text-lg font-semibold mb-3 mt-6">How it Works</h3>
               <ul className="list-disc pl-5 space-y-2 text-vana-text-secondary mb-6">
-                <li><strong>Personal Server:</strong> Users securely connect their Web2 accounts (e.g., ChatGPT, Spotify, Instagram) to their own <strong>Vana Personal Server</strong> via <a href="https://app.vana.org/sources" target="_blank" rel="noopener noreferrer" className="text-vana-primary hover:underline">app.vana.org/sources</a>.</li>
+                <li><strong>Personal Server:</strong> Users securely connect their Web2 accounts (e.g., ChatGPT, Spotify, Instagram) to their own <strong>Vana Personal Server</strong> via <a href="https://app.vana.org/sources" target="_blank" rel="noopener noreferrer" className="text-vana-primary hover:underline">app.vana.org/sources</a>.<br/><span className="text-sm mt-1 inline-block opacity-80"><em>Note: To securely connect private (non-public) data, you must authenticate and process data locally using the official <a href="https://app.vana.org/download" target="_blank" rel="noopener noreferrer" className="text-vana-primary hover:underline">Vana Desktop application</a>.</em></span></li>
                 <li><strong>Data Connection Request:</strong> Lumina sends a request to the user's Personal Server asking for permission to access specific data scopes.</li>
                 <li><strong>Verification:</strong> Once approved, the data undergoes an automated <em>Proof of Contribution (PoC)</em> check by AI Oracles to ensure authenticity and uniqueness.</li>
-                <li><strong>Earn:</strong> When an AI company purchases data matching your demographic, you automatically receive 80% of the revenue directly to your connected EVM wallet on the Vana Network.</li>
+                <li><strong>Earn:</strong> When AI companies, research institutions, marketing agencies, or other enterprise clients purchase data matching your demographic, you automatically receive 80% of the revenue directly to your connected EVM wallet on the Vana Network.</li>
               </ul>
               
               <div className="bg-vana-card border border-vana-border rounded-xl p-5 mb-6">
