@@ -4,10 +4,13 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { CustomConnectButton } from './CustomConnectButton';
 import { useAccount, useSwitchChain } from 'wagmi';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { status: sessionStatus } = useSession();
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const { chain, isConnected } = useAccount();
   const { switchChain } = useSwitchChain();
 
@@ -93,12 +96,41 @@ export function Header() {
               <CustomConnectButton />
             </div>
 
-            <Link href="/account" className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-vana-card border border-vana-border hover:border-vana-primary transition-colors hover:shadow-lg hover:shadow-vana-primary/20 group">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5 text-vana-text-secondary group-hover:text-vana-primary transition-colors">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-            </Link>
+            <div className="relative hidden sm:block">
+              <button 
+                onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-vana-card border border-vana-border hover:border-vana-primary transition-colors hover:shadow-lg hover:shadow-vana-primary/20 group"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5 text-vana-text-secondary group-hover:text-vana-primary transition-colors">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </button>
+
+              {isProfileDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-[#111] border border-[#333] rounded-xl shadow-2xl py-2 z-50 animate-fade-in">
+                  <Link 
+                    href="/account" 
+                    onClick={() => setIsProfileDropdownOpen(false)}
+                    className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-[#222] transition-colors"
+                  >
+                    Personal Cabinet
+                  </Link>
+                  
+                  {sessionStatus === 'authenticated' && (
+                    <button 
+                      onClick={() => {
+                        setIsProfileDropdownOpen(false);
+                        signOut();
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-[#222] transition-colors"
+                    >
+                      Sign Out (Google)
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
 
             {/* Mobile Menu Toggle */}
             <button

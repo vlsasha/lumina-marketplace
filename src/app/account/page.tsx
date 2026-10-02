@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Header } from '@/components/Header';
+import { CustomConnectButton } from '@/components/CustomConnectButton';
 import { Footer } from '@/components/Footer';
 import { useAccount } from 'wagmi';
 import { signIn, signOut, useSession } from 'next-auth/react';
@@ -71,8 +72,8 @@ export default function AccountPage() {
                   </div>
                 </div>
 
-                <div className="text-center text-sm text-gray-400">
-                  Connect your Web3 Wallet using the button in the top right corner.
+                <div className="flex justify-center">
+                  <CustomConnectButton />
                 </div>
               </div>
             </div>
@@ -110,11 +111,7 @@ export default function AccountPage() {
                     </button>
                   </div>
                   
-                  {sessionObj?.status === 'authenticated' && (
-                    <button onClick={() => signOut()} className="md:ml-6 px-5 py-2.5 bg-[#222] hover:bg-[#333] border border-[#444] text-white font-semibold rounded-xl transition-all">
-                      Sign Out (Google)
-                    </button>
-                  )}
+                  
                 </div>
               </div>
 
