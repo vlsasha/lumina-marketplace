@@ -265,14 +265,27 @@ function BuyerWorkspace({ userId }: { userId: string }) {
                       </a>
                     )}
                   </div>
-                  <div className="shrink-0 flex gap-2">
-                    <button className="px-3 py-1.5 bg-black border border-[#333] hover:border-white rounded-lg text-xs font-mono text-white transition-all flex items-center gap-1.5">
+                  <div className="shrink-0 flex gap-2 flex-wrap justify-end">
+                    <button 
+                      onClick={() => window.open(`/api/download?datasetId=${p.dataset_id}&buyerId=${userId}&format=jsonl`, '_blank')}
+                      className="px-3 py-1.5 bg-black border border-[#333] hover:border-vana-primary rounded-lg text-xs font-mono text-white transition-all flex items-center gap-1.5"
+                    >
                       <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                       JSONL
                     </button>
-                    <button className="px-3 py-1.5 bg-black border border-[#333] hover:border-white rounded-lg text-xs font-mono text-white transition-all flex items-center gap-1.5">
+                    <button 
+                      onClick={() => window.open(`/api/download?datasetId=${p.dataset_id}&buyerId=${userId}&format=csv`, '_blank')}
+                      className="px-3 py-1.5 bg-black border border-[#333] hover:border-vana-primary rounded-lg text-xs font-mono text-white transition-all flex items-center gap-1.5"
+                    >
                       <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                       CSV
+                    </button>
+                    <button 
+                      onClick={() => window.open(`/api/download?datasetId=${p.dataset_id}&buyerId=${userId}&format=parquet`, '_blank')}
+                      className="px-3 py-1.5 bg-black border border-[#333] hover:border-vana-primary rounded-lg text-xs font-mono text-white transition-all flex items-center gap-1.5"
+                    >
+                      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                      PARQUET
                     </button>
                   </div>
                 </div>
