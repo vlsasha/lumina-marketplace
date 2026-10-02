@@ -222,7 +222,7 @@ export default function AccountPage() {
                 </div>
               </div>
 
-              {role === 'provider' ? <ProviderWorkspace /> : <BuyerWorkspace />}
+              {role === 'provider' ? <ProviderWorkspace /> : <BuyerWorkspace userId={session?.user?.email || address || ''} />}
 
             </div>
           )}
@@ -302,7 +302,48 @@ function ProviderWorkspace() {
 }
 
 // Subcomponent: Buyer Workspace
-function BuyerWorkspace() {
+function BuyerWorkspace({ userId }: { userId: string }) {
+  const [apiKey, setApiKey] = useState<string>('Loading...');
+  const [isRevealed, setIsRevealed] = useState(false);
+  const [isRotating, setIsRotating] = useState(false);
+  const [purchases, setPurchases] = useState<any[]>([]);
+  const [isLoadingPurchases, setIsLoadingPurchases] = useState(true);
+
+  useEffect(() => {
+    if (!userId) return;
+    fetch(`/api/account/key?userId=${userId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.key) setApiKey(data.key);
+        else setApiKey('No key generated yet');
+      });
+      
+    fetch(`/api/account/purchases?userId=${userId}`)
+      .then(res => res.json())
+      .then(data => {
+        setPurchases(data.purchases || []);
+        setIsLoadingPurchases(false);
+      });
+  }, [userId]);
+
+  const rotateKey = async () => {
+    if (!userId) return;
+    setIsRotating(true);
+    try {
+      const res = await fetch('/api/account/key', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId })
+      });
+      const data = await res.json();
+      if (data.apiKey) {
+        setApiKey(data.apiKey);
+        setIsRevealed(true);
+      }
+    } finally {
+      setIsRotating(false);
+    }
+  };
   return (
     <div className="space-y-8 animate-fade-in">
       <div className="flex items-center justify-between mb-6">
@@ -320,74 +361,64 @@ function BuyerWorkspace() {
           <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-1">Active API Key</h3>
           <div className="flex items-center gap-3">
             <code className="text-vana-primary font-mono bg-vana-primary/10 px-3 py-1.5 rounded-lg border border-vana-primary/20">
-              db_live_7x89...4m2p
+              {apiKey}
             </code>
-            <button className="text-xs text-gray-500 hover:text-white transition-colors underline">Reveal</button>
+            {apiKey !== 'Loading...' && apiKey !== 'No key generated yet' && !isRevealed && (
+              <span className="text-xs text-gray-500">
+                (Hidden for security. Rotate to get a new full key)
+              </span>
+            )}
           </div>
         </div>
-        <button className="px-4 py-2 bg-black border border-[#333] hover:border-vana-primary text-white text-sm rounded-xl transition-all">
-          Rotate Key
-        </button>
+        <button onClick={rotateKey} disabled={isRotating} className="px-4 py-2 bg-black border border-[#333] hover:border-vana-primary text-white text-sm rounded-xl transition-all disabled:opacity-50">
+            {isRotating ? 'Rotating...' : (apiKey === 'No key generated yet' ? 'Generate Key' : 'Rotate Key')}
+          </button>
       </div>
 
       <div className="bg-[#111111] border border-[#222222] rounded-2xl overflow-hidden">
         <div className="px-6 py-5 border-b border-[#222]">
           <h3 className="font-semibold text-white">My Datasets (Purchased)</h3>
         </div>
+        
         <div className="divide-y divide-[#222]">
-          
-          {/* Dataset Row 1 */}
-          <div className="p-6 hover:bg-[#1a1a1a] transition-colors">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-              <div>
-                <h4 className="text-white font-semibold text-lg">Social & Media Habits (Age 30-40)</h4>
-                <p className="text-sm text-gray-400 mt-1">300 Users • Instagram, Spotify, Amazon • Purchased: Today</p>
-              </div>
-              <div className="shrink-0 flex gap-2">
-                <button className="px-3 py-1.5 bg-black border border-[#333] hover:border-white rounded-lg text-xs font-mono text-white transition-all flex items-center gap-1.5">
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  JSONL
-                </button>
-                <button className="px-3 py-1.5 bg-black border border-[#333] hover:border-white rounded-lg text-xs font-mono text-white transition-all flex items-center gap-1.5">
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  CSV
-                </button>
-                <button className="px-3 py-1.5 bg-black border border-[#333] hover:border-white rounded-lg text-xs font-mono text-white transition-all flex items-center gap-1.5">
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  Parquet
-                </button>
-              </div>
+          {isLoadingPurchases ? (
+            <div className="p-8 text-center text-gray-500">Loading datasets...</div>
+          ) : purchases.length === 0 ? (
+            <div className="p-8 text-center">
+              <div className="text-gray-400 mb-4">You haven't purchased any datasets yet.</div>
+              <a href="/pricing" className="text-vana-primary hover:underline">Explore the Marketplace</a>
             </div>
-            <div className="flex gap-2">
-              <span className="text-[10px] px-2 py-0.5 rounded bg-vana-green/10 text-vana-green border border-vana-green/20">Ready for Download</span>
-              <span className="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-400 border border-gray-700">Size: 4.2 MB</span>
-            </div>
-          </div>
-
-          {/* Dataset Row 2 */}
-          <div className="p-6 hover:bg-[#1a1a1a] transition-colors">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-              <div>
-                <h4 className="text-white font-semibold text-lg">Developer Coding Patterns (Global)</h4>
-                <p className="text-sm text-gray-400 mt-1">1,000 Users • GitHub, StackOverflow • Purchased: Oct 15, 2026</p>
+          ) : (
+            purchases.map(p => (
+              <div key={p.id} className="p-6 hover:bg-[#1a1a1a] transition-colors">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                  <div>
+                    <h4 className="text-white font-semibold text-lg">{p.dataset_id} Dataset</h4>
+                    <p className="text-sm text-gray-400 mt-1">Purchased: {new Date(p.purchased_at).toLocaleDateString()}</p>
+                    {p.transaction_hash && (
+                      <a href={`https://vanascan.io/tx/${p.transaction_hash}`} target="_blank" className="text-xs text-vana-primary hover:underline mt-1 block">
+                        View Tx on VanaScan
+                      </a>
+                    )}
+                  </div>
+                  <div className="shrink-0 flex gap-2">
+                    <button className="px-3 py-1.5 bg-black border border-[#333] hover:border-white rounded-lg text-xs font-mono text-white transition-all flex items-center gap-1.5">
+                      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                      JSONL
+                    </button>
+                    <button className="px-3 py-1.5 bg-black border border-[#333] hover:border-white rounded-lg text-xs font-mono text-white transition-all flex items-center gap-1.5">
+                      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                      CSV
+                    </button>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-vana-green/10 text-vana-green border border-vana-green/20">Ready for Download</span>
+                  {p.size_bytes && <span className="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-400 border border-gray-700">Size: {(p.size_bytes / 1024 / 1024).toFixed(1)} MB</span>}
+                </div>
               </div>
-              <div className="shrink-0 flex gap-2">
-                <button className="px-3 py-1.5 bg-black border border-[#333] hover:border-white rounded-lg text-xs font-mono text-white transition-all flex items-center gap-1.5">
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  JSONL
-                </button>
-                <button className="px-3 py-1.5 bg-black border border-[#333] hover:border-white rounded-lg text-xs font-mono text-white transition-all flex items-center gap-1.5">
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  CSV
-                </button>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <span className="text-[10px] px-2 py-0.5 rounded bg-vana-green/10 text-vana-green border border-vana-green/20">Ready for Download</span>
-              <span className="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-400 border border-gray-700">Size: 18.5 MB</span>
-            </div>
-          </div>
-
+            ))
+          )}
         </div>
       </div>
     </div>

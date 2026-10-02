@@ -68,4 +68,27 @@ export async function initDb() {
   `;
 }
 
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS api_keys (
+      id SERIAL PRIMARY KEY,
+      user_id VARCHAR(255) UNIQUE NOT NULL,
+      key_hash VARCHAR(255) NOT NULL,
+      prefix VARCHAR(20) NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS purchases (
+      id SERIAL PRIMARY KEY,
+      buyer_id VARCHAR(255) NOT NULL,
+      dataset_id VARCHAR(255) NOT NULL,
+      transaction_hash VARCHAR(255),
+      format VARCHAR(10),
+      size_bytes INTEGER,
+      purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `;
+
 export default sql;
