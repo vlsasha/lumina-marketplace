@@ -433,6 +433,17 @@ export default function DashboardPage() {
                   <div className="absolute -left-8 top-2 bottom-2 w-px bg-vana-border hidden sm:block"></div>
                   <h2 className="text-sm font-semibold text-vana-green uppercase tracking-wider mb-1 flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-vana-green animate-pulse"></span>
+                    Estimated Value
+                  </h2>
+                  <div className="flex items-end gap-2">
+                    <span className="text-4xl sm:text-5xl font-bold text-white">~{totalEarnings.toFixed(2)}</span>
+                    <span className="text-xl text-vana-text-secondary mb-1">USDC</span>
+                  </div>
+                </div>
+                
+                <div className="relative">
+                  <div className="absolute -left-8 top-2 bottom-2 w-px bg-vana-border hidden sm:block"></div>
+                  <h2 className="text-sm font-semibold text-vana-green uppercase tracking-wider mb-1 flex items-center gap-2">
                     Active Connections
                   </h2>
                   <div className="flex items-end gap-2">
