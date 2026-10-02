@@ -3,12 +3,15 @@
 import { useState, useEffect } from 'react';
 import { DATA_SOURCES } from '@/lib/data-sources';
 import { useAccount } from 'wagmi';
+import { useSession } from 'next-auth/react';
 import { SourceCard } from './SourceCard';
 
 export function SourcesGrid() {
   const [activeCategory, setActiveCategory] = useState<string>('All');
   
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
+  const sessionObj = useSession();
+  const isAuthenticated = isConnected || sessionObj?.status === 'authenticated';
   const [connections, setConnections] = useState<any[]>([]);
 
   useEffect(() => {
@@ -38,6 +41,7 @@ export function SourcesGrid() {
   }, [address]);
 
   const availableSources = DATA_SOURCES.map(source => {
+    if (!isAuthenticated) return { ...source, qualityScore: 0 };
     const conn = connections.find(c => c.sourceId === source.source || c.sourceId === source.id);
     if (conn && (conn.status === 'completed' || conn.status === 'approved')) {
       return { ...source, status: 'connected' as const, qualityScore: conn.qualityScore };

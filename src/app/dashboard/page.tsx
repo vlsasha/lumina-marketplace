@@ -6,6 +6,7 @@ import { Footer } from '@/components/Footer';
 import { DATA_SOURCES, EARNINGS_RATES } from '@/lib/data-sources';
 import { EarningsTable } from '@/components/EarningsTable';
 import { useAccount, useWriteContract, useReadContract } from 'wagmi';
+import { useSession } from 'next-auth/react';
 import { formatUnits } from 'viem';
 import { MARKETPLACE_CONFIG } from '@/lib/config';
 import { luminaMarketplaceAbi } from '@/lib/abi';
@@ -36,7 +37,9 @@ const getTierLabel = (score: number) => {
 };
 
 export default function DashboardPage() {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
+  const sessionObj = useSession();
+  const isAuthenticated = isConnected || sessionObj?.status === 'authenticated';
 
   const { data: balanceData } = useReadContract({
     address: MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`,
