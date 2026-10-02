@@ -32,18 +32,18 @@ export async function POST(req: Request) {
         from: 'Lumina Marketplace <noreply@lumina.market>', // Fallback placeholder if custom domain not verified
         to: email,
         subject: 'Lumina Verification Code',
-        html: \`
+        html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h2>Welcome to Lumina Marketplace</h2>
             <p>Your verification code is:</p>
-            <h1 style="font-size: 32px; letter-spacing: 4px; color: #6E56CF;">\${code}</h1>
+            <h1 style="font-size: 32px; letter-spacing: 4px; color: #6E56CF;">${code}</h1>
             <p>This code will expire in 10 minutes.</p>
           </div>
-        \`
+        `
       });
-      console.log(\`[AUTH] Sent OTP \${code} to \${email} via Resend\`);
+      console.log(`[AUTH] Sent OTP ${code} to ${email} via Resend`);
     } else {
-      console.log(\`\\n\\n========== MOCK EMAIL ==========\\nTo: \${email}\\nCode: \${code}\\n================================\\n\\n\`);
+      console.log(`\n\n========== MOCK EMAIL ==========\nTo: ${email}\nCode: ${code}\n================================\n\n`);
     }
 
     return NextResponse.json({ success: true, message: 'Verification code sent' });
