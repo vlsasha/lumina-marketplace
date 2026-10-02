@@ -275,51 +275,75 @@ export function DataQueryBuilder() {
 
         {/* Right Col: Checkout */}
         <div className="lg:col-span-5 flex flex-col justify-center">
-          <div className="bg-black border border-[#333] rounded-3xl p-8 sticky top-24">
-            <h3 className="text-lg font-semibold text-white mb-6 border-b border-[#222] pb-4">Order Summary</h3>
-            
-            <div className="space-y-4 mb-6">
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-400">Quality Tier</span>
-                <span className="text-white font-medium">{selectedTier === 'Any' ? 'All Data' : 'Tier ' + selectedTier}</span>
-              </div>
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-400">Selected Source</span>
-                <span className="text-white font-medium">{selectedSource ? DATA_SOURCES.find(s=>s.id===selectedSource)?.name : 'None'}</span>
-              </div>
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-400">Datasets Volume</span>
-                <span className="text-white font-medium">{volume.toLocaleString()} datasets</span>
-              </div>
-              
-              <div className="flex justify-between items-center text-sm border-t border-[#222] pt-4 mt-4">
-                <span className="text-gray-400">Premium Price (Tier A)</span>
-                <span className="text-white font-mono">${basePrice.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between items-center text-sm mt-3">
-                <span className="text-gray-400">Quality Multiplier</span>
-                <span className={`font-mono font-medium ${tierMultiplier === 1.0 ? 'text-vana-green' : 'text-gray-400'}`}>
-                  x{tierMultiplier.toFixed(2)}
-                </span>
-              </div>
-              <div className="flex justify-between items-center text-sm mt-3">
-                <span className="text-gray-400">Final Cost per Dataset</span>
-                <span className="text-white font-mono">${costPerDataset.toFixed(2)}</span>
-              </div>
-
-            </div>
-
-            <div className="mb-8 bg-vana-primary/5 rounded-xl p-4 border border-vana-primary/10">
-              <div className="flex justify-between items-end mb-2">
-                <span className="text-sm font-medium text-vana-primary">Total Cost</span>
-                <div className="text-right">
-                  <div className="text-3xl font-black text-white leading-none mb-1">${totalCost.toFixed(2)}</div>
-                  <div className="text-xs text-gray-500 font-mono">USDC.e</div>
+          <div className="bg-black border border-[#333] rounded-3xl p-8 sticky top-24 shadow-2xl">
+              <div className="flex items-center gap-4 mb-8 border-b border-[#222] pb-6">
+                <div className="w-10 h-10 rounded-xl bg-vana-primary/10 flex items-center justify-center text-vana-primary border border-vana-primary/20">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-lg">Order Summary</h3>
+                  <p className="text-[11px] text-gray-400 uppercase tracking-widest font-semibold">Transparent Pricing</p>
                 </div>
               </div>
-            </div>
+              
+              <div className="space-y-4 mb-8 relative z-10">
+                <div className="flex gap-4 group">
+                  <div className="flex flex-col items-center">
+                    <div className="w-6 h-6 rounded-full bg-[#222] border border-[#333] text-gray-400 text-xs font-bold flex items-center justify-center group-hover:border-vana-primary group-hover:text-vana-primary transition-colors">1</div>
+                    <div className="w-px h-full bg-[#222] my-1 group-hover:bg-vana-primary/30 transition-colors" />
+                  </div>
+                  <div className="pb-2 w-full">
+                    <div className="flex justify-between items-start mb-1">
+                      <h4 className="text-sm font-semibold text-white">Base Price</h4>
+                      <span className="text-white font-mono font-bold">${basePrice.toFixed(2)}</span>
+                    </div>
+                    <p className="text-xs text-gray-400 leading-relaxed">Standard value for {selectedSource ? DATA_SOURCES.find(s=>s.id===selectedSource)?.name : 'selected data'} (Premium Tier).</p>
+                  </div>
+                </div>
 
-            <button 
+                <div className="flex gap-4 group">
+                  <div className="flex flex-col items-center">
+                    <div className="w-6 h-6 rounded-full bg-[#222] border border-[#333] text-gray-400 text-xs font-bold flex items-center justify-center group-hover:border-vana-primary group-hover:text-vana-primary transition-colors">2</div>
+                    <div className="w-px h-full bg-[#222] my-1 group-hover:bg-vana-primary/30 transition-colors" />
+                  </div>
+                  <div className="pb-2 w-full">
+                    <div className="flex justify-between items-start mb-1">
+                      <h4 className="text-sm font-semibold text-white">Quality Multiplier</h4>
+                      <span className={`font-mono font-bold ${tierMultiplier === 1.0 ? 'text-vana-green' : 'text-vana-primary'}`}>
+                        x{tierMultiplier.toFixed(2)}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-400 leading-relaxed">Adjusted based on <span className="text-white">{selectedTier === 'Any' ? 'All Data' : 'Tier ' + selectedTier}</span> selection. Cost per dataset becomes <strong className="text-gray-300 font-mono">${costPerDataset.toFixed(2)}</strong>.</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 group">
+                  <div className="flex flex-col items-center">
+                    <div className="w-6 h-6 rounded-full bg-[#222] border border-[#333] text-gray-400 text-xs font-bold flex items-center justify-center group-hover:border-vana-primary group-hover:text-vana-primary transition-colors">3</div>
+                  </div>
+                  <div className="pb-0 w-full">
+                    <div className="flex justify-between items-start mb-1">
+                      <h4 className="text-sm font-semibold text-white">Datasets Volume</h4>
+                      <span className="text-white font-mono font-bold">x {volume.toLocaleString()}</span>
+                    </div>
+                    <p className="text-xs text-gray-400 leading-relaxed">Total requested unique profiles.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mb-8 bg-vana-primary/5 rounded-xl p-5 border border-vana-primary/10 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-vana-primary/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+                <div className="flex justify-between items-end relative z-10">
+                  <div>
+                    <span className="text-sm font-bold text-vana-primary uppercase tracking-wider block mb-1">Total Cost</span>
+                    <span className="text-[11px] text-vana-primary/70">80% goes directly to users</span>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-3xl font-black text-white leading-none mb-1">${totalCost.toFixed(2)}</div>
+                    <div className="text-[10px] text-gray-500 font-mono uppercase tracking-widest">USDC.e</div>
+                  </div>
+                </div>
+              </div>\n\n              <button 
               onClick={handlePurchase}
               disabled={isPending || totalCost === 0}
               className="w-full py-4 px-4 bg-vana-primary hover:bg-opacity-90 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-vana-primary/25 hover:-translate-y-0.5 disabled:opacity-50 flex items-center justify-center gap-2"
