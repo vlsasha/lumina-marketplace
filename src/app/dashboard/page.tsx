@@ -89,8 +89,29 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState<string | null>(null);
   const [dataPreview, setDataPreview] = useState<Record<string, unknown> | null>(null);
   const [privacyModalOpen, setPrivacyModalOpen] = useState<string | null>(null);
+  const [sandboxData, setSandboxData] = useState<any>(null);
+  const [isSandboxLoading, setIsSandboxLoading] = useState(false);
   
   const { writeContract, isPending } = useWriteContract();
+
+  useEffect(() => {
+    if (privacyModalOpen && address) {
+      setIsSandboxLoading(true);
+      fetch(`/api/connections/preview?wallet=${address}&source=${privacyModalOpen.toLowerCase()}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.preview) setSandboxData(data.preview);
+          else setSandboxData({ error: 'Could not load preview data' });
+          setIsSandboxLoading(false);
+        })
+        .catch(() => {
+          setSandboxData({ error: 'Failed to fetch' });
+          setIsSandboxLoading(false);
+        });
+    } else {
+      setSandboxData(null);
+    }
+  }, [privacyModalOpen, address]);
   
   const handleClaim = () => {
     writeContract(
@@ -488,7 +509,7 @@ export default function DashboardPage() {
                         {(conn?.status === 'approved' || conn?.status === 'completed') && (
                           <div className="flex items-center gap-2">
                             <button
-                              onClick={() => setPrivacyModalOpen(source.name)}
+                              onClick={() => setPrivacyModalOpen(source.id)}
                               className="px-3 py-1.5 text-xs rounded-lg border border-vana-primary/30 text-vana-primary hover:bg-vana-primary/10 font-medium transition-colors flex items-center gap-1.5"
                             >
                               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
@@ -633,7 +654,7 @@ export default function DashboardPage() {
                   <svg className="w-5 h-5 text-vana-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                   Data Privacy Sandbox
                 </h3>
-                <p className="text-sm text-gray-400 mt-1">Preview how your {privacyModalOpen} data is anonymized before sale.</p>
+                <p className="text-sm text-gray-400 mt-1">Preview how your {privacyModalOpen?.toUpperCase()} data is anonymized before sale.</p>
               </div>
               <button 
                 onClick={() => setPrivacyModalOpen(null)}
