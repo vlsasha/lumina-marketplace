@@ -126,13 +126,13 @@ export function DataQueryBuilder() {
   };
 
   return (
-    <div className="bg-[#111111] border border-[#222222] rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden max-w-6xl mx-auto">
+    <div className="bg-[#111111] border border-[#222222] rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden w-full max-w-[1400px] mx-auto">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-vana-primary opacity-5 blur-[128px] pointer-events-none" />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 relative z-10">
+      <div className="grid grid-cols-1 lg:grid-cols-12 xl:grid-cols-12 gap-8 lg:gap-10 relative z-10">
         
         {/* Left Col: Query Builder */}
-        <div className="lg:col-span-7 space-y-8">
+        <div className="lg:col-span-12 xl:col-span-6 space-y-8">
           <div>
             <h2 className="text-2xl font-bold text-white mb-2">Build Your Dataset</h2>
             <p className="text-gray-400 text-sm">Select audience filters and data sources to calculate real-time pricing.</p>
@@ -274,7 +274,7 @@ export function DataQueryBuilder() {
         </div>
 
         {/* Right Col: Checkout */}
-        <div className="lg:col-span-5 flex flex-col justify-center">
+        <div className="lg:col-span-6 xl:col-span-3 flex flex-col justify-start">
           <div className="bg-black border border-[#333] rounded-3xl p-8 sticky top-24">
             <h3 className="text-lg font-semibold text-white mb-6 border-b border-[#222] pb-4">Order Summary</h3>
             
@@ -349,6 +349,60 @@ export function DataQueryBuilder() {
               <p className="text-xs text-gray-500 leading-relaxed">
                 Payments are securely processed via the Lumina Smart Contract and routed directly to the users providing data.
               </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Col: Pricing Guide */}
+        <div className="lg:col-span-6 xl:col-span-3 flex flex-col">
+          <div className="sticky top-24 space-y-6 bg-black border border-[#333] p-8 rounded-3xl h-fit">
+            <div className="flex items-center gap-3 mb-2 border-b border-[#222] pb-4">
+              <div className="w-8 h-8 rounded-lg bg-vana-primary/10 flex items-center justify-center text-vana-primary border border-vana-primary/20">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              </div>
+              <div>
+                <h3 className="text-white font-bold text-base">How Pricing Works</h3>
+              </div>
+            </div>
+
+            <div className="space-y-6 relative z-10 pt-2">
+              <div className="flex gap-4 group">
+                <div className="flex flex-col items-center">
+                  <div className="w-6 h-6 rounded-full bg-[#222] border border-[#333] text-gray-400 text-xs font-bold flex items-center justify-center group-hover:border-vana-primary group-hover:text-vana-primary transition-colors">1</div>
+                  <div className="w-px h-full bg-[#222] my-1 group-hover:bg-vana-primary/30 transition-colors" />
+                </div>
+                <div className="pb-3 w-full">
+                  <h4 className="text-sm font-semibold text-white mb-1">Base Source Value</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed">Every dataset has a base market rate (e.g. GitHub is $15.00). This represents the highest Tier A premium price.</p>
+                </div>
+              </div>
+
+              <div className="flex gap-4 group">
+                <div className="flex flex-col items-center">
+                  <div className="w-6 h-6 rounded-full bg-[#222] border border-[#333] text-gray-400 text-xs font-bold flex items-center justify-center group-hover:border-vana-primary group-hover:text-vana-primary transition-colors">2</div>
+                  <div className="w-px h-full bg-[#222] my-1 group-hover:bg-vana-primary/30 transition-colors" />
+                </div>
+                <div className="pb-3 w-full">
+                  <h4 className="text-sm font-semibold text-white mb-1">Quality Multipliers</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-3">The AI Oracle scores data from 0-100. Lower quality tiers apply a discount multiplier to the base value:</p>
+                  <ul className="text-xs text-gray-400 space-y-2 bg-[#111] p-3 rounded-lg border border-[#222]">
+                    <li className="flex justify-between items-center"><span className="text-white">Tier A (80-100 pts)</span> <span className="text-vana-green font-mono font-bold bg-vana-green/10 px-2 py-0.5 rounded">x 1.00</span></li>
+                    <li className="flex justify-between items-center"><span className="text-white">Tier B (50-79 pts)</span> <span className="text-amber-400 font-mono font-bold bg-amber-400/10 px-2 py-0.5 rounded">x 0.75</span></li>
+                    <li className="flex justify-between items-center"><span className="text-white">Tier C (20-49 pts)</span> <span className="text-orange-400 font-mono font-bold bg-orange-400/10 px-2 py-0.5 rounded">x 0.50</span></li>
+                    <li className="flex justify-between items-center"><span className="text-white">Tier D (0-19 pts)</span> <span className="text-red-400 font-mono font-bold bg-red-400/10 px-2 py-0.5 rounded">x 0.25</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="flex gap-4 group">
+                <div className="flex flex-col items-center">
+                  <div className="w-6 h-6 rounded-full bg-[#222] border border-[#333] text-gray-400 text-xs font-bold flex items-center justify-center group-hover:border-vana-primary group-hover:text-vana-primary transition-colors">3</div>
+                </div>
+                <div className="pb-0 w-full">
+                  <h4 className="text-sm font-semibold text-white mb-1">Fair Revenue Split</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed">Total Cost = (Base Value × Multiplier) × Volume.<br/><br/>Exactly <strong className="text-white">80%</strong> of your payment goes instantly to the users' crypto wallets.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
