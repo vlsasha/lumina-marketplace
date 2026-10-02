@@ -10,7 +10,8 @@ export async function GET() {
     }
 
     await initDb();
-    const result = await sql`SELECT wallet_address FROM vana_users`;
+    // Fetch unique users who have at least one valid connection
+    const result = await sql`SELECT DISTINCT wallet_address FROM user_connections WHERE status IN ('approved', 'completed')`;
     const providers = result.map(row => row.wallet_address);
     
     // Always include the Treasury wallet as a fallback so the marketplace doesn't break if DB is empty
