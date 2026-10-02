@@ -4,13 +4,21 @@ import { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useAccount } from 'wagmi';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
+import { useEffect } from 'react';
 
 type Role = 'provider' | 'buyer';
 
 export default function AccountPage() {
   const { isConnected } = useAccount();
+  const { data: session, status } = useSession();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      setIsLoggedIn(true);
+    }
+  }, [status]);
   const [role, setRole] = useState<Role>('provider');
   const [authStep, setAuthStep] = useState<'login' | 'otp'>('login');
   const [email, setEmail] = useState('');
@@ -21,7 +29,7 @@ export default function AccountPage() {
   // Handle mock Google/Wallet login
   const handleDirectLogin = (e: React.MouseEvent) => {
     e.preventDefault();
-    setIsLoggedIn(true);
+    signIn('google', { callbackUrl: '/account' });
   };
 
   // Handle mock Email submit
