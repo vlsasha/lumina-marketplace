@@ -22,14 +22,12 @@ export function DataQueryBuilder() {
   
   const [volume, setVolume] = useState<number>(1);
   const [selectedSources, setSelectedSources] = useState<string[]>([]);
-  const [ageRange, setAgeRange] = useState('Any');
-  const [region, setRegion] = useState('Global');
+  const [selectedTier, setSelectedTier] = useState('Any');
 
   useEffect(() => {
     const queryParams = new URLSearchParams();
     if (selectedSources.length > 0) queryParams.append('sources', selectedSources.join(','));
-    if (region !== 'Global') queryParams.append('region', region);
-    if (ageRange !== 'Any') queryParams.append('age', ageRange);
+    if (selectedTier !== 'Any') queryParams.append('tier', selectedTier);
     
     fetch(`/api/providers?${queryParams.toString()}`)
       .then(res => res.json())
@@ -38,19 +36,18 @@ export function DataQueryBuilder() {
         setTotalUsersAvailable(data.count); 
       })
       .catch(console.error);
-  }, [selectedSources, region, ageRange]);
+  }, [selectedSources, selectedTier]);
 
   // Fetch individual source counts
   useEffect(() => {
     const queryParams = new URLSearchParams();
-    if (region !== 'Global') queryParams.append('region', region);
-    if (ageRange !== 'Any') queryParams.append('age', ageRange);
+    if (selectedTier !== 'Any') queryParams.append('tier', selectedTier);
     
     fetch(`/api/inventory/sources?${queryParams.toString()}`)
       .then(res => res.json())
       .then(data => setSourceCounts(data.counts || {}))
       .catch(console.error);
-  }, [region, ageRange]);
+  }, [selectedTier]);
 
   
 
@@ -91,8 +88,7 @@ export function DataQueryBuilder() {
       // Fetch valid providers from our new backend API
       const queryParams = new URLSearchParams();
       if (selectedSources.length > 0) queryParams.append('sources', selectedSources.join(','));
-      if (region !== 'Global') queryParams.append('region', region);
-      if (ageRange !== 'Any') queryParams.append('age', ageRange);
+      if (selectedTier !== 'Any') queryParams.append('tier', selectedTier);
       const response = await fetch(`/api/providers?${queryParams.toString()}`);
       const data = await response.json();
       const validProviders = data.providers as `0x${string}`[];
@@ -135,133 +131,31 @@ export function DataQueryBuilder() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {/* Audience Filters */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Target Audience</h3>
-              
-              <div>
-                <label className="block text-xs text-gray-500 mb-1.5">Age Range</label>
-                <select 
-                  value={ageRange}
-                  onChange={(e) => setAgeRange(e.target.value)}
-                  className="w-full bg-black border border-[#333] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-vana-primary transition-colors appearance-none"
-                >
-                  <option value="18-24">18-24</option>
-                  <option value="25-31">25-31</option>
-                  <option value="32-38">32-38</option>
-                  <option value="39-45">39-45</option>
-                  <option value="45+">45+</option>
-                  <option value="Any">Any Age</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs text-gray-500 mb-1.5">Region</label>
-                <select 
-                  value={region}
-                  onChange={(e) => setRegion(e.target.value)}
-                  className="w-full bg-black border border-[#333] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-vana-primary transition-colors appearance-none"
-                >
-                  <option value="Global">Global</option>
-                  <option value="North America">North America</option>
-                  <option value="Europe">Europe</option>
-                  <option value="Asia">Asia</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Volume Slider */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Volume</h3>
-                <div className="flex items-center gap-2 bg-vana-primary/10 border border-vana-primary/20 px-2 py-1 rounded-md">
-                  <span className="w-1.5 h-1.5 rounded-full bg-vana-primary status-pulse" />
-                  <span className="text-xs text-vana-primary font-mono font-bold">{availableInventory.toLocaleString()} Datasets Available</span>
-                </div>
-              </div>
-              
-              <div className="bg-black border border-[#333] rounded-xl p-5">
-                <div className="flex justify-between items-end mb-4">
-                  <span className="text-xs text-gray-500">Number of Users to Acquire</span>
-                  <span className="text-2xl font-bold text-white">{volume.toLocaleString()}</span>
-                </div>
-                <input 
-                  type="range" 
-                  min="1" 
-                  max={Math.max(1, availableInventory)} 
-                  step="1"
-                  value={volume} 
-                  onChange={(e) => setVolume(parseInt(e.target.value))}
-                  className="w-full h-1.5 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-vana-primary"
-                />
-                <div className="flex justify-between mt-2 text-[10px] text-gray-600 font-mono">
-                  <span>1</span>
-                  <span>{availableInventory.toLocaleString()}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Sources Selection */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Required Data Sources</h3>
-              <span className="text-xs text-gray-500">{selectedSources.length} selected</span>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {DATA_SOURCES.map(source => {
-                const rate = EARNINGS_RATES.find(r => r.id === source.id);
-                const price = rate ? rate.price : 0;
-                const isSelected = selectedSources.includes(source.id);
-                return (
-                  <button
-                    key={source.id}
-                    onClick={() => handleSourceToggle(source.id)}
-                    className={`flex items-center gap-3 p-3 rounded-xl border transition-all text-left ${
-                      isSelected 
-                        ? 'bg-vana-primary/10 border-vana-primary/50 shadow-sm shadow-vana-primary/20' 
-                        : 'bg-black/50 border-[#222] hover:border-[#444]'
-                    }`}
+            {/* Quality Tier Filter */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Data Quality Tier</h3>
+                
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1.5">Select Target Quality</label>
+                  <select 
+                    value={selectedTier}
+                    onChange={(e) => setSelectedTier(e.target.value)}
+                    className="w-full bg-black border border-[#333] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-vana-primary transition-colors appearance-none"
                   >
-                    <div className="w-6 h-6 rounded bg-white flex items-center justify-center p-1 shrink-0">
-                      <img src={source.icon} alt={source.name} className="w-full h-full object-contain" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex justify-between items-center gap-2">
-                        <div className={`text-xs font-semibold truncate ${isSelected ? 'text-white' : 'text-gray-400'}`}>
-                          {source.name}
-                        </div>
-                        <div className="flex items-center gap-1 bg-black/40 px-1.5 py-0.5 rounded text-[9px] font-mono text-gray-500">
-                          <svg className="w-2.5 h-2.5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" fillRule="evenodd" /></svg>
-                          {sourceCounts[source.id] || 0}
-                        </div>
-                      </div>
-                      <div className={`text-[10px] font-mono mt-0.5 ${isSelected ? 'text-vana-primary' : 'text-gray-500'}`}>
-                        +${price.toFixed(2)}
-                      </div>
-                      </div>
-                      <div className={`w-3 h-3 rounded-full border shrink-0 flex items-center justify-center ${
-                      isSelected ? 'border-vana-primary bg-vana-primary' : 'border-gray-700'
-                    }`}>
-                      {isSelected && <svg viewBox="0 0 14 14" fill="none" className="w-2 h-2 text-black"><path d="M11.6666 3.5L5.24992 9.91667L2.33325 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* Right Col: Checkout */}
-        <div className="lg:col-span-5 flex flex-col justify-center">
-          <div className="bg-black border border-[#333] rounded-3xl p-8 sticky top-24">
-            <h3 className="text-lg font-semibold text-white mb-6 border-b border-[#222] pb-4">Order Summary</h3>
-            
-            <div className="space-y-4 mb-6">
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-400">Target Audience</span>
-                <span className="text-white font-medium">{ageRange} yrs • {region}</span>
+                    <option value="Any">Any Tier (All Data)</option>
+                    <option value="A">Tier A (Premium: &gt;80 pts)</option>
+                    <option value="B">Tier B (High: 50-79 pts)</option>
+                    <option value="C">Tier C (Standard: 20-49 pts)</option>
+                    <option value="D">Tier D (Basic: &lt;20 pts)</option>
+                  </select>
+                </div>
               </div>
+              
+              <div className="space-y-4 mb-6">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-gray-400">Quality Tier</span>
+                  <span className="text-white font-medium">{selectedTier === 'Any' ? 'All Data' : 'Tier ' + selectedTier}</span>
+                </div>
               <div className="flex justify-between items-center text-sm">
                 <span className="text-gray-400">Selected Sources</span>
                 <span className="text-white font-medium">{selectedSources.length} sources</span>

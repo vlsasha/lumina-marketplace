@@ -5,8 +5,7 @@ import sql, { initDb } from '@/lib/db';
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const regionParam = searchParams.get('region');
-    const ageParam = searchParams.get('age');
+    const tierParam = searchParams.get('tier');
 
     if (!sql) {
        return NextResponse.json({ counts: {} });
@@ -15,11 +14,11 @@ export async function GET(request: Request) {
     await initDb();
 
         let sqlFilter = sql``;
-    if (regionParam && regionParam !== 'Global') {
-      sqlFilter = sql` AND region = ${regionParam}`;
-    }
-    if (ageParam && ageParam !== 'Any') {
-      sqlFilter = sql` ${sqlFilter} AND age_group = ${ageParam}`;
+    if (tierParam && tierParam !== 'Any') {
+      if (tierParam === 'A') sqlFilter = sql` AND quality_score >= 80`;
+      else if (tierParam === 'B') sqlFilter = sql` AND quality_score >= 50 AND quality_score < 80`;
+      else if (tierParam === 'C') sqlFilter = sql` AND quality_score >= 20 AND quality_score < 50`;
+      else if (tierParam === 'D') sqlFilter = sql` AND quality_score < 20`;
     }
     
     // We count rows in user_connections to match the 'Datasets Available' logic.
@@ -39,7 +38,7 @@ export async function GET(request: Request) {
 
     // Fallback: If DB is empty, let's at least show some dummy data for the user testing 
     // so they see the UI working if their connections are failing to sync
-    if (Object.keys(counts).length === 0 && (!regionParam || regionParam === 'Global') && (!ageParam || ageParam === 'Any')) {
+    if (Object.keys(counts).length === 0 && (!tierParam || tierParam === 'Any')) {
       // Only do this if they haven't applied filters
       counts['github'] = 1;
       counts['youtube'] = 1;

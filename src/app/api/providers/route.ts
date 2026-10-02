@@ -6,8 +6,7 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const sourcesParam = searchParams.get('sources');
-    const regionParam = searchParams.get('region');
-    const ageParam = searchParams.get('age');
+    const tierParam = searchParams.get('tier');
     
     if (!sql) {
        return NextResponse.json({ providers: ['0xC1d3007A33d86Fd7390B087304AD3083FC87438C'], count: 1 });
@@ -19,11 +18,11 @@ export async function GET(request: Request) {
     let count = 0;
 
         let sqlFilter = sql``;
-    if (regionParam && regionParam !== 'Global') {
-      sqlFilter = sql` AND region = ${regionParam}`;
-    }
-    if (ageParam && ageParam !== 'Any') {
-      sqlFilter = sql` ${sqlFilter} AND age_group = ${ageParam}`;
+    if (tierParam && tierParam !== 'Any') {
+      if (tierParam === 'A') sqlFilter = sql` AND quality_score >= 80`;
+      else if (tierParam === 'B') sqlFilter = sql` AND quality_score >= 50 AND quality_score < 80`;
+      else if (tierParam === 'C') sqlFilter = sql` AND quality_score >= 20 AND quality_score < 50`;
+      else if (tierParam === 'D') sqlFilter = sql` AND quality_score < 20`;
     }
 
     if (sourcesParam) {
