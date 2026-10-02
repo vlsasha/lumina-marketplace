@@ -11,7 +11,8 @@ type Role = 'provider' | 'buyer';
 
 export default function AccountPage() {
   const { isConnected } = useAccount();
-  const { data: session, status } = useSession();
+  const sessionObj = useSession();
+  const status = sessionObj?.status;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
