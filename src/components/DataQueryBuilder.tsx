@@ -180,9 +180,9 @@ export function DataQueryBuilder() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Volume</h3>
-                <div className="flex items-center gap-2 bg-vana-primary/10 border border-vana-primary/20 px-2 py-1 rounded-md">
-                  <span className="w-1.5 h-1.5 rounded-full bg-vana-primary status-pulse" />
-                  <span className="text-xs text-vana-primary font-mono font-bold">{availableInventory.toLocaleString()} Datasets Available</span>
+                <div className={`flex items-center gap-2 px-2 py-1 rounded-md border ${availableInventory > 0 ? 'bg-vana-green/15 border-vana-green/30' : 'bg-[#222] border-[#333]'}`}>
+                  <span className={`w-1.5 h-1.5 rounded-full ${availableInventory > 0 ? 'bg-vana-green status-pulse' : 'bg-gray-500'}`} />
+                  <span className={`text-xs font-mono font-bold ${availableInventory > 0 ? 'text-vana-green' : 'text-gray-400'}`}>{availableInventory.toLocaleString()} Datasets Available</span>
                 </div>
               </div>
               
