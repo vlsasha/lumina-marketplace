@@ -6,6 +6,8 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const sourcesParam = searchParams.get('sources');
+    const regionParam = searchParams.get('region');
+    const ageParam = searchParams.get('age');
     
     if (!sql) {
        return NextResponse.json({ providers: ['0xC1d3007A33d86Fd7390B087304AD3083FC87438C'], count: 1 });
@@ -16,8 +18,45 @@ export async function GET(request: Request) {
     let providers: string[] = [];
     let count = 0;
 
+    // Build dynamic where clause for JSONB filtering
+    let jsonbFilter = sql``;
+    if (regionParam && regionParam !== 'Global') {
+      // Look inside the downloaded_data JSON for a country/location match.
+      // This uses PostgreSQL JSONB operators to search various paths depending on the provider.
+      // Using ILIKE for case-insensitive matching if it was text, but with JSONB we cast to text.
+      jsonbFilter = sql`
+        AND EXISTS (
+          SELECT 1 FROM downloaded_data dd 
+          WHERE dd.connection_id = user_connections.connection_id
+          AND (
+            (dd.data::text ILIKE ${'%' + regionParam + '%'})
+          )
+        )
+      `;
+    }
+
+    if (ageParam && ageParam !== 'Any') {
+      // Simulating age extraction. In reality, most providers don't give age in raw JSON.
+      // This will just scan the text for keywords as a placeholder MVP implementation.
+      let ageKeyword = '';
+      if (ageParam === '18-24') ageKeyword = '200'; // born in 200x
+      if (ageParam === '25-34') ageKeyword = '199'; // born in 199x
+      if (ageParam === '35-44') ageKeyword = '198';
+      if (ageParam === '45+') ageKeyword = '197';
+      
+      if (ageKeyword) {
+        jsonbFilter = sql`
+          ${jsonbFilter}
+          AND EXISTS (
+            SELECT 1 FROM downloaded_data dd 
+            WHERE dd.connection_id = user_connections.connection_id
+            AND (dd.data::text ILIKE ${'%' + ageKeyword + '%'})
+          )
+        `;
+      }
+    }
+
     if (sourcesParam) {
-      // Find users who have ALL the requested sources
       const sources = sourcesParam.split(',').filter(Boolean);
       if (sources.length > 0) {
         const result = await sql`
@@ -25,6 +64,7 @@ export async function GET(request: Request) {
           FROM user_connections 
           WHERE status IN ('approved', 'completed') 
             AND source_id = ANY(${sources})
+            ${jsonbFilter}
           GROUP BY wallet_address
           HAVING COUNT(DISTINCT source_id) = ${sources.length}
         `;
@@ -32,21 +72,19 @@ export async function GET(request: Request) {
         count = providers.length;
       }
     } else {
-      // If no specific sources are selected, count TOTAL connected datasets across the platform
-      // to make the marketplace look more populated (as requested by the user).
       const allConnectionsResult = await sql`
         SELECT wallet_address 
         FROM user_connections 
         WHERE status IN ('approved', 'completed')
+        ${jsonbFilter}
       `;
       providers = allConnectionsResult.map(row => row.wallet_address);
-      count = providers.length; // Will be 7 if 1 user connected 7 accounts
+      count = providers.length;
     }
     
-    // Always include the Treasury wallet as a fallback so the marketplace doesn't break if DB is empty
     if (providers.length === 0) {
       providers.push('0xC1d3007A33d86Fd7390B087304AD3083FC87438C');
-      if (count === 0) count = 1;
+      if (count === 0) count = 0; // If filter misses, actually show 0 to the user!
     }
 
     return NextResponse.json({

@@ -26,15 +26,19 @@ export function DataQueryBuilder() {
   const [region, setRegion] = useState('Global');
 
   useEffect(() => {
-    const query = selectedSources.length > 0 ? `?sources=${selectedSources.join(',')}` : '';
-    fetch(`/api/providers${query}`)
+    const queryParams = new URLSearchParams();
+    if (selectedSources.length > 0) queryParams.append('sources', selectedSources.join(','));
+    if (region !== 'Global') queryParams.append('region', region);
+    if (ageRange !== 'Any') queryParams.append('age', ageRange);
+    
+    fetch(`/api/providers?${queryParams.toString()}`)
       .then(res => res.json())
       .then(data => {
         setValidProviders(data.providers);
         setTotalUsersAvailable(data.count); 
       })
       .catch(console.error);
-  }, [selectedSources]);
+  }, [selectedSources, region, ageRange]);
 
   // Fetch individual source counts
   useEffect(() => {
@@ -81,8 +85,11 @@ export function DataQueryBuilder() {
       setIsPending(true);
       
       // Fetch valid providers from our new backend API
-      const query = selectedSources.length > 0 ? `?sources=${selectedSources.join(',')}` : '';
-      const response = await fetch(`/api/providers${query}`);
+      const queryParams = new URLSearchParams();
+      if (selectedSources.length > 0) queryParams.append('sources', selectedSources.join(','));
+      if (region !== 'Global') queryParams.append('region', region);
+      if (ageRange !== 'Any') queryParams.append('age', ageRange);
+      const response = await fetch(`/api/providers?${queryParams.toString()}`);
       const data = await response.json();
       const validProviders = data.providers as `0x${string}`[];
 
