@@ -18,15 +18,15 @@ export function DataQueryBuilder() {
   const [totalUsersAvailable, setTotalUsersAvailable] = useState(0);
 
   useEffect(() => {
-    fetch('/api/providers')
+    const query = selectedSources.length > 0 ? `?sources=${selectedSources.join(',')}` : '';
+    fetch(`/api/providers${query}`)
       .then(res => res.json())
       .then(data => {
         setValidProviders(data.providers);
-        // If it's just the Treasury wallet (1), consider real users as 0 for display
         setTotalUsersAvailable(data.count); 
       })
       .catch(console.error);
-  }, []);
+  }, [selectedSources]);
   
   const [volume, setVolume] = useState<number>(1);
   const [selectedSources, setSelectedSources] = useState<string[]>([]);
@@ -47,25 +47,8 @@ export function DataQueryBuilder() {
   }, 0);
   const totalCost = costPerUser * volume;
 
-  // Simulate dynamic database inventory based on filters
-  const calculateInventory = () => {
-    let base = totalUsersAvailable; // Base total users from database
-    
-    // Region penalty
-    if (region !== 'Global') base = base * 0.35;
-    
-    // Age penalty
-    if (ageRange !== 'Any') base = base * 0.45;
-
-    // Sources penalty (intersection logic: more sources = fewer people who have ALL of them)
-    // E.g. finding someone with Oura AND Github AND Strava is rare
-    const sourcePenalty = Math.pow(0.8, selectedSources.length);
-    
-    const rawInventory = Math.floor(base * sourcePenalty);
-    return base > 0 ? Math.max(1, rawInventory) : 0;
-  };
-
-  const availableInventory = calculateInventory();
+  // Real inventory from database
+  const availableInventory = totalUsersAvailable;
 
   // Ensure volume doesn't exceed inventory
   useEffect(() => {
@@ -87,7 +70,8 @@ export function DataQueryBuilder() {
       setIsPending(true);
       
       // Fetch valid providers from our new backend API
-      const response = await fetch('/api/providers');
+      const query = selectedSources.length > 0 ? `?sources=${selectedSources.join(',')}` : '';
+      const response = await fetch(`/api/providers${query}`);
       const data = await response.json();
       const validProviders = data.providers as `0x${string}`[];
 
