@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useAccount } from 'wagmi';
+import { signIn } from 'next-auth/react';
 
 type Role = 'provider' | 'buyer';
 
@@ -125,7 +126,7 @@ export default function AccountPage() {
 
                     {isConnected && (
                       <button 
-                        onClick={handleDirectLogin}
+                        onClick={(e) => { e.preventDefault(); setIsLoggedIn(true); }}
                         className="w-full py-3 px-4 bg-transparent border border-[#333] hover:border-[#555] text-white font-medium rounded-xl transition-colors mt-2"
                       >
                         Sign in with Web3 Wallet
