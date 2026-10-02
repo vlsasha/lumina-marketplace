@@ -24,16 +24,23 @@ interface ConnectedSource {
 
 const getTierStyle = (score: number) => {
   if (score >= 80) return 'bg-amber-500/15 text-amber-400 border-amber-500/40 shadow-[0_0_12px_rgba(245,158,11,0.25)]';
-  if (score >= 60) return 'bg-purple-500/15 text-purple-400 border-purple-500/40';
-  if (score >= 40) return 'bg-blue-500/15 text-blue-400 border-blue-500/40';
+  if (score >= 50) return 'bg-purple-500/15 text-purple-400 border-purple-500/40';
+  if (score >= 20) return 'bg-blue-500/15 text-blue-400 border-blue-500/40';
   return 'bg-gray-500/15 text-gray-400 border-gray-500/40';
 };
 
 const getTierLabel = (score: number) => {
   if (score >= 80) return 'A';
-  if (score >= 60) return 'B';
-  if (score >= 40) return 'C';
+  if (score >= 50) return 'B';
+  if (score >= 20) return 'C';
   return 'D';
+};
+
+const getTierMultiplier = (score: number) => {
+  if (score >= 80) return 1.0;
+  if (score >= 50) return 0.50;
+  if (score >= 20) return 0.20;
+  return 0.05;
 };
 
 export default function DashboardPage() {
@@ -65,7 +72,7 @@ export default function DashboardPage() {
   const totalEarnings = connections.reduce((acc, conn) => {
     if (conn.status !== 'approved' && conn.status !== 'completed') return acc;
     const rate = EARNINGS_RATES.find(r => r.id === conn.sourceId)?.price || 0;
-    const multiplier = (conn.qualityScore || 0) / 100;
+    const multiplier = getTierMultiplier(conn.qualityScore || 0) * 0.8;
     return acc + (rate * multiplier);
   }, 0);
 
@@ -73,7 +80,7 @@ export default function DashboardPage() {
     if (conn.status !== 'approved' && conn.status !== 'completed') return acc;
     // @ts-ignore - TS might not know about monthlyYield yet if not fully recompiled
     const rate = EARNINGS_RATES.find(r => r.id === conn.sourceId)?.monthlyYield || 0;
-    const multiplier = (conn.qualityScore || 0) / 100;
+    const multiplier = getTierMultiplier(conn.qualityScore || 0) * 0.8;
     return acc + (rate * multiplier);
   }, 0);
   
@@ -517,7 +524,7 @@ export default function DashboardPage() {
                                   <span className="opacity-60 font-medium text-[9px] ml-0.5">({conn.qualityScore})</span>
                                   </span>
                                   <span className="ml-2 text-[11px] font-semibold text-vana-green/90 bg-vana-green/10 px-2 py-0.5 rounded-md border border-vana-green/20">
-                                    +${((EARNINGS_RATES.find(r => r.id === conn.sourceId)?.price || 0) * (conn.qualityScore / 100)).toFixed(2)} USDC</span></>)}
+                                    +${((EARNINGS_RATES.find(r => r.id === conn.sourceId)?.price || 0) * (getTierMultiplier(conn.qualityScore) * 0.8)).toFixed(2)} USDC</span></>)}
                             </div>
                             <p className="text-xs text-vana-text-muted">
                             {(conn?.status === 'approved' || conn?.status === 'completed') ? (conn.scopesApproved?.length || 0) : source.scopes.length} scope{((conn?.status === 'approved' || conn?.status === 'completed') ? (conn.scopesApproved?.length || 0) : source.scopes.length) !== 1 ? 's' : ''}
