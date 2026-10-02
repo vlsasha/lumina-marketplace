@@ -343,7 +343,7 @@ export function DataQueryBuilder() {
                     <div className="text-[10px] text-gray-500 font-mono uppercase tracking-widest">USDC.e</div>
                   </div>
                 </div>
-              </div>\n\n              <button 
+              </div><button 
               onClick={handlePurchase}
               disabled={isPending || totalCost === 0}
               className="w-full py-4 px-4 bg-vana-primary hover:bg-opacity-90 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-vana-primary/25 hover:-translate-y-0.5 disabled:opacity-50 flex items-center justify-center gap-2"
