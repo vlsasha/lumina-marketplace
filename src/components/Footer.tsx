@@ -44,14 +44,7 @@ export function Footer() {
           </div>
 
           <div className="flex gap-12 md:gap-16">
-          {/* Product */}
-          <div>
-            <h3 className="text-sm font-semibold text-vana-text mb-4">Product</h3>
-            <ul className="space-y-3">
-              <FooterLink href="/sources">Data Sources</FooterLink>
-              <FooterLink href="/dashboard">Dashboard</FooterLink>
-            </ul>
-          </div>
+          
 
           {/* Vana */}
           <div>
