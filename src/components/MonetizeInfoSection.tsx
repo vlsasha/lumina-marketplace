@@ -23,14 +23,14 @@ export function MonetizeInfoSection() {
       glow: 'from-[#0A66C2] to-[#ffffff]'
     },
     {
-      title: 'AI Prompts & Commerce',
-      description: 'E-commerce purchase graphs and your deep analytical AI prompts are invaluable for RLHF and consumer prediction engines.',
+      title: t.monetize.groups.commerce,
+      description: t.monetize.groups.commerceDesc,
       sources: ['chatgpt', 'claude', 'amazon'],
       glow: 'from-[#10A37F] to-[#FF9900]'
     },
     {
-      title: 'Content & Social',
-      description: 'Content creators and consumers can monetize their published videos, streaming taste, and social engagement graphs.',
+      title: t.monetize.groups.social,
+      description: t.monetize.groups.socialDesc,
       sources: ['youtube', 'spotify', 'instagram', 'icloud_notes'],
       glow: 'from-[#FF0000] to-[#E4405F]'
     }
@@ -45,10 +45,10 @@ export function MonetizeInfoSection() {
       <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Turn Your Digital Footprint Into an Asset
+            {t.monetize.title}
           </h2>
           <p className="text-lg text-gray-400">
-            Every app you use generates highly valuable data. Lumina lets you securely package and rent this data to verified buyers while keeping full control.
+            {t.monetize.subtitle}
           </p>
         </div>
 
@@ -87,3 +87,4 @@ export function MonetizeInfoSection() {
     </section>
   );
 }
+

@@ -21,7 +21,7 @@ export function HowItWorks() {
     {
       number: '02',
       title: t.howItWorks.step2Title,
-      description: 'Firms, AI researchers, and brands browse the marketplace and request access to valuable user-owned datasets.',
+      description: t.howItWorks.step2Desc,
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -33,8 +33,8 @@ export function HowItWorks() {
     },
     {
       number: '03',
-      title: 'Users Get Paid',
-      description: 'Users choose which requests to approve and receive instant monetary rewards in crypto for their data.',
+      title: t.howItWorks.step3Title,
+      description: t.howItWorks.step3Desc,
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <circle cx="12" cy="12" r="10" />
@@ -44,8 +44,8 @@ export function HowItWorks() {
     },
     {
       number: '04',
-      title: 'Data is Delivered',
-      description: 'Buyers receive verified, high-quality data to train models and build products, completing the cycle.',
+      title: t.howItWorks.step4Title,
+      description: t.howItWorks.step4Desc,
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M12 2L2 7l10 5 10-5-10-5z" />
@@ -63,10 +63,10 @@ export function HowItWorks() {
       <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-bold text-vana-text">
-            How It Works
+            {t.howItWorks.title}
           </h2>
           <p className="mt-3 text-vana-text-secondary max-w-xl mx-auto">
-            A transparent marketplace where users get paid for their data and companies get the insights they need.
+            {t.howItWorks.subtitle}
           </p>
         </div>
 
@@ -101,3 +101,4 @@ export function HowItWorks() {
     </section>
   );
 }
+
