@@ -3,8 +3,11 @@
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { PAGES_DICT } from '@/lib/i18n/pages-dict';
 import { DataQueryBuilder } from '@/components/DataQueryBuilder';
 export default function PricingPage() {
+  const { locale } = useLanguage();
+  const pDict = PAGES_DICT[locale as keyof typeof PAGES_DICT]?.pricing || PAGES_DICT.en.pricing;
   const { t } = useLanguage();
   return (
     <>
@@ -32,9 +35,9 @@ export default function PricingPage() {
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-bold text-vana-text mb-2">Need USDC on Vana Network?</h3>
+                <h3 className="text-lg font-bold text-vana-text mb-2">{pDict.needUsdcTitle}</h3>
                 <p className="text-sm text-vana-text-secondary mb-4">
-                  To pay for data, you need USDC tokens on the Vana blockchain. You can easily bridge your USDC from Ethereum, Arbitrum, or other networks using Stargate Finance.
+                  {pDict.needUsdcDesc}
                 </p>
                 <a 
                   href="https://stargate.finance/?dstChain=islander&dstToken=0xF1815bd50389c46847f0Bda824eC8da914045D14" 
@@ -42,7 +45,7 @@ export default function PricingPage() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-vana-primary hover:text-vana-primary-hover transition-colors"
                 >
-                  Bridge USDC via Stargate
+                  {pDict.bridgeUsdc}
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M7 17L17 7M17 7H7M17 7v10" />
                   </svg>

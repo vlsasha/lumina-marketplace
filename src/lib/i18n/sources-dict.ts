@@ -9,6 +9,7 @@ export const SOURCES_DICT = {
     "categories": {
       "Entertainment": "Entertainment",
       "Developer": "Developer",
+      "Professional": "Professional",
       "Social Media": "Social Media",
       "E-commerce": "E-commerce",
       "AI & Productivity": "AI & Productivity",
@@ -125,6 +126,7 @@ export const SOURCES_DICT = {
     }
   },
   "ru": {
+
     "pageTitle": "Источники данных",
     "pageSubtitle": "Просматривайте доступные источники. Безопасно подключайте аккаунты через децентрализованный протокол Vana.",
     "noSources": "В этой категории нет доступных источников.",
@@ -137,7 +139,9 @@ export const SOURCES_DICT = {
       "AI & Productivity": "ИИ и Продуктивность",
       "Productivity": "Продуктивность",
       "Health & Fitness": "Здоровье и фитнес"
-    },
+    ,
+        "Professional": "Профессиональное"
+      },
     "howTo": {
       "sidebarTitle": "ЗАЩИЩЕННЫЙ ПРОТОКОЛ VANA",
       "step1Title": "Установите Vana Desktop",
@@ -255,6 +259,7 @@ export const SOURCES_DICT = {
     "categories": {
       "Entertainment": "Entretenimiento",
       "Developer": "Desarrollador",
+      "Professional": "Profesional",
       "Social Media": "Redes Sociales",
       "E-commerce": "E-commerce",
       "AI & Productivity": "IA y Productividad",
@@ -378,6 +383,7 @@ export const SOURCES_DICT = {
     "categories": {
       "Entertainment": "Entretenimento",
       "Developer": "Desenvolvedor",
+      "Professional": "Profissional",
       "Social Media": "Redes Sociais",
       "E-commerce": "E-commerce",
       "AI & Productivity": "IA e Produtividade",
@@ -501,6 +507,7 @@ export const SOURCES_DICT = {
     "categories": {
       "Entertainment": "Unterhaltung",
       "Developer": "Entwickler",
+      "Professional": "Professionell",
       "Social Media": "Social Media",
       "E-commerce": "E-Commerce",
       "AI & Productivity": "KI & Produktivität",
@@ -617,6 +624,7 @@ export const SOURCES_DICT = {
     }
   },
   "zh": {
+
     "pageTitle": "数据源",
     "pageSubtitle": "浏览可用的数据源。通过 Vana 去中心化协议安全连接您的账户。",
     "noSources": "该类别下没有可用的数据源。",
@@ -629,7 +637,9 @@ export const SOURCES_DICT = {
       "AI & Productivity": "人工智能与生产力",
       "Productivity": "生产力",
       "Health & Fitness": "健康与健身"
-    },
+    ,
+        "Professional": "职业"
+      },
     "howTo": {
       "sidebarTitle": "安全的 VANA 协议",
       "step1Title": "安装 Vana Desktop",
@@ -740,6 +750,7 @@ export const SOURCES_DICT = {
     }
   },
   "ko": {
+
     "pageTitle": "데이터 소스",
     "pageSubtitle": "사용 가능한 데이터 소스를 탐색하세요. Vana의 탈중앙화 프로토콜을 통해 안전하게 연결하세요.",
     "noSources": "이 카테고리에는 데이터 소스가 없습니다.",
@@ -752,7 +763,9 @@ export const SOURCES_DICT = {
       "AI & Productivity": "AI 및 생산성",
       "Productivity": "생산성",
       "Health & Fitness": "건강 및 피트니스"
-    },
+    ,
+        "Professional": "전문 네트워크"
+      },
     "howTo": {
       "sidebarTitle": "안전한 VANA 프로토콜",
       "step1Title": "Vana Desktop 설치",

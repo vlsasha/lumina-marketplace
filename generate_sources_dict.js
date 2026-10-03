@@ -8,7 +8,7 @@ const sourcesDict = {
     all: "All",
     categories: {
       "Entertainment": "Entertainment",
-      "Developer": "Developer",
+      "Developer": "Developer", "Professional": "Professional",
       "Social Media": "Social Media",
       "E-commerce": "E-commerce",
       "AI & Productivity": "AI & Productivity",
@@ -234,7 +234,7 @@ const sourcesDict = {
     all: "Todos",
     categories: {
       "Entertainment": "Entretenimiento",
-      "Developer": "Desarrollador",
+      "Developer": "Desarrollador", "Professional": "Profesional",
       "Social Media": "Redes Sociales",
       "E-commerce": "E-commerce",
       "AI & Productivity": "IA y Productividad",
@@ -275,7 +275,7 @@ const sourcesDict = {
     noSources: "Nenhuma fonte de dados disponível nesta categoria.",
     all: "Todos",
     categories: {
-      "Entertainment": "Entretenimento", "Developer": "Desenvolvedor", "Social Media": "Redes Sociais", "E-commerce": "E-commerce", "AI & Productivity": "IA e Produtividade", "Productivity": "Produtividade", "Health & Fitness": "Saúde e Fitness"
+      "Entertainment": "Entretenimento", "Developer": "Desenvolvedor", "Professional": "Profissional", "Social Media": "Redes Sociais", "E-commerce": "E-commerce", "AI & Productivity": "IA e Produtividade", "Productivity": "Produtividade", "Health & Fitness": "Saúde e Fitness"
     },
     howTo: {
       sidebarTitle: "PROTOCOLO VANA SEGURO",
@@ -311,7 +311,7 @@ const sourcesDict = {
     noSources: "Keine Datenquellen in dieser Kategorie.",
     all: "Alle",
     categories: {
-      "Entertainment": "Unterhaltung", "Developer": "Entwickler", "Social Media": "Social Media", "E-commerce": "E-Commerce", "AI & Productivity": "KI & Produktivität", "Productivity": "Produktivität", "Health & Fitness": "Gesundheit & Fitness"
+      "Entertainment": "Unterhaltung", "Developer": "Entwickler", "Professional": "Professionell", "Social Media": "Social Media", "E-commerce": "E-Commerce", "AI & Productivity": "KI & Produktivität", "Productivity": "Produktivität", "Health & Fitness": "Gesundheit & Fitness"
     },
     howTo: {
       sidebarTitle: "SICHERES VANA-PROTOKOLL",
@@ -422,3 +422,4 @@ export const SOURCES_DICT = ${JSON.stringify(sourcesDict, null, 2)};
 
 fs.writeFileSync('src/lib/i18n/sources-dict.ts', fileContent, 'utf8');
 console.log('sources-dict.ts generated!');
+

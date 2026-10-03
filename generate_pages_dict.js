@@ -9,10 +9,10 @@ const pagesDict = {
       connected: "Connected",
       pending: "Pending",
       totalScopes: "Total Scopes",
-      availableBalance: "AVAILABLE BALANCE",
-      estimatedValue: "ESTIMATED VALUE",
-      activeConnections: "ACTIVE CONNECTIONS",
-      dataQualityScore: "DATA QUALITY SCORE",
+      availableBalance: "Available Balance",
+      estimatedValue: "Estimated Value",
+      activeConnections: "Active Connections",
+      dataQualityScore: "Data Quality Score",
       pocPending: "PoC: Pending",
       claimToWallet: "Claim to Wallet",
       earningsTitle: "Data Valuation (Hybrid Model)",
@@ -21,7 +21,21 @@ const pagesDict = {
       colPayload: "Data Payload",
       colInitial: "Initial Sync",
       colMonthly: "Monthly Yield",
-      footer: "Rates dynamically updated via Lumina Oracle"
+      footer: "Rates dynamically updated via Lumina Oracle",
+      metrics: {
+        github: "Verified Dev Profile & Code",
+        linkedin: "Professional Network Graph",
+        oura: "Continuous Biometric Stream",
+        whoop: "Continuous Recovery Stream",
+        chatgpt: "Reasoning Trace & Prompts",
+        claude: "Project Context & Prompts",
+        amazon: "Historical Purchases + Sync",
+        icloud_notes: "Knowledge Base + Sync",
+        youtube: "Psychographic Watch Profile",
+        instagram: "Social Engagement Graph",
+        spotify: "Audio Affinity Profile",
+        strava: "Endurance & Route Log"
+      }
     },
     pricing: {
       howPricingWorks: "How Pricing Works",
@@ -34,7 +48,10 @@ const pagesDict = {
       pts: "pts",
       processing: "Processing...",
       purchaseDataset: "Purchase Dataset",
-      paymentsProcessed: "Payments are securely processed via the Lumina Smart Contract and routed directly to the users providing data."
+      paymentsProcessed: "Payments are securely processed via the Lumina Smart Contract and routed directly to the users providing data.",
+      needUsdcTitle: "Need USDC on Vana Network?",
+      needUsdcDesc: "To pay for data, you need USDC tokens on the Vana blockchain. You can easily bridge your USDC from Ethereum, Arbitrum, or other networks using Stargate Finance.",
+      bridgeUsdc: "Bridge USDC via Stargate"
     },
     docs: {
       title: "Lumina Documentation",
@@ -86,10 +103,10 @@ const pagesDict = {
       connected: "Подключено",
       pending: "В ожидании",
       totalScopes: "Всего областей",
-      availableBalance: "ДОСТУПНЫЙ БАЛАНС",
-      estimatedValue: "ОЦЕНОЧНАЯ ЦЕННОСТЬ",
-      activeConnections: "АКТИВНЫЕ ПОДКЛЮЧЕНИЯ",
-      dataQualityScore: "ОЦЕНКА КАЧЕСТВА",
+      availableBalance: "Доступный баланс",
+      estimatedValue: "Оценочная ценность",
+      activeConnections: "Активные подключения",
+      dataQualityScore: "Оценка качества",
       pocPending: "PoC: Ожидание",
       claimToWallet: "Вывести на кошелек",
       earningsTitle: "Оценка данных (Гибридная модель)",
@@ -98,20 +115,37 @@ const pagesDict = {
       colPayload: "Тип данных",
       colInitial: "Первичная выплата",
       colMonthly: "В месяц",
-      footer: "Ставки динамически обновляются через Lumina Oracle"
+      footer: "Ставки динамически обновляются через Lumina Oracle",
+      metrics: {
+        github: "Подтвержденный профиль разработчика и код",
+        linkedin: "Граф профессиональной сети",
+        oura: "Непрерывный поток биометрии",
+        whoop: "Поток данных восстановления",
+        chatgpt: "Запросы и логика рассуждений",
+        claude: "Контекст проектов и запросы",
+        amazon: "История покупок + Синхронизация",
+        icloud_notes: "База знаний + Синхронизация",
+        youtube: "Психографический профиль зрителя",
+        instagram: "Граф социального взаимодействия",
+        spotify: "Профиль музыкальных предпочтений",
+        strava: "Журнал тренировок и маршрутов"
+      }
     },
     pricing: {
       howPricingWorks: "Как формируется цена",
       step1Title: "Базовая ценность",
       step1Desc: "Каждый датасет имеет базовую рыночную ставку (например, GitHub — $15.00). Это премиальная цена для уровня Tier A.",
       step2Title: "Множители качества",
-      step2Desc: "AI Oracle оценивает данные от 0 до 100. Более низкие уровни качества применяют понижающий множитель к базовой стоимости:",
+      step2Desc: "AI Oracle оценивает данные от 0 до 100. Более низкие уровни применяют понижающий множитель к базовой стоимости:",
       step3Title: "Справедливое распределение",
       step3Desc: "Итоговая стоимость = (Базовая ценность × Множитель) × Объем.\n\nРовно 80% от вашего платежа моментально отправляется на криптокошельки пользователей.",
       pts: "очков",
       processing: "Обработка...",
       purchaseDataset: "Купить датасет",
-      paymentsProcessed: "Платежи безопасно обрабатываются через смарт-контракт Lumina и направляются напрямую поставщикам данных."
+      paymentsProcessed: "Платежи безопасно обрабатываются через смарт-контракт Lumina и направляются напрямую поставщикам данных.",
+      needUsdcTitle: "Нужен USDC в сети Vana?",
+      needUsdcDesc: "Для оплаты данных вам понадобятся токены USDC в блокчейне Vana. Вы можете легко перевести USDC из Ethereum, Arbitrum или других сетей с помощью Stargate Finance.",
+      bridgeUsdc: "Перевести USDC через Stargate"
     },
     docs: {
       title: "Документация Lumina",
@@ -159,18 +193,25 @@ const pagesDict = {
     dashboard: {
       pageTitle: "Panel", pageSubtitle: "Administra las conexiones de tus fuentes de datos y previsualiza.",
       availableSources: "Fuentes Disponibles", connected: "Conectado", pending: "Pendiente", totalScopes: "Alcances Totales",
-      availableBalance: "SALDO DISPONIBLE", estimatedValue: "VALOR ESTIMADO", activeConnections: "CONEXIONES ACTIVAS",
-      dataQualityScore: "PUNTUACIÓN DE CALIDAD", pocPending: "PoC: Pendiente", claimToWallet: "Reclamar a Billetera",
+      availableBalance: "Saldo Disponible", estimatedValue: "Valor Estimado", activeConnections: "Conexiones Activas",
+      dataQualityScore: "Puntuación de Calidad", pocPending: "PoC: Pendiente", claimToWallet: "Reclamar a Billetera",
       earningsTitle: "Valoración de Datos (Modelo Híbrido)", earningsSubtitle: "Sincronización inicial + rendimiento mensual.",
       colSource: "Fuente", colPayload: "Datos", colInitial: "Sinc. Inicial", colMonthly: "Rend. Mensual",
-      footer: "Las tasas se actualizan dinámicamente a través de Lumina Oracle"
+      footer: "Las tasas se actualizan dinámicamente a través de Lumina Oracle",
+      metrics: {
+        github: "Perfil de Dev Verificado y Código", linkedin: "Gráfico de Red Profesional", oura: "Flujo Biométrico Continuo",
+        whoop: "Flujo de Recuperación Continuo", chatgpt: "Rastros de Razonamiento", claude: "Contexto y Prompts",
+        amazon: "Historial de Compras", icloud_notes: "Base de Conocimientos", youtube: "Perfil Psicográfico de Visualización",
+        instagram: "Gráfico de Compromiso Social", spotify: "Perfil de Afinidad de Audio", strava: "Registro de Rutas y Resistencia"
+      }
     },
     pricing: {
       howPricingWorks: "Cómo Funciona", step1Title: "Valor Base", step1Desc: "Cada conjunto de datos tiene una tasa de mercado base.",
       step2Title: "Multiplicadores de Calidad", step2Desc: "El Oráculo AI puntúa los datos de 0 a 100. Los niveles aplican un multiplicador:",
       step3Title: "Reparto Justo", step3Desc: "Costo Total = (Base × Multiplicador) × Volumen.\n\nEl 80% va a los usuarios.",
       pts: "pts", processing: "Procesando...", purchaseDataset: "Comprar Dataset",
-      paymentsProcessed: "Los pagos se procesan de forma segura a través del Contrato Inteligente de Lumina."
+      paymentsProcessed: "Los pagos se procesan de forma segura a través del Contrato Inteligente de Lumina.",
+      needUsdcTitle: "¿Necesitas USDC en la Red Vana?", needUsdcDesc: "Para pagar, necesitas USDC. Puedes enviarlo fácilmente usando Stargate.", bridgeUsdc: "Enviar USDC vía Stargate"
     },
     docs: {
       title: "Documentación de Lumina", welcome: "Bienvenido a la documentación oficial. Aprende a monetizar tus datos.",
@@ -185,7 +226,7 @@ const pagesDict = {
       poc1Li1: "Analizamos el JSON.", poc1Li2: "Extraemos el ID del sistema.", poc1Li3: "Se guarda con restricción UNIQUE.",
       poc1Li4: "Si se intenta subir la misma cuenta, se rechaza.", poc2: "Puntuación de Calidad", poc2Desc: "Se evalúa usando PoC:",
       poc2Pillar1Title: "Profundidad Histórica", poc2Pillar1Desc: "Cuentas antiguas valen más.", poc2Pillar2Title: "Densidad de Datos",
-      poc2Pillar2Desc: "Más datos continuos valen más.", poc2Pillar3Title: "Riesgo de Autenticidad", poc2Pillar3Desc: "Perfiles reales valen más.",
+      poc2Pillar2Desc: "Más datos continuos valem más.", poc2Pillar3Title: "Riesgo de Autenticidad", poc2Pillar3Desc: "Perfiles reales valen más.",
       poc3: "Precios Dinámicos", poc3Desc: "La puntuación multiplica el precio base.", poc3TableCol1: "Nivel", poc3TableCol2: "Puntos PoC",
       poc3TableCol3: "Multiplicador", poc3ExTitle: "Ejemplo", poc3ExDesc: "Si conectas GitHub ($15.00) con puntuación 90 (Tier A):\nValor = $15.00 × 0.90 = $13.50."
     }
@@ -194,18 +235,25 @@ const pagesDict = {
     dashboard: {
       pageTitle: "Painel", pageSubtitle: "Gerencie suas fontes de dados e visualize.",
       availableSources: "Fontes Disponíveis", connected: "Conectado", pending: "Pendente", totalScopes: "Escopos Totais",
-      availableBalance: "SALDO DISPONÍVEL", estimatedValue: "VALOR ESTIMADO", activeConnections: "CONEXÕES ATIVAS",
-      dataQualityScore: "PONTUAÇÃO DE QUALIDADE", pocPending: "PoC: Pendente", claimToWallet: "Resgatar para Carteira",
+      availableBalance: "Saldo Disponível", estimatedValue: "Valor Estimado", activeConnections: "Conexões Ativas",
+      dataQualityScore: "Pontuação de Qualidade", pocPending: "PoC: Pendente", claimToWallet: "Resgatar para Carteira",
       earningsTitle: "Avaliação de Dados (Modelo Híbrido)", earningsSubtitle: "Sincronização inicial + rendimento mensal.",
-      colSource: "Fonte", colPayload: "Dados", colInitial: "Sinc. Inicial", colMonthly: "Rend. Mensal",
-      footer: "As taxas são atualizadas dinamicamente via Lumina Oracle"
+      colSource: "Fonte", colPayload: "Dados", colInitial: "Sinc. Inicial", colMonthly: "Rend. Mensual",
+      footer: "As taxas são atualizadas dinamicamente via Lumina Oracle",
+      metrics: {
+        github: "Perfil de Dev Verificado", linkedin: "Gráfico de Rede Profissional", oura: "Fluxo Biométrico Contínuo",
+        whoop: "Fluxo de Recuperação Contínuo", chatgpt: "Rastros de Raciocínio", claude: "Contexto e Prompts",
+        amazon: "Histórico de Compras", icloud_notes: "Base de Conhecimentos", youtube: "Perfil Psicográfico de Visualização",
+        instagram: "Gráfico de Engajamento Social", spotify: "Perfil de Afinidade de Áudio", strava: "Registro de Rotas e Resistência"
+      }
     },
     pricing: {
       howPricingWorks: "Como Funciona", step1Title: "Valor Base", step1Desc: "Cada conjunto de dados tem uma taxa de mercado base.",
       step2Title: "Multiplicadores de Qualidade", step2Desc: "O Oráculo pontua os dados de 0 a 100. Os níveis aplicam um multiplicador:",
       step3Title: "Divisão Justa", step3Desc: "Custo Total = (Base × Multiplicador) × Volume.\n\n80% vai para os usuários.",
       pts: "pts", processing: "Processando...", purchaseDataset: "Comprar Dataset",
-      paymentsProcessed: "Os pagamentos são processados com segurança através do Smart Contract Lumina."
+      paymentsProcessed: "Os pagamentos são processados com segurança através do Smart Contract Lumina.",
+      needUsdcTitle: "Precisa de USDC na Rede Vana?", needUsdcDesc: "Para pagar, você precisa de USDC. Pode transferir facilmente via Stargate.", bridgeUsdc: "Transferir USDC via Stargate"
     },
     docs: {
       title: "Documentação Lumina", welcome: "Bem-vindo à documentação oficial. Aprenda a monetizar seus dados.",
@@ -229,18 +277,25 @@ const pagesDict = {
     dashboard: {
       pageTitle: "Dashboard", pageSubtitle: "Verwalten Sie Ihre Datenquellen und Vorschauen.",
       availableSources: "Verfügbare Quellen", connected: "Verbunden", pending: "Ausstehend", totalScopes: "Gesamte Bereiche",
-      availableBalance: "VERFÜGBARES GUTHABEN", estimatedValue: "GESCHÄTZTER WERT", activeConnections: "AKTIVE VERBINDUNGEN",
-      dataQualityScore: "QUALITÄTSSCORE", pocPending: "PoC: Ausstehend", claimToWallet: "Auszahlen",
+      availableBalance: "Verfügbares Guthaben", estimatedValue: "Geschätzter Wert", activeConnections: "Aktive Verbindungen",
+      dataQualityScore: "Qualitätsscore", pocPending: "PoC: Ausstehend", claimToWallet: "Auszahlen",
       earningsTitle: "Datenbewertung (Hybridmodell)", earningsSubtitle: "Anfängliche Synchronisation + monatliche Rendite.",
       colSource: "Quelle", colPayload: "Daten", colInitial: "Initiale Sync", colMonthly: "Monatliche Rendite",
-      footer: "Die Raten werden dynamisch über das Lumina Oracle aktualisiert"
+      footer: "Die Raten werden dynamisch über das Lumina Oracle aktualisiert",
+      metrics: {
+        github: "Verifiziertes Dev-Profil", linkedin: "Berufsnetzwerk", oura: "Kontinuierlicher Biometrie-Stream",
+        whoop: "Kontinuierlicher Erholungs-Stream", chatgpt: "Reasoning & Prompts", claude: "Projektkontext & Prompts",
+        amazon: "Einkaufshistorie", icloud_notes: "Wissensbasis", youtube: "Zuschauer-Profil",
+        instagram: "Social Engagement Graph", spotify: "Musikprofil", strava: "Routen- & Ausdauer-Log"
+      }
     },
     pricing: {
       howPricingWorks: "Wie die Preisgestaltung funktioniert", step1Title: "Basiswert", step1Desc: "Jeder Datensatz hat einen Basispreis.",
       step2Title: "Qualitätsmultiplikator", step2Desc: "Das AI-Oracle bewertet Daten von 0-100. Qualitätsstufen wenden einen Multiplikator an:",
       step3Title: "Faire Umsatzteilung", step3Desc: "Gesamtkosten = (Basiswert × Multiplikator) × Volumen.\n\n80 % gehen an die Nutzer.",
       pts: "Pkte", processing: "Verarbeitung...", purchaseDataset: "Datensatz kaufen",
-      paymentsProcessed: "Zahlungen werden sicher über den Lumina Smart Contract abgewickelt."
+      paymentsProcessed: "Zahlungen werden sicher über den Lumina Smart Contract abgewickelt.",
+      needUsdcTitle: "Benötigen Sie USDC im Vana-Netzwerk?", needUsdcDesc: "Sie benötigen USDC, um zu bezahlen. Überweisen Sie einfach via Stargate.", bridgeUsdc: "USDC über Stargate überweisen"
     },
     docs: {
       title: "Lumina Dokumentation", welcome: "Willkommen zur offiziellen Dokumentation. Erfahren Sie, wie Sie Daten monetarisieren.",
@@ -262,20 +317,27 @@ const pagesDict = {
   },
   zh: {
     dashboard: {
-      pageTitle: "仪表板", pageSubtitle: "管理您的数据源连接和预览。",
+      pageTitle: "仪表板", pageSubtitle: "管理您的数据源连接和预览数据。",
       availableSources: "可用来源", connected: "已连接", pending: "待处理", totalScopes: "总范围",
       availableBalance: "可用余额", estimatedValue: "估值", activeConnections: "活跃连接",
       dataQualityScore: "质量得分", pocPending: "PoC: 待处理", claimToWallet: "提取到钱包",
       earningsTitle: "数据估值（混合模式）", earningsSubtitle: "初始同步 + 每月持续收益。",
       colSource: "来源", colPayload: "数据类型", colInitial: "初始同步", colMonthly: "每月收益",
-      footer: "费率通过 Lumina Oracle 动态更新"
+      footer: "费率通过 Lumina Oracle 动态更新",
+      metrics: {
+        github: "已验证的开发者档案和代码", linkedin: "职业关系网图", oura: "连续生物识别流",
+        whoop: "连续恢复流", chatgpt: "推理痕迹和提示词", claude: "项目上下文和提示词",
+        amazon: "历史购买和同步", icloud_notes: "知识库和同步", youtube: "心理学观看特征",
+        instagram: "社交互动图", spotify: "音频偏好特征", strava: "耐力和路线日志"
+      }
     },
     pricing: {
       howPricingWorks: "定价规则", step1Title: "基础价值", step1Desc: "每个数据集都有基础市场价。",
       step2Title: "质量乘数", step2Desc: "AI Oracle 对数据进行 0-100 评分，应用相应的乘数：",
       step3Title: "公平收益分配", step3Desc: "总成本 = (基础价值 × 乘数) × 数量。\n\n80% 的资金直接进入用户钱包。",
       pts: "分", processing: "处理中...", purchaseDataset: "购买数据集",
-      paymentsProcessed: "付款通过 Lumina 智能合约安全处理。"
+      paymentsProcessed: "付款通过 Lumina 智能合约安全处理。",
+      needUsdcTitle: "需要在 Vana 网络上使用 USDC？", needUsdcDesc: "购买数据需要 USDC，您可以通过 Stargate 轻松跨链提取。", bridgeUsdc: "通过 Stargate 跨链 USDC"
     },
     docs: {
       title: "Lumina 文档", welcome: "欢迎阅读官方文档。了解如何将您的数据变现。",
@@ -303,14 +365,21 @@ const pagesDict = {
       dataQualityScore: "품질 점수", pocPending: "PoC: 대기 중", claimToWallet: "지갑으로 수령",
       earningsTitle: "데이터 가치 평가(하이브리드 모델)", earningsSubtitle: "초기 동기화 + 지속적인 월별 수익.",
       colSource: "소스", colPayload: "데이터 페이로드", colInitial: "초기 동기화", colMonthly: "월별 수익",
-      footer: "Lumina Oracle을 통해 요율이 동적으로 업데이트됩니다."
+      footer: "Lumina Oracle을 통해 요율이 동적으로 업데이트됩니다.",
+      metrics: {
+        github: "검증된 개발자 프로필 및 코드", linkedin: "전문 네트워크 그래프", oura: "연속 생체 데이터",
+        whoop: "연속 회복 데이터", chatgpt: "추론 및 프롬프트", claude: "프로젝트 컨텍스트 및 프롬프트",
+        amazon: "구매 내역 및 동기화", icloud_notes: "지식 베이스 및 동기화", youtube: "시청자 심리 프로필",
+        instagram: "소셜 참여 그래프", spotify: "오디오 선호도 프로필", strava: "운동 및 경로 기록"
+      }
     },
     pricing: {
       howPricingWorks: "가격 책정 방식", step1Title: "기본 가치", step1Desc: "각 데이터 세트에는 기본 시장 가격이 있습니다.",
       step2Title: "품질 승수", step2Desc: "AI Oracle이 0-100점으로 평가하여 품질 등급에 따라 승수를 적용합니다.",
       step3Title: "공정한 수익 분배", step3Desc: "총 비용 = (기본 가치 × 승수) × 수량.\n\n결제 금액의 80%가 사용자 지갑으로 이동합니다.",
       pts: "점", processing: "처리 중...", purchaseDataset: "데이터 세트 구매",
-      paymentsProcessed: "결제는 Lumina 스마트 컨트랙트를 통해 안전하게 처리됩니다."
+      paymentsProcessed: "결제는 Lumina 스마트 컨트랙트를 통해 안전하게 처리됩니다.",
+      needUsdcTitle: "Vana 네트워크에 USDC가 필요하신가요?", needUsdcDesc: "데이터를 구매하려면 USDC가 필요합니다. Stargate를 통해 쉽게 브릿지할 수 있습니다.", bridgeUsdc: "Stargate를 통해 USDC 브릿지"
     },
     docs: {
       title: "Lumina 문서", welcome: "공식 문서에 오신 것을 환영합니다. 데이터 수익화 방법을 알아보세요.",

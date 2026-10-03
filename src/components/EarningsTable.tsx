@@ -47,7 +47,7 @@ export function EarningsTable() {
                       </div>
                     </td>
                     <td className="py-2.5 px-3 text-vana-text-secondary">
-                      {rate.metric}
+                      {pDict.metrics[rate.id as keyof typeof pDict.metrics] || rate.metric}
                     </td>
                     <td className="py-2.5 px-3 text-vana-text font-mono text-right">
                       ${rate.price.toFixed(2)}

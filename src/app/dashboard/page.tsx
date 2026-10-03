@@ -410,23 +410,23 @@ export default function DashboardPage() {
           <div className="mb-10">
             <h1 className="text-3xl sm:text-4xl font-bold text-vana-text mb-2">{t.dashboard.title}</h1>
             <p className="text-vana-text-secondary">
-              Manage your data source connections and preview data.
+              {pDict.pageSubtitle}
             </p>
           </div>
 
           {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-            <StatCard label="Available Sources" value={DATA_SOURCES.length.toString()} />
-            <StatCard label="Connected" value={connections.filter((c) => (c.status === 'approved' || c.status === 'completed')).length.toString()} />
-            <StatCard label="Pending" value={connections.filter((c) => c.status === 'pending').length.toString()} />
-            <StatCard label="Total Scopes" value={DATA_SOURCES.reduce((acc, s) => acc + s.scopes.length, 0).toString()} />
+            <StatCard label={pDict.availableSources} value={DATA_SOURCES.length.toString()} />
+            <StatCard label={pDict.connected} value={connections.filter((c) => (c.status === 'approved' || c.status === 'completed')).length.toString()} />
+            <StatCard label={pDict.pending} value={connections.filter((c) => c.status === 'pending').length.toString()} />
+            <StatCard label={pDict.totalScopes} value={DATA_SOURCES.reduce((acc, s) => acc + s.scopes.length, 0).toString()} />
           </div>
 
           {/* Earnings & PoC Panel */}
           <div className="mb-10 bg-gradient-to-br from-vana-primary/10 to-transparent border border-vana-primary/20 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 overflow-hidden">
             <div className="flex flex-col sm:flex-row gap-8 sm:gap-16">
                 <div>
-                  <h2 className="text-sm font-semibold text-vana-text-secondary uppercase tracking-wider mb-1">Available Balance</h2>
+                  <h2 className="text-sm font-semibold text-vana-text-secondary uppercase tracking-wider mb-1">{pDict.availableBalance}</h2>
                   <div className="flex items-end gap-2">
                     <span className="text-4xl sm:text-5xl font-bold text-vana-text">{displayBalance}</span>
                     <span className="text-xl text-vana-text-secondary mb-1">USDC</span>
