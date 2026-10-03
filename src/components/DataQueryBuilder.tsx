@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { PAGES_DICT } from '@/lib/i18n/pages-dict';
 import { DATA_SOURCES, EARNINGS_RATES } from '@/lib/data-sources';
 import { useAccount, useWriteContract } from 'wagmi';
 import { useSession } from 'next-auth/react';
@@ -12,6 +13,8 @@ import { parseUnits } from 'viem';
 const erc20Abi = [{type: 'function', name: 'approve', inputs: [{ name: 'spender', type: 'address' }, { name: 'amount', type: 'uint256' }], outputs: [{ type: 'bool' }], stateMutability: 'nonpayable'}] as const;
 
 export function DataQueryBuilder() {
+  const { locale } = useLanguage();
+  const pDict = PAGES_DICT[locale as keyof typeof PAGES_DICT]?.pricing || PAGES_DICT.en.pricing;
   const { t } = useLanguage();
   const { address, isConnected } = useAccount();
   const sessionObj = useSession();
@@ -331,14 +334,14 @@ export function DataQueryBuilder() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Processing...
+                  {pDict.processing}
                 </>
               ) : (
                 <>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
-                  Purchase Dataset
+                  {pDict.purchaseDataset}
                 </>
               )}
             </button>
@@ -347,9 +350,7 @@ export function DataQueryBuilder() {
               <svg className="w-5 h-5 text-vana-green shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
               </svg>
-              <p className="text-xs text-gray-500 leading-relaxed">
-                Payments are securely processed via the Lumina Smart Contract and routed directly to the users providing data.
-              </p>
+              <p className="text-xs text-gray-500 leading-relaxed">{pDict.paymentsProcessed}</p>
             </div>
           </div>
         </div>
@@ -362,7 +363,7 @@ export function DataQueryBuilder() {
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
               </div>
               <div>
-                <h3 className="text-white font-bold text-base">How Pricing Works</h3>
+                <h3 className="text-white font-bold text-base">{pDict.howPricingWorks}</h3>
               </div>
             </div>
 
@@ -373,8 +374,8 @@ export function DataQueryBuilder() {
                   <div className="w-px h-full bg-[#222] my-1 group-hover:bg-vana-primary/30 transition-colors" />
                 </div>
                 <div className="pb-3 w-full">
-                  <h4 className="text-sm font-semibold text-white mb-1">Base Source Value</h4>
-                  <p className="text-xs text-gray-400 leading-relaxed">Every dataset has a base market rate (e.g. GitHub is $15.00). This represents the highest Tier A premium price.</p>
+                  <h4 className="text-sm font-semibold text-white mb-1">{pDict.step1Title}</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed">{pDict.step1Desc}</p>
                 </div>
               </div>
 
@@ -384,8 +385,8 @@ export function DataQueryBuilder() {
                   <div className="w-px h-full bg-[#222] my-1 group-hover:bg-vana-primary/30 transition-colors" />
                 </div>
                 <div className="pb-3 w-full">
-                  <h4 className="text-sm font-semibold text-white mb-1">Quality Multipliers</h4>
-                  <p className="text-xs text-gray-400 leading-relaxed mb-3">The AI Oracle scores data from 0-100. Lower quality tiers apply a discount multiplier to the base value:</p>
+                  <h4 className="text-sm font-semibold text-white mb-1">{pDict.step2Title}</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-3">{pDict.step2Desc}</p>
                   <ul className="text-xs text-gray-400 space-y-2 bg-[#111] p-3 rounded-lg border border-[#222]">
                     <li className="flex justify-between items-center"><span className="text-white">Tier A (80-100 pts)</span> <span className="text-vana-green font-mono font-bold bg-vana-green/10 px-2 py-0.5 rounded">x 1.00</span></li>
                     <li className="flex justify-between items-center"><span className="text-white">Tier B (50-79 pts)</span> <span className="text-amber-400 font-mono font-bold bg-amber-400/10 px-2 py-0.5 rounded">x 0.50</span></li>
@@ -400,8 +401,8 @@ export function DataQueryBuilder() {
                   <div className="w-6 h-6 rounded-full bg-[#222] border border-[#333] text-gray-400 text-xs font-bold flex items-center justify-center group-hover:border-vana-primary group-hover:text-vana-primary transition-colors">3</div>
                 </div>
                 <div className="pb-0 w-full">
-                  <h4 className="text-sm font-semibold text-white mb-1">Fair Revenue Split</h4>
-                  <p className="text-xs text-gray-400 leading-relaxed">Total Cost = (Base Value × Multiplier) × Volume.<br/><br/>Exactly <strong className="text-white">80%</strong> of your payment goes instantly to the users' crypto wallets.</p>
+                  <h4 className="text-sm font-semibold text-white mb-1">{pDict.step3Title}</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed whitespace-pre-wrap">{pDict.step3Desc}</p>
                 </div>
               </div>
             </div>

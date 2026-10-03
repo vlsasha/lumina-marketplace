@@ -12,6 +12,7 @@ import { formatUnits } from 'viem';
 import { MARKETPLACE_CONFIG } from '@/lib/config';
 import { luminaMarketplaceAbi } from '@/lib/abi';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { PAGES_DICT } from '@/lib/i18n/pages-dict';
 
 type ConnectionStatus = 'idle' | 'pending' | 'approved' | 'completed' | 'denied' | 'error';
 
@@ -46,7 +47,8 @@ const getTierMultiplier = (score: number) => {
 };
 
 export default function DashboardPage() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
+  const pDict = PAGES_DICT[locale as keyof typeof PAGES_DICT]?.dashboard || PAGES_DICT.en.dashboard;
   const { address, isConnected } = useAccount();
   const sessionObj = useSession();
   const isAuthenticated = isConnected || sessionObj?.status === 'authenticated';

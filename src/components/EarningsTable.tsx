@@ -1,6 +1,12 @@
 import { DATA_SOURCES, EARNINGS_RATES } from '@/lib/data-sources';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { PAGES_DICT } from '@/lib/i18n/pages-dict';
+import { SOURCES_DICT } from '@/lib/i18n/sources-dict';
 
 export function EarningsTable() {
+  const { locale } = useLanguage();
+  const pDict = PAGES_DICT[locale as keyof typeof PAGES_DICT]?.dashboard || PAGES_DICT.en.dashboard;
+  const sDict = SOURCES_DICT[locale as keyof typeof SOURCES_DICT] || SOURCES_DICT.en;
   return (
     <div className="bg-vana-card border border-vana-border rounded-2xl p-5 shadow-lg">
       <div className="mb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
@@ -19,10 +25,10 @@ export function EarningsTable() {
           <table className="w-full text-left text-xs whitespace-nowrap">
             <thead className="bg-[#1a1a1a] text-vana-text-secondary border-b border-vana-border">
               <tr>
-                <th className="py-2.5 px-3 font-medium">Source</th>
-                <th className="py-2.5 px-3 font-medium">Data Payload</th>
-                <th className="py-2.5 px-3 font-medium text-right">Initial Sync</th>
-                <th className="py-2.5 px-3 font-medium text-right">Monthly Yield</th>
+                <th className="py-2.5 px-3 font-medium">{pDict.colSource}</th>
+                <th className="py-2.5 px-3 font-medium">{pDict.colPayload}</th>
+                <th className="py-2.5 px-3 font-medium text-right">{pDict.colInitial}</th>
+                <th className="py-2.5 px-3 font-medium text-right">{pDict.colMonthly}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-vana-border bg-black/20">

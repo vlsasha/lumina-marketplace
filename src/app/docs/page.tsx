@@ -1,6 +1,7 @@
 'use client';
 
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { PAGES_DICT } from '@/lib/i18n/pages-dict';
 
 
 
@@ -20,6 +21,8 @@ const DOCS_SECTIONS = (t: any) => [
 ];
 
 export default function DocsPage() {
+  const { locale } = useLanguage();
+  const pDict = PAGES_DICT[locale as keyof typeof PAGES_DICT]?.docs || PAGES_DICT.en.docs;
   const { t } = useLanguage();
   const [activeSection, setActiveSection] = useState('overview');
 
@@ -58,7 +61,7 @@ export default function DocsPage() {
         <main className="flex-1 lg:ml-72 pb-32">
           
           <div className="prose prose-invert prose-vana max-w-4xl">
-            <h1 className="text-4xl font-bold mb-8">Lumina Documentation</h1>
+            <h1 className="text-4xl font-bold mb-8">{pDict.title}</h1>
             <p className="text-xl text-vana-text-secondary mb-12 leading-relaxed">
               Welcome to the official developer and user documentation for Lumina. 
               Learn how to monetize your data, query verified datasets, and integrate with our Vana-powered smart contracts.
@@ -66,7 +69,7 @@ export default function DocsPage() {
 
             {/* OVERVIEW */}
             <section id="overview" className="scroll-mt-32 mb-16">
-              <h2 className="text-2xl font-bold border-b border-vana-border pb-2 mb-6">Platform Overview</h2>
+              <h2 className="text-2xl font-bold border-b border-vana-border pb-2 mb-6">{pDict.platformOverview}</h2>
               <p className="text-vana-text-secondary mb-4 leading-relaxed">
                 Lumina is a decentralized API Marketplace and Data Liquidity Pool (DLP) built natively on the <strong>Vana Network</strong>. 
                 We bridge the gap between individual users who generate valuable data (Data Providers) and AI companies/researchers (B2B Buyers) who need high-quality, verified datasets to train models.
@@ -78,12 +81,12 @@ export default function DocsPage() {
 
             {/* PROVIDERS */}
             <section id="providers" className="scroll-mt-32 mb-16">
-              <h2 className="text-2xl font-bold border-b border-vana-border pb-2 mb-6">For Data Providers</h2>
+              <h2 className="text-2xl font-bold border-b border-vana-border pb-2 mb-6">{pDict.forProviders}</h2>
               <h3 className="text-lg font-semibold mb-3 mt-6">How it Works</h3>
               <ul className="list-disc pl-5 space-y-2 text-vana-text-secondary mb-6">
                 <li><strong>Personal Server:</strong> Users securely connect their Web2 accounts (e.g., ChatGPT, Spotify, Instagram) to their own <strong>Vana Personal Server</strong> via <a href="https://app.vana.org/sources" target="_blank" rel="noopener noreferrer" className="text-vana-primary hover:underline">app.vana.org/sources</a>.<br/><span className="text-sm mt-1 inline-block opacity-80"><em>Note: To securely connect private (non-public) data, you must authenticate and process data locally using the official <a href="https://app.vana.org/download" target="_blank" rel="noopener noreferrer" className="text-vana-primary hover:underline">Vana Desktop application</a>.</em></span></li>
-                <li><strong>Data Connection Request:</strong> Lumina sends a request to the user's Personal Server asking for permission to access specific data scopes.</li>
-                <li><strong>Verification:</strong> Once approved, the data undergoes an automated <em>Proof of Contribution (PoC)</em> check by AI Oracles to ensure authenticity and uniqueness.</li>
+                <li><strong>Data Connection Request:</strong> {pDict.hw2}</li>
+                <li><strong>Verification:</strong> {pDict.hw3}</li>
                 <li><strong>Earn:</strong> When AI companies, research institutions, marketing agencies, or other enterprise clients purchase data matching your demographic, you automatically receive 80% of the revenue directly to your connected EVM wallet on the Vana Network.</li>
               </ul>
               
@@ -239,10 +242,10 @@ dataset = response.json()<br/>
                   </p>
                   <div className="bg-[#111] p-4 rounded-xl border border-[#222]">
                     <ul className="list-disc pl-4 space-y-2 text-sm text-gray-400">
-                      <li>When a user connects a dataset, our backend parses the raw JSON payload.</li>
-                      <li>We extract the immutable system ID from the platform (e.g., <code>youtube_channel_id</code> or ChatGPT's root <code>conversation_id</code>).</li>
-                      <li>This ID is stored as <code>provider_account_id</code> with a strict <strong>UNIQUE SQL Constraint</strong>.</li>
-                      <li>If a user switches wallets or logs in via Google/Email and tries to upload the same account again, the database physically rejects the transaction (409 Conflict). One human = One dataset.</li>
+                      <li>{pDict.poc1Li1}</li>
+                      <li>{pDict.poc1Li2}</li>
+                      <li>{pDict.poc1Li3}</li>
+                      <li>{pDict.poc1Li4}</li>
                     </ul>
                   </div>
                 </div>
@@ -259,15 +262,15 @@ dataset = response.json()<br/>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="bg-[#111] p-4 rounded-xl border border-[#222]">
                         <h4 className="font-bold text-white mb-2 text-sm flex items-center gap-2"><span className="text-vana-primary">⏱</span> Historical Depth</h4>
-                        <p className="text-xs text-gray-400 leading-relaxed">A 5-year-old GitHub account with 500 commits scores significantly higher than a 1-week-old account created just to farm and sell data.</p>
+                        <p className="text-xs text-gray-400 leading-relaxed">{pDict.poc2Pillar1Desc}</p>
                       </div>
                       <div className="bg-[#111] p-4 rounded-xl border border-[#222]">
                         <h4 className="font-bold text-white mb-2 text-sm flex items-center gap-2"><span className="text-vana-primary">📊</span> Data Density</h4>
-                        <p className="text-xs text-gray-400 leading-relaxed">An Oura Ring sync containing 365 days of continuous sleep architecture is worth exponentially more than a fragmented 3-day log.</p>
+                        <p className="text-xs text-gray-400 leading-relaxed">{pDict.poc2Pillar2Desc}</p>
                       </div>
                       <div className="bg-[#111] p-4 rounded-xl border border-[#222]">
                         <h4 className="font-bold text-white mb-2 text-sm flex items-center gap-2"><span className="text-vana-primary">🛡️</span> Authenticity Risk</h4>
-                        <p className="text-xs text-gray-400 leading-relaxed">A LinkedIn profile with 500+ connections and recommendations verifies you as human, protecting B2B buyers from bot-generated data.</p>
+                        <p className="text-xs text-gray-400 leading-relaxed">{pDict.poc2Pillar3Desc}</p>
                       </div>
                     </div>
                   </div>
@@ -285,9 +288,9 @@ dataset = response.json()<br/>
                       <table className="w-full text-sm text-left border-collapse">
                         <thead>
                           <tr className="border-b border-[#333] text-gray-400">
-                            <th className="py-3 font-medium">Quality Tier</th>
-                            <th className="py-3 font-medium">PoC Score Range</th>
-                            <th className="py-3 font-medium">Payout Multiplier</th>
+                            <th className="py-3 font-medium">{pDict.poc3TableCol1}</th>
+                            <th className="py-3 font-medium">{pDict.poc3TableCol2}</th>
+                            <th className="py-3 font-medium">{pDict.poc3TableCol3}</th>
                           </tr>
                         </thead>
                         <tbody className="text-gray-300">
@@ -317,12 +320,8 @@ dataset = response.json()<br/>
                     <div className="mt-4 p-4 rounded-xl bg-vana-primary/5 border border-vana-primary/20 flex gap-3 items-start">
                       <div className="text-xl">💡</div>
                       <div>
-                        <h4 className="text-sm font-bold text-white mb-1">Example Calculation</h4>
-                        <p className="text-xs text-gray-400 leading-relaxed">
-                          If you connect a GitHub Developer Profile (Base Dataset Value: <span className="text-white">$15.00</span>), and the Oracle assigns you a Quality Score of <span className="text-vana-green font-bold">90 (Tier A)</span>:<br/><br/>
-                          Estimated Value = $15.00 × 0.90 = <span className="text-vana-primary font-bold">$13.50</span><br/>
-                          When a buyer purchases your data, <span className="text-vana-primary font-bold">$13.50</span> is instantly credited to your <strong>Available Balance</strong> via the smart contract, ready to be claimed to your wallet.
-                        </p>
+                        <h4 className="text-sm font-bold text-white mb-1">{pDict.poc3ExTitle}</h4>
+                        <p className="text-xs text-gray-400 leading-relaxed">{pDict.poc3ExDesc}</p>
                       </div>
                     </div>
                   </div>
