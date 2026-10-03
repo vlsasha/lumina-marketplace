@@ -3,9 +3,11 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export function HeroSection() {
   const [mounted, setMounted] = useState(false);
+  const { t } = useLanguage();
   useEffect(() => setMounted(true), []);
 
   return (
@@ -28,13 +30,13 @@ export function HeroSection() {
         <div className="text-center w-full mx-auto mb-8 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
           <h1 className="text-5xl sm:text-7xl lg:text-[90px] xl:text-[110px] font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-gray-500 pb-2 leading-[1.1]">
             Turn your personal data <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-vana-primary via-[#b9ff42] to-[#7fdb00]">into a valuable asset</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-vana-primary via-[#b9ff42] to-[#7fdb00]">{t.hero.title2}</span>
           </h1>
         </div>
 
         {/* Subtitle */}
         <p className="text-center text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-10 animate-fade-in-up font-medium" style={{ animationDelay: '0.2s' }}>
-          Connect your digital accounts once, and let your data work for you. Secure, private, and fully decentralized on the Vana protocol.
+          {t.hero.subtitle}
         </p>
 
         {/* CTA Buttons */}
@@ -43,7 +45,7 @@ export function HeroSection() {
             href="/sources"
             className="group flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl bg-vana-primary text-black font-bold text-base transition-all hover:bg-[#b9ff42] hover:shadow-[0_0_40px_rgba(205,255,100,0.3)] hover:-translate-y-0.5"
           >
-            Explore Data Sources
+            {t.hero.btnExplore}
             <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
             </svg>
@@ -52,7 +54,7 @@ export function HeroSection() {
             href="/docs"
             className="group flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl border border-[#333] bg-[#111]/50 backdrop-blur-sm hover:border-vana-primary/50 text-white font-semibold text-base transition-all hover:bg-[#1a1a1a]"
           >
-            Read Documentation
+            {t.hero.btnDocs}
           </Link>
         </div>
 

@@ -8,6 +8,7 @@ import {
 } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 import { SessionProvider } from 'next-auth/react';
+import { LanguageProvider } from '@/lib/i18n/LanguageContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 
@@ -90,6 +91,7 @@ const CustomAvatar = ({ address, ensImage, size }: any) => {
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
+      <LanguageProvider>
       <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
@@ -109,6 +111,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
+          </LanguageProvider>
     </SessionProvider>
   );
 }
