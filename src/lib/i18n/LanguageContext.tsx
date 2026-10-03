@@ -21,9 +21,13 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     if (saved && dictionaries[saved]) {
       setLocaleState(saved);
     } else {
-      const browserLang = navigator.language.slice(0, 2) as Locale;
-      if (dictionaries[browserLang]) {
-        setLocaleState(browserLang);
+      const userLangs = navigator.languages || [navigator.language || 'en'];
+      for (const lang of userLangs) {
+        const shortLang = lang.slice(0, 2) as Locale;
+        if (dictionaries[shortLang]) {
+          setLocaleState(shortLang);
+          break;
+        }
       }
     }
   }, []);
