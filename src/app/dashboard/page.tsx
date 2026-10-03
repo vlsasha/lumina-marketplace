@@ -553,7 +553,7 @@ export default function DashboardPage() {
                           <button
                             onClick={() => handleConnect(source.source)}
                             disabled={isLoading}
-                            className="px-4 py-2 text-xs rounded-lg bg-vana-primary hover:bg-vana-primary/90 text-white font-medium transition-colors disabled:opacity-50"
+                            className="px-4 py-2 text-xs rounded-lg bg-vana-primary hover:bg-[#b9ff42] active:scale-95 text-black font-bold transition-all shadow-[0_0_10px_rgba(205,255,100,0.15)] disabled:opacity-50"
                           >
                             {isLoading ? 'Creating...' : 'Connect'}
                           </button>
