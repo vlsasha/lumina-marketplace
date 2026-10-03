@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { DataSource } from '@/lib/data-sources';
 import { useAccount } from 'wagmi';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 interface SourceCardProps {
   source: DataSource & { status?: string, qualityScore?: number };
@@ -27,6 +28,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const { address } = useAccount();
+  const { openConnectModal } = useConnectModal();
 
   const statusConfig = {
     available: { label: 'Available', color: 'text-vana-green', bg: 'bg-vana-green/10', border: 'border-vana-green/20' },
@@ -38,6 +40,13 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
   const status = statusConfig[source.status];
 
   const handleConnect = async () => {
+    if (!address) {
+      if (openConnectModal) {
+        openConnectModal();
+      }
+      return;
+    }
+
     setIsConnecting(true);
     try {
       const res = await fetch('/api/vana/request', {
