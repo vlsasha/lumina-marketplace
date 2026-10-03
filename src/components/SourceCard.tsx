@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { DataSource } from '@/lib/data-sources';
 import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useSession, signIn } from 'next-auth/react';
 
 interface SourceCardProps {
   source: DataSource & { status?: string, qualityScore?: number };
@@ -28,6 +29,8 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const { address } = useAccount();
+  const { status: sessionStatus } = useSession();
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const { openConnectModal } = useConnectModal();
 
   const statusConfig = {
