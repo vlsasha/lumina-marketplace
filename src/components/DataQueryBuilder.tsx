@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { DATA_SOURCES, EARNINGS_RATES } from '@/lib/data-sources';
 import { useAccount, useWriteContract } from 'wagmi';
 import { useSession } from 'next-auth/react';
@@ -11,6 +12,7 @@ import { parseUnits } from 'viem';
 const erc20Abi = [{type: 'function', name: 'approve', inputs: [{ name: 'spender', type: 'address' }, { name: 'amount', type: 'uint256' }], outputs: [{ type: 'bool' }], stateMutability: 'nonpayable'}] as const;
 
 export function DataQueryBuilder() {
+  const { t } = useLanguage();
   const { address, isConnected } = useAccount();
   const sessionObj = useSession();
   const { writeContractAsync } = useWriteContract();
@@ -134,8 +136,8 @@ export function DataQueryBuilder() {
         {/* Left Col: Query Builder */}
         <div className="lg:col-span-12 xl:col-span-6 space-y-8">
           <div>
-            <h2 className="text-2xl font-bold text-white mb-2">Build Your Dataset</h2>
-            <p className="text-gray-400 text-sm">Select audience filters and data sources to calculate real-time pricing.</p>
+            <h2 className="text-2xl font-bold text-white mb-2">{t.pricing.buildTitle}</h2>
+            <p className="text-gray-400 text-sm">{t.pricing.buildSubtitle}</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -279,30 +281,30 @@ export function DataQueryBuilder() {
             
             <div className="space-y-4 mb-6">
               <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-400">Quality Tier</span>
+                <span className="text-gray-400">{t.pricing.summQualityTier}</span>
                 <span className="text-white font-medium">{'Tier ' + selectedTier}</span>
               </div>
               <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-400">Selected Source</span>
+                <span className="text-gray-400">{t.pricing.summSelectedSource}</span>
                 <span className="text-white font-medium">{selectedSource ? DATA_SOURCES.find(s=>s.id===selectedSource)?.name : 'None'}</span>
               </div>
               <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-400">Datasets Volume</span>
+                <span className="text-gray-400">{t.pricing.summVolume}</span>
                 <span className="text-white font-medium">{volume.toLocaleString()} datasets</span>
               </div>
               
               <div className="flex justify-between items-center text-sm border-t border-[#222] pt-4 mt-4">
-                <span className="text-gray-400">Premium Price (Tier A)</span>
+                <span className="text-gray-400">{t.pricing.summPremiumPrice}</span>
                 <span className="text-white font-mono">${basePrice.toFixed(2)}</span>
               </div>
               <div className="flex justify-between items-center text-sm mt-3">
-                <span className="text-gray-400">Quality Multiplier</span>
+                <span className="text-gray-400">{t.pricing.summMultiplier}</span>
                 <span className={`font-mono font-medium ${tierMultiplier === 1.0 ? 'text-vana-green' : 'text-gray-400'}`}>
                   x{tierMultiplier.toFixed(2)}
                 </span>
               </div>
               <div className="flex justify-between items-center text-sm mt-3">
-                <span className="text-gray-400">Final Cost per Dataset</span>
+                <span className="text-gray-400">{t.pricing.summFinalCost}</span>
                 <span className="text-white font-mono">${costPerDataset.toFixed(2)}</span>
               </div>
 
@@ -310,7 +312,7 @@ export function DataQueryBuilder() {
 
             <div className="mb-8 bg-vana-primary/5 rounded-xl p-4 border border-vana-primary/10">
               <div className="flex justify-between items-end mb-2">
-                <span className="text-sm font-medium text-vana-primary">Total Cost</span>
+                <span className="text-sm font-medium text-vana-primary">{t.pricing.summTotalCost}</span>
                 <div className="text-right">
                   <div className="text-3xl font-black text-white leading-none mb-1">${totalCost.toFixed(2)}</div>
                   <div className="text-xs text-gray-500 font-mono">USDC.e</div>

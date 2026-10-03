@@ -1,9 +1,17 @@
+'use client';
+
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+
+
+
+
 export function HowItWorks() {
+  const { t } = useLanguage();
   const steps = [
     {
       number: '01',
-      title: 'Connect & Sync',
-      description: 'Users connect their wallets and securely sync their personal data from popular platforms like Instagram, Spotify, or LinkedIn.',
+      title: t.howItWorks.step1Title,
+      description: t.howItWorks.step1Desc,
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3" />
@@ -12,7 +20,7 @@ export function HowItWorks() {
     },
     {
       number: '02',
-      title: 'Companies Browse Data',
+      title: t.howItWorks.step2Title,
       description: 'Firms, AI researchers, and brands browse the marketplace and request access to valuable user-owned datasets.',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

@@ -104,7 +104,7 @@ export function Header() {
                 className="flex items-center justify-center w-10 h-10 rounded-xl bg-vana-card border border-vana-border hover:border-vana-primary/50 transition-colors"
                 title="Change Language"
               >
-                <span className="text-xl">{locales.find(l => l.code === locale)?.flag}</span>
+                <span className="text-sm font-bold uppercase">{locale}</span>
               </button>
               
               {isLangMenuOpen && (
@@ -121,8 +121,8 @@ export function Header() {
                           onClick={() => { setLocale(l.code); setIsLangMenuOpen(false); }}
                           className={`w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${locale === l.code ? 'bg-vana-primary/10 text-vana-primary' : 'text-gray-300 hover:bg-[#222]'}`}
                         >
-                          <span className="text-xl">{l.flag}</span>
-                          <span className="font-medium text-sm">{l.name} - {l.code.toUpperCase()}</span>
+                          
+                          <span className="font-medium text-sm w-full text-left">{l.code.toUpperCase()} - {l.name}</span>
                         </button>
                       ))}
                     </div>
@@ -211,7 +211,7 @@ export function Header() {
                       onClick={() => setLocale(l.code)}
                       className={`flex items-center justify-center gap-2 px-2 py-2 rounded-lg border ${locale === l.code ? 'border-vana-primary bg-vana-primary/10 text-vana-primary' : 'border-[#333] bg-[#111] text-gray-400'}`}
                     >
-                      <span>{l.flag}</span> <span className="text-xs font-medium">{l.code.toUpperCase()}</span>
+                      <span className="text-xs font-medium uppercase">{l.code} - {l.name}</span>
                     </button>
                   ))}
                 </div>

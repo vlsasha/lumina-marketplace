@@ -1,16 +1,24 @@
+'use client';
+
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+
+
+
+
 import { DATA_SOURCES } from '@/lib/data-sources';
 
 export function MonetizeInfoSection() {
+  const { t } = useLanguage();
   const groups = [
     {
-      title: 'Health & Biometrics',
-      description: 'Your physical activity, sleep cycles, and daily recovery metrics are highly sought after by HealthTech startups and researchers.',
+      title: t.monetize.groups.health,
+      description: t.monetize.groups.healthDesc,
       sources: ['oura', 'whoop', 'strava'],
       glow: 'from-[#FC4C02] to-[#000000]'
     },
     {
-      title: 'Professional & Code',
-      description: 'B2B contact networks and coding repositories are premium assets for AI recruitment models and developer copilots.',
+      title: t.monetize.groups.prof,
+      description: t.monetize.groups.profDesc,
       sources: ['linkedin', 'github'],
       glow: 'from-[#0A66C2] to-[#ffffff]'
     },

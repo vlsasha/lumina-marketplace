@@ -1,18 +1,26 @@
 'use client';
 
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+
+
+
+
+
+
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useState } from 'react';
 
-const DOCS_SECTIONS = [
-  { id: 'overview', title: 'Platform Overview' },
-  { id: 'providers', title: 'For Data Providers' },
-  { id: 'buyers', title: 'For B2B Buyers' },
-  { id: 'architecture', title: 'Architecture & Contracts' },
-  { id: 'poc', title: 'Proof of Contribution (PoC)' },
+const DOCS_SECTIONS = (t: any) => [
+  { id: 'overview', title: t.docs.sections.overview },
+  { id: 'providers', title: t.docs.sections.providers },
+  { id: 'buyers', title: t.docs.sections.buyers },
+  { id: 'architecture', title: t.docs.sections.architecture },
+  { id: 'poc', title: t.docs.sections.poc },
 ];
 
 export default function DocsPage() {
+  const { t } = useLanguage();
   const [activeSection, setActiveSection] = useState('overview');
 
   const scrollToSection = (id: string) => {
@@ -28,9 +36,9 @@ export default function DocsPage() {
         
         {/* Sidebar Navigation */}
         <aside className="hidden lg:block w-64 shrink-0 fixed h-[calc(100vh-120px)] overflow-y-auto pr-6 border-r border-vana-border">
-          <h2 className="text-xs font-bold text-vana-text-muted uppercase tracking-wider mb-4">Documentation</h2>
+          <h2 className="text-xs font-bold text-vana-text-muted uppercase tracking-wider mb-4">{t.docs.title}</h2>
           <nav className="space-y-1">
-            {DOCS_SECTIONS.map((section) => (
+            {DOCS_SECTIONS(t).map((section) => (
               <button
                 key={section.id}
                 onClick={() => scrollToSection(section.id)}

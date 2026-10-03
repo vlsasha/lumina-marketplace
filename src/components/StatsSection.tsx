@@ -1,7 +1,15 @@
+'use client';
+
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+
+
+
+
 
 import { DATA_SOURCES, getTotalScopes } from '@/lib/data-sources';
 
 export function StatsSection() {
+  const { t } = useLanguage();
   const stats = [
     {
       value: 'Unified API',
@@ -38,8 +46,8 @@ export function StatsSection() {
       <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">Built for the future of data ownership</h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">Lumina provides the enterprise-grade infrastructure needed to securely connect, validate, and route private user data directly to researchers and brands.</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">{t.stats.title1}</h2>
+          <p className="text-gray-400 max-w-2xl mx-auto">{t.stats.title2}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-7xl mx-auto">

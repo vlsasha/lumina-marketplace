@@ -14,12 +14,8 @@ export default function PricingPage() {
           
           {/* Header */}
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h1 className="text-4xl sm:text-5xl font-bold text-vana-text mb-6">
-              Fair Pricing for Quality Data
-            </h1>
-            <p className="text-lg text-vana-text-secondary">
-              Buyers get verified, high-quality datasets to train models and build products. Users receive revenue directly to their wallets.
-            </p>
+            <h1 className="text-4xl sm:text-5xl font-bold text-vana-text mb-6">{t.pricing.fairPricingTitle}</h1>
+            <p className="text-lg text-vana-text-secondary">{t.pricing.fairPricingDesc}</p>
           </div>
 
           {/* B2B Query Builder */}
