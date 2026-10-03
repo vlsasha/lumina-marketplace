@@ -144,12 +144,16 @@ const baseTranslations = {
       title1: 'Built for the future of data ownership',
       title2: 'Lumina provides the enterprise-grade infrastructure needed to securely connect, validate, and route private user data directly to researchers and brands.',
       f1_title: 'Unified API',
+      f1_label: 'RESTful endpoints for all Web2 sources',
       f1_desc: 'Access YouTube, LinkedIn, Instagram, and 10+ others through a single standardized schema.',
       f2_title: 'Proof of Contribution',
+      f2_label: 'LLM-validated authenticity scoring',
       f2_desc: 'Every data point is scored by Vana network validators for quality and authenticity before sale.',
       f3_title: 'Zero-Knowledge',
+      f3_label: 'Cryptographic Privacy',
       f3_desc: 'Personally identifiable information (PII) is automatically redacted. Buyers only see encrypted aggregates.',
       f4_title: 'User Owned',
+      f4_label: 'Decentralized Architecture',
       f4_desc: 'Data never leaves your local machine. Vana Desktop serves data directly from your device.'
     },
     monetize: {
@@ -236,7 +240,7 @@ const baseTranslations = {
     hero: {
       title1: 'Превратите ваши личные данные',
       title2: 'в ценный актив',
-      subtitle: 'Безопасно подключите аккаунты через Vana Desktop и зарабатывайте на своем цифровом следе. B2B исследователи получают доступ к данным через Zero-Knowledge proofs.',
+      subtitle: 'Безопасно подключите аккаунты через Vana Desktop и зарабатывайте на своем цифровом следе. B2B исследователи получают доступ к данным через доказательства с нулевым разглашением (ZK).',
       btnExplore: 'Обзор источников',
       btnDocs: 'Документация',
       statsUsers: 'Активных пользователей',
@@ -341,12 +345,16 @@ const baseTranslations = {
       title1: 'Создано для будущего владения данными',
       title2: 'Lumina предоставляет инфраструктуру корпоративного уровня для безопасного подключения, проверки и маршрутизации ваших личных данных напрямую исследователям и брендами.',
       f1_title: 'Единый API',
+      f1_label: 'RESTful-эндпоинты для всех Web2 источников',
       f1_desc: 'Получите доступ к YouTube, LinkedIn, Instagram и еще 10+ источникам через единую стандартизированную схему.',
       f2_title: 'Доказательство вклада (PoC)',
+      f2_label: 'Оценка подлинности валидаторами Vana',
       f2_desc: 'Каждая единица данных оценивается валидаторами сети Vana на качество и подлинность перед продажей.',
-      f3_title: 'Zero-Knowledge',
+      f3_title: 'Нулевое разглашение (ZK)',
+      f3_label: 'Криптографическая конфиденциальность',
       f3_desc: 'Личная информация (PII) автоматически удаляется. Покупатели видят только зашифрованные агрегированные данные.',
       f4_title: 'Принадлежит пользователю',
+      f4_label: 'Децентрализованная архитектура',
       f4_desc: 'Данные никогда не покидают ваш ПК. Vana Desktop раздает данные напрямую с вашего устройства.'
     },
     monetize: {
@@ -433,7 +441,7 @@ const baseTranslations = {
     hero: {
       title1: 'Convierte tus datos personales',
       title2: 'en un activo valioso',
-      subtitle: 'Conecta tus cuentas de forma segura a través de Vana Desktop y gana rendimiento. Los investigadores acceden mediante Zero-Knowledge proofs.',
+      subtitle: 'Conecta tus cuentas de forma segura a través de Vana Desktop y gana rendimiento. Los investigadores acceden mediante pruebas de conocimiento cero.',
       btnExplore: 'Explorar Fuentes',
       btnDocs: 'Leer Docs',
       statsUsers: 'Usuarios Activos',
@@ -538,12 +546,16 @@ const baseTranslations = {
       title1: 'Construido para el futuro de los datos',
       title2: 'Lumina proporciona infraestructura empresarial para conectar, validar y enrutar datos de forma segura.',
       f1_title: 'API Unificada',
+      f1_label: 'Endpoints RESTful para fuentes Web2',
       f1_desc: 'Accede a YouTube, LinkedIn, Instagram y 10+ fuentes mediante un esquema estándar.',
-      f2_title: 'Proof of Contribution',
+      f2_title: 'Prueba de Contribución (PoC)',
+      f2_label: 'Puntuación de autenticidad',
       f2_desc: 'Cada punto de dato es puntuado por validadores de la red Vana antes de la venta.',
-      f3_title: 'Zero-Knowledge',
+      f3_title: 'Conocimiento Cero (ZK)',
+      f3_label: 'Privacidad Criptográfica',
       f3_desc: 'La información personal (PII) es redactada automáticamente. Los compradores solo ven agregados cifrados.',
       f4_title: 'Propiedad del Usuario',
+      f4_label: 'Arquitectura Descentralizada',
       f4_desc: 'Los datos nunca salen de tu PC. Vana Desktop los sirve directamente desde tu dispositivo.'
     },
     monetize: {
@@ -630,7 +642,7 @@ const baseTranslations = {
     hero: {
       title1: 'Transforme seus dados',
       title2: 'em um ativo valioso',
-      subtitle: 'Conecte contas com segurança via Vana Desktop e ganhe rendimento. Compradores acessam via Zero-Knowledge proofs.',
+      subtitle: 'Conecte contas com segurança via Vana Desktop e ganhe rendimento. Compradores acessam via provas de conhecimento zero.',
       btnExplore: 'Explorar Fontes',
       btnDocs: 'Ler Docs',
       statsUsers: 'Usuários Ativos',
@@ -735,12 +747,16 @@ const baseTranslations = {
       title1: 'Construído para o futuro dos dados',
       title2: 'A Lumina fornece infraestrutura para conectar, validar e rotear dados de forma segura.',
       f1_title: 'API Unificada',
+      f1_label: 'Endpoints RESTful para fontes Web2',
       f1_desc: 'Acesse YouTube, LinkedIn, Instagram e 10+ fontes por meio de um esquema padrão.',
-      f2_title: 'Proof of Contribution',
+      f2_title: 'Prova de Contribuição (PoC)',
+      f2_label: 'Pontuação de autenticidade validada',
       f2_desc: 'Cada ponto de dados é pontuado por validadores da rede Vana.',
-      f3_title: 'Zero-Knowledge',
+      f3_title: 'Conhecimento Zero (ZK)',
+      f3_label: 'Privacidade Criptográfica',
       f3_desc: 'Informações pessoais (PII) são removidas automaticamente.',
       f4_title: 'Propriedade do Usuário',
+      f4_label: 'Arquitetura Descentralizada',
       f4_desc: 'Os dados nunca saem do seu PC. O Vana Desktop os serve do seu dispositivo.'
     },
     monetize: {
@@ -932,12 +948,16 @@ const baseTranslations = {
       title1: 'Gebaut für die Zukunft des Datenbesitzes',
       title2: 'Lumina bietet Unternehmensinfrastruktur zur sicheren Weiterleitung privater Daten.',
       f1_title: 'Einheitliche API',
+      f1_label: 'RESTful-Endpunkte für Web2-Quellen',
       f1_desc: 'Greifen Sie auf YouTube, LinkedIn und mehr über ein standardisiertes Schema zu.',
-      f2_title: 'Proof of Contribution',
+      f2_title: 'Beitragsnachweis (PoC)',
+      f2_label: 'Authentizitätsbewertung',
       f2_desc: 'Jeder Datenpunkt wird vor dem Verkauf von Vana-Validatoren bewertet.',
-      f3_title: 'Zero-Knowledge',
+      f3_title: 'Zero-Knowledge-Beweise (ZK)',
+      f3_label: 'Kryptografische Privatsphäre',
       f3_desc: 'Personenbezogene Daten (PII) werden automatisch entfernt.',
       f4_title: 'Im Besitz des Nutzers',
+      f4_label: 'Dezentrale Architektur',
       f4_desc: 'Daten verlassen niemals Ihren PC. Vana Desktop bedient Käufer direkt.'
     },
     monetize: {
@@ -1129,12 +1149,16 @@ const baseTranslations = {
       title1: '为数据所有权的未来而建',
       title2: 'Lumina 提供企业级基础设施，安全连接、验证并传输私人用户数据。',
       f1_title: '统一 API',
+      f1_label: '所有 Web2 资源的 RESTful 接口',
       f1_desc: '通过单一标准化架构访问 YouTube、LinkedIn、Instagram 等。',
       f2_title: '贡献证明 (PoC)',
+      f2_label: 'LLM 验证的真实性评分',
       f2_desc: '每个数据点在出售前均由 Vana 网络验证者进行质量评分。',
       f3_title: '零知识证明',
+      f3_label: '密码学隐私保护',
       f3_desc: '自动脱敏个人信息 (PII)。买家只能看到加密的聚合数据。',
       f4_title: '用户所有',
+      f4_label: '去中心化架构',
       f4_desc: '数据永远不会离开您的电脑。Vana Desktop 直接从您的设备提供数据。'
     },
     monetize: {
@@ -1326,12 +1350,16 @@ const baseTranslations = {
       title1: '데이터 소유권의 미래를 위해 구축됨',
       title2: 'Lumina는 개인 사용자 데이터를 연구자와 브랜드에 안전하게 연결하고 검증하는 엔터프라이즈급 인프라를 제공합니다.',
       f1_title: '통합 API',
+      f1_label: '모든 Web2 소스를 위한 RESTful 엔드포인트',
       f1_desc: '단일 표준화된 스키마를 통해 YouTube, LinkedIn, Instagram 등에 액세스하세요.',
       f2_title: '기여 증명 (PoC)',
+      f2_label: 'LLM 검증 진위성 평가',
       f2_desc: '모든 데이터는 판매 전에 Vana 검증자에 의해 품질이 평가됩니다.',
       f3_title: '영지식 증명 (ZK)',
+      f3_label: '암호화된 개인 정보 보호',
       f3_desc: '개인식별정보(PII)는 자동으로 삭제됩니다. 구매자는 암호화된 집계만 볼 수 있습니다.',
       f4_title: '사용자 소유',
+      f4_label: '탈중앙화 아키텍처',
       f4_desc: '데이터는 PC를 떠나지 않습니다. Vana Desktop이 디바이스에서 직접 데이터를 제공합니다.'
     },
     monetize: {
@@ -1403,3 +1431,4 @@ export const dictionaries = ${JSON.stringify(baseTranslations, null, 2)};
 
 fs.writeFileSync('src/lib/i18n/dictionaries.ts', output);
 console.log('Successfully wrote exact dictionary file.');
+
