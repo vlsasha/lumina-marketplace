@@ -11,6 +11,7 @@ import { useSession, signIn } from 'next-auth/react';
 import { formatUnits } from 'viem';
 import { MARKETPLACE_CONFIG } from '@/lib/config';
 import { luminaMarketplaceAbi } from '@/lib/abi';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 type ConnectionStatus = 'idle' | 'pending' | 'approved' | 'completed' | 'denied' | 'error';
 
@@ -45,6 +46,7 @@ const getTierMultiplier = (score: number) => {
 };
 
 export default function DashboardPage() {
+  const { t } = useLanguage();
   const { address, isConnected } = useAccount();
   const sessionObj = useSession();
   const isAuthenticated = isConnected || sessionObj?.status === 'authenticated';
@@ -404,7 +406,7 @@ export default function DashboardPage() {
         <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           {/* Header */}
           <div className="mb-10">
-            <h1 className="text-3xl sm:text-4xl font-bold text-vana-text mb-2">Dashboard</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold text-vana-text mb-2">{t.dashboard.title}</h1>
             <p className="text-vana-text-secondary">
               Manage your data source connections and preview data.
             </p>
@@ -616,7 +618,7 @@ export default function DashboardPage() {
               
               <div className="mt-8">
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg font-semibold text-vana-text">Data Preview</h2>
+                    <h2 className="text-lg font-semibold text-vana-text">{t.dashboard.sandboxTitle}</h2>
                     {dataPreview && (
                       <button 
                         onClick={() => {

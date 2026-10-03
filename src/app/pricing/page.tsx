@@ -2,8 +2,10 @@
 
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { DataQueryBuilder } from '@/components/DataQueryBuilder';
 export default function PricingPage() {
+  const { t } = useLanguage();
   return (
     <>
       <Header />

@@ -1,7 +1,11 @@
+'use client';
+
 import Link from 'next/link';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 import Image from 'next/image';
 
 export function Footer() {
+  const { t } = useLanguage();
   return (
     <footer className="border-t border-vana-border mt-auto">
       <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">

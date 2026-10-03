@@ -5,9 +5,25 @@ import { DATA_SOURCES } from '@/lib/data-sources';
 import { useAccount } from 'wagmi';
 import { useSession } from 'next-auth/react';
 import { SourceCard } from './SourceCard';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export function SourcesGrid() {
+  const { t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState<string>('All');
+
+  const getCategoryTranslation = (cat: string) => {
+    switch (cat) {
+      case 'All': return t.sources.categories.all;
+      case 'Social Media': return t.sources.categories.socialMedia;
+      case 'Professional': return t.sources.categories.professional;
+      case 'Entertainment': return t.sources.categories.entertainment;
+      case 'E-Commerce': return t.sources.categories.ecommerce;
+      case 'Productivity': return t.sources.categories.productivity;
+      case 'Health & Fitness': return t.sources.categories.healthFitness;
+      default: return cat;
+    }
+  };
+
   
   const { address, isConnected } = useAccount();
   const sessionObj = useSession();
@@ -122,7 +138,7 @@ export function SourcesGrid() {
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                 </div>
                 <div>
-                  <h3 className="text-white font-bold text-lg">How to Connect</h3>
+                  <h3 className="text-white font-bold text-lg">{t.sources.howTo.title}</h3>
                   <p className="text-[11px] text-gray-400 uppercase tracking-widest font-semibold">Secure Vana Protocol</p>
                 </div>
               </div>
@@ -156,7 +172,7 @@ export function SourcesGrid() {
                     <div className="w-px h-full bg-[#222] my-1 group-hover:bg-vana-primary/30 transition-colors" />
                   </div>
                   <div className="pb-4">
-                    <h4 className="text-sm font-semibold text-white mb-1">Approve Connection</h4>
+                    <h4 className="text-sm font-semibold text-white mb-1">{t.sources.howTo.step3Title}</h4>
                     <p className="text-xs text-gray-400 leading-relaxed">Click "Connect Data" on any card here to launch the Vana Data Connection Request (DCR) flow.</p>
                   </div>
                 </div>
@@ -166,7 +182,7 @@ export function SourcesGrid() {
                     <div className="w-6 h-6 rounded-full bg-vana-primary/10 border border-vana-primary/30 text-vana-primary text-xs font-bold flex items-center justify-center shadow-[0_0_10px_rgba(205,255,100,0.2)]">4</div>
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-white mb-1">Earn & Monetize</h4>
+                    <h4 className="text-sm font-semibold text-white mb-1">{t.sources.howTo.step4Title}</h4>
                     <p className="text-xs text-gray-400 leading-relaxed">Once validated by the Proof of Contribution (PoC) oracle, your data generates dynamic USDC yields based on your Quality Tier.</p>
                   </div>
                 </div>
