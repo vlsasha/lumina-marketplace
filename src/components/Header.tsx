@@ -122,7 +122,7 @@ export function Header() {
                           className={`w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${locale === l.code ? 'bg-vana-primary/10 text-vana-primary' : 'text-gray-300 hover:bg-[#222]'}`}
                         >
                           
-                          <span className="font-medium text-sm w-full text-left">{l.code.toUpperCase()} - {l.name}</span>
+                          <span className="font-medium text-sm w-full text-left">{l.name}</span>
                         </button>
                       ))}
                     </div>
@@ -211,7 +211,7 @@ export function Header() {
                       onClick={() => setLocale(l.code)}
                       className={`flex items-center justify-center gap-2 px-2 py-2 rounded-lg border ${locale === l.code ? 'border-vana-primary bg-vana-primary/10 text-vana-primary' : 'border-[#333] bg-[#111] text-gray-400'}`}
                     >
-                      <span className="text-xs font-medium uppercase">{l.code} - {l.name}</span>
+                      <span className="text-xs font-medium uppercase">{l.name}</span>
                     </button>
                   ))}
                 </div>
