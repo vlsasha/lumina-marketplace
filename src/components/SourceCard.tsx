@@ -7,6 +7,7 @@ import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useSession, signIn } from 'next-auth/react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { SOURCES_DICT } from '@/lib/i18n/sources-dict';
 
 interface SourceCardProps {
   source: DataSource & { status?: string, qualityScore?: number };
@@ -36,7 +37,8 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   const { openConnectModal } = useConnectModal();
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
+  const sDict = SOURCES_DICT[locale as keyof typeof SOURCES_DICT] || SOURCES_DICT.en;
 
   const statusConfig = {
     available: { label: t.common.available, color: 'text-vana-green', bg: 'bg-vana-green/10', border: 'border-vana-green/20' },
@@ -159,7 +161,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
                   </span>
                 )}
               </div>
-              <span className="text-[11px] uppercase tracking-wider font-semibold text-gray-500">{source.category}</span>
+              <span className="text-[11px] uppercase tracking-wider font-semibold text-gray-500">{sDict.categories[source.category as keyof typeof sDict.categories] || source.category}</span>
             </div>
           </div>
           <span className={`shrink-0 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${status.bg} ${status.color} border ${status.border} shadow-sm`}>
@@ -167,13 +169,13 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
           </span>
         </div>
 
-        <p className="text-sm text-gray-400 leading-relaxed">{source.description}</p>
+        <p className="text-sm text-gray-400 leading-relaxed">{sDict.cards[source.id as keyof typeof sDict.cards]?.description || source.description}</p>
         
         {source.scopes && source.scopes.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-3 mb-1 flex-grow items-start content-start">
             {source.scopes.map(s => (
               <span key={s.id} className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#111] text-gray-400 border border-[#222]">
-                {s.name}
+                {sDict.cards[source.id as keyof typeof sDict.cards]?.scopes?.[s.id as keyof typeof sDict.cards[keyof typeof sDict.cards]['scopes']] || s.name}
               </span>
             ))}
           </div>
@@ -195,10 +197,10 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
               {isConnecting ? (
                 <span className="flex items-center justify-center gap-2">
                   <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
-                  Waiting for Vana...
+                  {sDict.howTo.waitingVana}
                 </span>
               ) : (
-                'Connect Data'
+                sDict.howTo.btnConnect
               )}
             </button>
           )}
@@ -263,6 +265,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
     </div>
   );
 }
+
 
 
 

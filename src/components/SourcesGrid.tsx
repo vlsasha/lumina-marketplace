@@ -2,12 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import { DATA_SOURCES } from '@/lib/data-sources';
+import { SOURCES_DICT } from '@/lib/i18n/sources-dict';
 import { useAccount } from 'wagmi';
 import { useSession } from 'next-auth/react';
 import { SourceCard } from './SourceCard';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export function SourcesGrid() {
+  const { locale } = useLanguage();
+  const sDict = SOURCES_DICT[locale as keyof typeof SOURCES_DICT] || SOURCES_DICT.en;
   const { t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState<string>('All');
 
@@ -64,6 +67,7 @@ export function SourcesGrid() {
 
   // Extract unique categories
   const categories = ['All', ...Array.from(new Set(availableSources.map(s => s.category)))];
+  const getCategoryName = (c: string) => c === 'All' ? sDict.all : sDict.categories[c as keyof typeof sDict.categories] || c;
 
   // Filter sources based on active category
   const filteredSources = activeCategory === 'All' 
@@ -85,12 +89,8 @@ export function SourcesGrid() {
         
         {/* Section Header */}
         <div className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Data Sources
-          </h2>
-          <p className="text-vana-text-secondary max-w-2xl mx-auto text-sm sm:text-base">
-            Browse available data sources. Connect your accounts securely via Vana's decentralized protocol.
-          </p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">{sDict.pageTitle}</h2>
+          <p className="text-vana-text-secondary max-w-2xl mx-auto text-sm sm:text-base">{sDict.pageSubtitle}</p>
         </div>
 
         <div className="flex flex-col xl:flex-row gap-8 lg:gap-10 items-start">
@@ -109,7 +109,7 @@ export function SourcesGrid() {
                       : 'bg-[#111] text-gray-400 border border-[#333] hover:border-vana-primary/50 hover:text-white'
                   }`}
                 >
-                  {category}
+                  {getCategoryName(category)}
                 </button>
               ))}
             </div>
@@ -123,7 +123,7 @@ export function SourcesGrid() {
             
             {filteredSources.length === 0 && (
               <div className="text-center text-gray-500 py-12">
-                No data sources available in this category.
+                {sDict.noSources}
               </div>
             )}
           </div>
@@ -139,7 +139,7 @@ export function SourcesGrid() {
                 </div>
                 <div>
                   <h3 className="text-white font-bold text-lg">{t.sources.howTo.title}</h3>
-                  <p className="text-[11px] text-gray-400 uppercase tracking-widest font-semibold">Secure Vana Protocol</p>
+                  <p className="text-[11px] text-gray-400 uppercase tracking-widest font-semibold">{sDict.howTo.sidebarTitle}</p>
                 </div>
               </div>
 
@@ -150,8 +150,8 @@ export function SourcesGrid() {
                     <div className="w-px h-full bg-[#222] my-1 group-hover:bg-vana-primary/30 transition-colors" />
                   </div>
                   <div className="pb-4">
-                    <h4 className="text-sm font-semibold text-white mb-1">Install Vana Desktop</h4>
-                    <p className="text-xs text-gray-400 leading-relaxed">Most data sources require the official <a href="https://app.vana.org/download" target="_blank" rel="noreferrer" className="text-vana-primary hover:underline">Vana Desktop application</a> to securely run local algorithms without exposing your data.</p>
+                    <h4 className="text-sm font-semibold text-white mb-1">{sDict.howTo.step1Title}</h4>
+                    <p className="text-xs text-gray-400 leading-relaxed">{sDict.howTo.step1Desc}</p>
                   </div>
                 </div>
 
@@ -161,8 +161,8 @@ export function SourcesGrid() {
                     <div className="w-px h-full bg-[#222] my-1 group-hover:bg-vana-primary/30 transition-colors" />
                   </div>
                   <div className="pb-4">
-                    <h4 className="text-sm font-semibold text-white mb-1">Pre-Login to Accounts</h4>
-                    <p className="text-xs text-gray-400 leading-relaxed"><span className="text-amber-400/90 font-medium">Crucial step:</span> Before clicking connect, ensure you are logged into the respective social network or service in your default browser. This ensures Vana can accurately sync the exact data scopes listed on the card.</p>
+                    <h4 className="text-sm font-semibold text-white mb-1">{sDict.howTo.step2Title}</h4>
+                    <p className="text-xs text-gray-400 leading-relaxed">{sDict.howTo.step2Desc}</p>
                   </div>
                 </div>
 
@@ -173,7 +173,7 @@ export function SourcesGrid() {
                   </div>
                   <div className="pb-4">
                     <h4 className="text-sm font-semibold text-white mb-1">{t.sources.howTo.step3Title}</h4>
-                    <p className="text-xs text-gray-400 leading-relaxed">Click "Connect Data" on any card here to launch the Vana Data Connection Request (DCR) flow.</p>
+                    <p className="text-xs text-gray-400 leading-relaxed">{sDict.howTo.step3Desc}</p>
                   </div>
                 </div>
 
@@ -183,14 +183,14 @@ export function SourcesGrid() {
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold text-white mb-1">{t.sources.howTo.step4Title}</h4>
-                    <p className="text-xs text-gray-400 leading-relaxed">Once validated by the Proof of Contribution (PoC) oracle, your data generates dynamic USDC yields based on your Quality Tier.</p>
+                    <p className="text-xs text-gray-400 leading-relaxed">{sDict.howTo.step4Desc}</p>
                   </div>
                 </div>
               </div>
               
               <div className="mt-6 pt-5 border-t border-[#222] flex items-center justify-between relative z-10">
-                <span className="text-xs text-gray-500 font-medium">Security</span>
-                <span className="text-[10px] bg-vana-green/10 text-vana-green border border-vana-green/20 px-2 py-0.5 rounded flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-vana-green" />End-to-end encrypted</span>
+                <span className="text-xs text-gray-500 font-medium">{sDict.howTo.security}</span>
+                <span className="text-[10px] bg-vana-green/10 text-vana-green border border-vana-green/20 px-2 py-0.5 rounded flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-vana-green" />{sDict.howTo.e2e}</span>
               </div>
             </div>
           </div>
@@ -200,3 +200,6 @@ export function SourcesGrid() {
     </section>
   );
 }
+
+
+
