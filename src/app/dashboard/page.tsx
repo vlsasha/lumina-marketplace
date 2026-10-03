@@ -182,6 +182,10 @@ export default function DashboardPage() {
   
 
   const handleConnect = async (sourceId: string) => {
+    if (!isAuthenticated) {
+      setShowAuthModal(true);
+      return;
+    }
     setLoading(sourceId);
     try {
       const res = await fetch('/api/vana/request', {
