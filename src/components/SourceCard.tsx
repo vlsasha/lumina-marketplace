@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import type { DataSource } from '@/lib/data-sources';
 import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
@@ -31,6 +32,8 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
   const { address } = useAccount();
   const { status: sessionStatus } = useSession();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const { openConnectModal } = useConnectModal();
 
   const statusConfig = {
@@ -201,7 +204,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
           
         </div>
       
-      {showAuthModal && (
+      {showAuthModal && mounted && createPortal(
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setShowAuthModal(false)}>
           <div className="bg-[#111] border border-[#222] rounded-3xl p-8 max-w-sm w-full shadow-2xl relative" onClick={e => e.stopPropagation()}>
             <button onClick={() => setShowAuthModal(false)} className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors">
@@ -252,7 +255,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
 
       </div>
     </div>
