@@ -9,7 +9,7 @@ export const sql = process.env.DATABASE_URL
 export async function initDb() {
   if (!sql) return;
 
-    await sql`
+  await sql`
     CREATE TABLE IF NOT EXISTS downloaded_data (
       id SERIAL PRIMARY KEY,
       connection_id VARCHAR(255) UNIQUE NOT NULL,
@@ -46,16 +46,7 @@ export async function initDb() {
     await sql`ALTER TABLE purchases ADD COLUMN IF NOT EXISTS provider_wallets JSONB`;
   } catch (e) {
     // Ignore if already exists or other error
-  } NOT NULL,
-      dataset_id VARCHAR(255) NOT NULL,
-      transaction_hash VARCHAR(255),
-      format VARCHAR(10),
-      size_bytes INTEGER,
-      purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-  `;
-
+  }
 }
-
 
 export default sql;
