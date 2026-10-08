@@ -11,7 +11,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const datasetIdRaw = searchParams.get('datasetId') || '';
     const datasetId = datasetIdRaw;
-    const baseSourceId = datasetIdRaw.split(' ')[0];
+    const baseSourceId = datasetIdRaw.split(' ')[0].toLowerCase();
     const format = searchParams.get('format') || 'jsonl';
     let buyerId = searchParams.get('buyerId');
     const apiKey = searchParams.get('apiKey');
@@ -94,3 +94,4 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
