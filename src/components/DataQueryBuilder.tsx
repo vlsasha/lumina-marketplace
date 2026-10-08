@@ -327,8 +327,8 @@ export function DataQueryBuilder() {
               </div>
             </div>
 
-            <button onClick={handlePurchase} disabled={isPending || totalCost === 0 || isAlreadyPurchased} className="w-full py-4 px-4 bg-vana-primary hover:bg-opacity-90 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-vana-primary/25 hover:-translate-y-0.5 disabled:opacity-50 flex items-center justify-center gap-2">
-              {isAlreadyPurchased ? (<>Already Purchased</>) : isPending ? (
+            <button onClick={handlePurchase} disabled={isPending || totalCost === 0 || isAlreadyPurchased || totalUsersAvailable === 0} className="w-full py-4 px-4 bg-vana-primary hover:bg-opacity-90 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-vana-primary/25 hover:-translate-y-0.5 disabled:opacity-50 flex items-center justify-center gap-2">
+              {totalUsersAvailable === 0 ? (<>No New Data Available</>) : isAlreadyPurchased ? (<>Already Purchased</>) : isPending ? (
                 <>
                   <svg className="animate-spin h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
