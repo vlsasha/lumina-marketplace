@@ -20,7 +20,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ purchases });
   } catch (error) {
     console.error('Failed to get purchases:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error', details: (error as any).message }, { status: 500 });
   }
 }
 

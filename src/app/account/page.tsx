@@ -234,9 +234,10 @@ function BuyerWorkspace({ address }: { address?: `0x${string}` }) {
       fetch(`/api/account/key?userId=${address}`)
         .then(res => res.json())
         .then(data => {
-          if (data.key) setApiKey(data.key);
-          else setApiKey('No active key');
-        })
+            if (data.error) setApiKey('DB Error: ' + data.details);
+            else if (data.key) setApiKey(data.key);
+            else setApiKey('No active key');
+          })
         .catch(() => setApiKey('Error loading key'));
     }
 
@@ -245,9 +246,10 @@ function BuyerWorkspace({ address }: { address?: `0x${string}` }) {
       fetch(`/api/account/purchases?userId=${address}`)
         .then(res => res.json())
         .then(data => {
-          if (data.purchases) setPurchases(data.purchases);
-          setLoading(false);
-        })
+            if (data.error) { alert('DB Error loading purchases: ' + data.details); }
+            if (data.purchases) setPurchases(data.purchases);
+            setLoading(false);
+          })
         .catch(err => {
           console.error(err);
           setLoading(false);

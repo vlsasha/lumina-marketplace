@@ -20,7 +20,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ key: keys[0].raw_key || `${keys[0].prefix}...` });
   } catch (error) {
     console.error('Failed to get API key:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error', details: (error as any).message }, { status: 500 });
   }
 }
 
