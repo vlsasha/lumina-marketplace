@@ -132,20 +132,33 @@ function BuyerWorkspace({ address }: { address?: `0x${string}` }) {
     const [loading, setLoading] = useState(true);
   const [downloadModal, setDownloadModal] = useState<any>(null);
 
-  const handleDownload = (format: string, datasetId: string) => {
-    const content = format === 'CSV' 
-      ? 'id,username,followers\n1,mock_user,1500' 
-      : '{"id":1,"username":"mock_user","followers":1500}';
-    
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${datasetId.toLowerCase().replace(/\s/g, '_')}.${format.toLowerCase()}`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+  const handleDownload = async (format: string, datasetId: string) => {
+    try {
+      setLoading(true);
+      const res = await fetch(`/api/download?datasetId=${encodeURIComponent(datasetId)}&format=${format}&buyerId=${address}`);
+      
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        alert(errorData.error || 'Failed to download dataset.');
+        setLoading(false);
+        return;
+      }
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${datasetId.toLowerCase().replace(/\s/g, '_')}.${format.toLowerCase()}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error(e);
+      alert('Network error downloading dataset.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
