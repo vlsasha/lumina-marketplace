@@ -3,6 +3,7 @@ import sql, { initDb } from '@/lib/db';
 
 export async function GET() {
   await initDb();
+  if (!sql) return NextResponse.json({error: 'No DB'});
   await sql`ALTER TABLE purchases ADD COLUMN IF NOT EXISTS provider_wallets JSONB DEFAULT '[]'::jsonb`;
   
   // Backfill existing purchases to have an empty array if null
@@ -10,3 +11,4 @@ export async function GET() {
 
   return NextResponse.json({ success: true });
 }
+

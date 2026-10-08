@@ -37,6 +37,8 @@ export function DataQueryBuilder() {
     const queryParams = new URLSearchParams();
     if (selectedSource) queryParams.append('sources', selectedSource);
     if (selectedTier !== 'Any') queryParams.append('tier', selectedTier);
+        if (address) queryParams.append('buyerId', address);
+      if (address) queryParams.append('buyerId', address);
     
     fetch(`/api/providers?${queryParams.toString()}`)
       .then(res => res.json())
@@ -65,7 +67,7 @@ export function DataQueryBuilder() {
   };
 
   const currentDatasetId = selectedSource ? (DATA_SOURCES.find(s => s.id === selectedSource)?.name || selectedSource) + ' (Tier ' + selectedTier + ')' : '';
-  const isAlreadyPurchased = purchasedDatasets.includes(currentDatasetId) || purchasedDatasets.includes(selectedSource + ' (Tier ' + selectedTier + ')');
+  const isAlreadyPurchased = false; // Delta purchasing enabled!
 
   const basePrice = selectedSource ? (EARNINGS_RATES.find(r => r.id === selectedSource)?.price || 0) : 0;
   
@@ -123,7 +125,7 @@ export function DataQueryBuilder() {
         functionName: 'buyData',
         args: [validProviders, amountsArray],
       });
-      fetch('/api/account/purchases', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ buyerId: address, datasetId: (DATA_SOURCES.find(s => s.id === selectedSource)?.name || selectedSource) + ' (Tier ' + selectedTier + ')', transactionHash: hash1, sizeBytes: validProviders.length * 1024 * 5 }) }); alert('Dataset purchased successfully!');
+      fetch('/api/account/purchases', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ buyerId: address, datasetId: (DATA_SOURCES.find(s => s.id === selectedSource)?.name || selectedSource) + ' (Tier ' + selectedTier + ')', transactionHash: hash1, sizeBytes: validProviders.length * 1024 * 5, providerWallets: validProviders }) }); alert('Dataset purchased successfully!');
     } catch (err) {
       console.error(err);
       alert('Payment failed.');

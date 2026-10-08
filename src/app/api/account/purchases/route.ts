@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     await initDb();
     
     const body = await req.json();
-    const { buyerId, datasetId, transactionHash, sizeBytes } = body;
+    const { buyerId, datasetId, transactionHash, sizeBytes, providerWallets } = body;
     
     if (!buyerId || !datasetId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -38,15 +38,11 @@ export async function POST(req: Request) {
 
     const format = 'JSONL, CSV'; // Default formats available
     
-    // Prevent duplicates
-    const existing = await sql`SELECT id FROM purchases WHERE buyer_id = ${buyerId} AND dataset_id = ${datasetId}`;
-    if (existing && existing.length > 0) {
-      return NextResponse.json({ error: 'You have already purchased this dataset.' }, { status: 409 });
-    }
+    // Duplicates logic removed: we allow delta purchasing!
     
     const result = await sql`
-      INSERT INTO purchases (buyer_id, dataset_id, transaction_hash, format, size_bytes)
-      VALUES (${buyerId}, ${datasetId}, ${transactionHash}, ${format}, ${sizeBytes})
+      INSERT INTO purchases (buyer_id, dataset_id, transaction_hash, format, size_bytes, provider_wallets)
+      VALUES (${buyerId}, ${datasetId}, ${transactionHash}, ${format}, ${sizeBytes}, ${providerWallets ? JSON.stringify(providerWallets) : '[]'})
       RETURNING *
     `;
     

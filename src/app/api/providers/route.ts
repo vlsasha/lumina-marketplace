@@ -7,6 +7,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const sourcesParam = searchParams.get('sources');
     const tierParam = searchParams.get('tier');
+    const buyerId = searchParams.get('buyerId');
     
     if (!sql) {
        return NextResponse.json({ providers: ['0xC1d3007A33d86Fd7390B087304AD3083FC87438C'], count: 1 });
@@ -51,9 +52,29 @@ export async function GET(request: Request) {
       count = providers.length;
     }
     
-    if (providers.length === 0) {
+    
+    // Filter out already purchased wallets
+    if (buyerId && sourcesParam) {
+      const sources = sourcesParam.split(',').filter(Boolean);
+      // Determine what dataset ID to look up (approximate, since we only know the source name and tier)
+      // Actually, we can just look up ALL purchases for this buyer where the dataset name includes the source name.
+      // But more simply, we can just check all provider_wallets they ever bought for ANY dataset.
+      const purchases = await sql`SELECT provider_wallets FROM purchases WHERE buyer_id = ${buyerId}`;
+      const purchasedWallets = new Set();
+      purchases.forEach(p => {
+        if (p.provider_wallets && Array.isArray(p.provider_wallets)) {
+          p.provider_wallets.forEach(w => purchasedWallets.add(w));
+        }
+      });
+      providers = providers.filter(w => !purchasedWallets.has(w));
+      count = providers.length;
+    }
+    
+    // Prevent fallback to treasury wallet if there are genuinely 0 remaining
+    if (providers.length === 0 && count === 0) {
+      // Do nothing, let it be 0!
+    } else if (providers.length === 0) {
       providers.push('0xC1d3007A33d86Fd7390B087304AD3083FC87438C');
-      if (count === 0) count = 0; // If filter misses, actually show 0 to the user!
     }
 
     return NextResponse.json({
