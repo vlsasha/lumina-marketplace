@@ -3,12 +3,12 @@ import { DATA_SOURCES } from './data-sources';
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://lumina-vana.vercel.app';
 const APP_PRIVATE_KEY = process.env.APP_PRIVATE_KEY;
 const ODL_APP_ID = process.env.ODL_APP_ID || 'lumina-marketplace';
-const MODE = process.env.VANA_MODE || 'sample';
+const MODE = process.env.VANA_MODE || 'live';
 
 export function getVanaConfig() {
   return {
     appId: process.env.ODL_APP_ID || 'lumina-marketplace',
-    mode: process.env.VANA_MODE || 'sample',
+    mode: process.env.VANA_MODE || 'live',
     apiBaseUrl: 'https://api.vana.org/api/v1',
     network: 'mainnet' as 'mainnet' | 'moksha'
   };
@@ -61,7 +61,7 @@ export async function createConnectSession(sourceId: string) {
 
   if (!APP_PRIVATE_KEY) {
     if (MODE !== 'sample') {
-      throw new Error('APP_PRIVATE_KEY is missing in Vercel Environment Variables. Required by vana-sdk.');
+      throw new Error('CRITICAL SETUP REQUIRED: You switched to VANA_MODE=live (Mainnet), but forgot to add APP_PRIVATE_KEY in Vercel Environment Variables. To use real Vana DataDAOs, please add your developer wallet private key (e.g. 0x123...) to Vercel.');
     }
     const sampleConnectionId = `conn_sample_${sourceId}_${Date.now()}`;
     const redirectUrl = encodeURIComponent(`${APP_URL}/connect/return`);
