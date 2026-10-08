@@ -12,10 +12,10 @@ export function EarningsTable() {
       <div className="mb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
         <div>
           <h2 className="text-sm font-semibold text-vana-text uppercase tracking-wider mb-1">
-            Data Valuation (Hybrid Model)
+            Data Valuation
           </h2>
           <p className="text-xs text-vana-text-muted">
-            Initial historical sync + ongoing monthly stream yield.
+            Base market rate for historical data sync.
           </p>
         </div>
       </div>
@@ -28,7 +28,7 @@ export function EarningsTable() {
                 <th className="py-2.5 px-3 font-medium">{pDict.colSource}</th>
                 <th className="py-2.5 px-3 font-medium">{pDict.colPayload}</th>
                 <th className="py-2.5 px-3 font-medium text-right">{pDict.colInitial}</th>
-                <th className="py-2.5 px-3 font-medium text-right">{pDict.colMonthly}</th>
+                
               </tr>
             </thead>
             <tbody className="divide-y divide-vana-border bg-black/20">
@@ -52,9 +52,7 @@ export function EarningsTable() {
                     <td className="py-2.5 px-3 text-vana-text font-mono text-right">
                       ${rate.price.toFixed(2)}
                     </td>
-                    <td className="py-2.5 px-3 text-vana-green font-mono font-semibold text-right">
-                      +${rate.monthlyYield.toFixed(2)}/mo
-                    </td>
+                    
                   </tr>
                 );
               })}
