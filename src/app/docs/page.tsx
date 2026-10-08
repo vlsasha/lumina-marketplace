@@ -2,12 +2,6 @@
 
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { PAGES_DICT } from '@/lib/i18n/pages-dict';
-
-
-
-
-
-
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useState } from 'react';
@@ -35,7 +29,7 @@ export default function DocsPage() {
     <div className="min-h-screen bg-vana-dark text-white flex flex-col">
       <Header />
       
-      <div className="flex-1 max-w-[1440px] w-full mx-auto w-full px-4 sm:px-6 lg:px-8 py-24 flex gap-12">
+      <div className="flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-24 flex gap-12">
         
         {/* Sidebar Navigation */}
         <aside className="hidden lg:block w-64 shrink-0 fixed h-[calc(100vh-120px)] overflow-y-auto pr-6 border-r border-vana-border">
@@ -63,78 +57,82 @@ export default function DocsPage() {
           <div className="prose prose-invert prose-vana max-w-4xl">
             <h1 className="text-4xl font-bold mb-8">{pDict.title}</h1>
             <p className="text-xl text-vana-text-secondary mb-12 leading-relaxed">
-              Welcome to the official developer and user documentation for Lumina. 
-              Learn how to monetize your data, query verified datasets, and integrate with our Vana-powered smart contracts.
+              {pDict.welcome}
             </p>
 
             {/* OVERVIEW */}
             <section id="overview" className="scroll-mt-32 mb-16">
               <h2 className="text-2xl font-bold border-b border-vana-border pb-2 mb-6">{pDict.platformOverview}</h2>
               <p className="text-vana-text-secondary mb-4 leading-relaxed">
-                Lumina is a decentralized API Marketplace and Data Liquidity Pool (DLP) built natively on the <strong>Vana Network</strong>. 
-                We bridge the gap between individual users who generate valuable data (Data Providers) and AI companies/researchers (B2B Buyers) who need high-quality, verified datasets to train models.
+                {pDict.platformDesc1}
               </p>
               <p className="text-vana-text-secondary mb-4 leading-relaxed">
-                By leveraging Web3 infrastructure, Lumina guarantees that users retain ownership of their data while earning fair compensation (in USDC.e) transparently routed through audited smart contracts.
+                {pDict.platformDesc2}
               </p>
             </section>
 
             {/* PROVIDERS */}
             <section id="providers" className="scroll-mt-32 mb-16">
               <h2 className="text-2xl font-bold border-b border-vana-border pb-2 mb-6">{pDict.forProviders}</h2>
-              <h3 className="text-lg font-semibold mb-3 mt-6">How it Works</h3>
+              <h3 className="text-lg font-semibold mb-3 mt-6">{pDict.howItWorks}</h3>
               <ul className="list-disc pl-5 space-y-2 text-vana-text-secondary mb-6">
-                <li><strong>Personal Server:</strong> Users securely connect their Web2 accounts (e.g., ChatGPT, Spotify, Instagram) to their own <strong>Vana Personal Server</strong> via <a href="https://app.vana.org/sources" target="_blank" rel="noopener noreferrer" className="text-vana-primary hover:underline">app.vana.org/sources</a>.<br/><span className="text-sm mt-1 inline-block opacity-80"><em>Note: To securely connect private (non-public) data, you must authenticate and process data locally using the official <a href="https://app.vana.org/download" target="_blank" rel="noopener noreferrer" className="text-vana-primary hover:underline">Vana Desktop application</a>.</em></span></li>
-                <li><strong>Data Connection Request:</strong> {pDict.hw2}</li>
-                <li><strong>Verification:</strong> {pDict.hw3}</li>
-                <li><strong>Earn:</strong> When AI companies, research institutions, marketing agencies, or other enterprise clients purchase data matching your demographic, you automatically receive 80% of the revenue directly to your connected EVM wallet on the Vana Network.</li>
+                <li>
+                  <strong>{pDict.hw1Prefix}</strong>
+                  {pDict.hw1.replace(/^.*(?:Personal Server|Персональный сервер|Servidor Personal|Pessoal|Persönlicher Server|个人服务器|개인 서버)[:\s]+/, '')}
+                  <br/>
+                  <span className="text-sm mt-1 inline-block opacity-80">
+                    <em>{pDict.hw1Note}</em>
+                  </span>
+                </li>
+                <li><strong>{pDict.hw2Prefix}</strong>{pDict.hw2}</li>
+                <li><strong>{pDict.hw3Prefix}</strong>{pDict.hw3}</li>
+                <li><strong>{pDict.hw4Prefix}</strong>{pDict.hw4}</li>
               </ul>
               
               <div className="bg-vana-card border border-vana-border rounded-xl p-5 mb-6">
                 <h4 className="font-semibold text-vana-green mb-2 flex items-center gap-2">
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                  Instant Claiming
+                  {pDict.instantClaiming}
                 </h4>
                 <p className="text-sm text-vana-text-secondary">
-                  Earnings are credited to your on-chain balance inside <code>LuminaMarketplace.sol</code>. You can click <strong>Claim to Wallet</strong> in your Dashboard at any time to withdraw your USDC.e.
+                  {pDict.instantClaimingDesc}
                 </p>
               </div>
             </section>
 
             {/* BUYERS */}
             <section id="buyers" className="scroll-mt-32 mb-16">
-              <h2 className="text-2xl font-bold border-b border-vana-border pb-2 mb-6">For B2B Buyers</h2>
+              <h2 className="text-2xl font-bold border-b border-vana-border pb-2 mb-6">{pDict.forBuyers}</h2>
               <p className="text-vana-text-secondary mb-4 leading-relaxed">
-                AI researchers and enterprise clients can utilize our <strong>Data Query Builder</strong> to source precision-targeted datasets.
+                {pDict.forBuyersDesc}
               </p>
               
-              <h3 className="text-lg font-semibold mb-3">Dataset Formats & Delivery</h3>
+              <h3 className="text-lg font-semibold mb-3">{pDict.datasetFormats}</h3>
               <p className="text-vana-text-secondary mb-4">
-                Once a transaction is confirmed on the Vana blockchain, buyers are granted immediate access to the requested dataset. Data can be exported in standard formats optimized for machine learning:
+                {pDict.datasetFormatsDesc}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                 <div className="bg-[#111] border border-[#333] p-4 rounded-lg text-center">
                   <span className="font-mono text-vana-primary font-bold">.JSONL</span>
-                  <p className="text-xs text-gray-400 mt-2">Ideal for LLM fine-tuning</p>
+                  <p className="text-xs text-gray-400 mt-2">{pDict.idealForLLM}</p>
                 </div>
                 <div className="bg-[#111] border border-[#333] p-4 rounded-lg text-center">
-                  <span className="font-mono text-vana-primary font-bold">.PARQUET</span>
-                  <p className="text-xs text-gray-400 mt-2">For heavy analytical workloads</p>
+                  <span className="font-mono text-vana-green font-bold">.CSV</span>
+                  <p className="text-xs text-gray-400 mt-2">{pDict.idealForGraph}</p>
                 </div>
                 <div className="bg-[#111] border border-[#333] p-4 rounded-lg text-center">
-                  <span className="font-mono text-vana-primary font-bold">REST API</span>
-                  <p className="text-xs text-gray-400 mt-2">Continuous data streaming</p>
+                  <span className="font-mono text-purple-400 font-bold">REST API</span>
+                  <p className="text-xs text-gray-400 mt-2">{pDict.standardApi}</p>
                 </div>
               </div>
 
-              <h3 className="text-lg font-semibold mb-3 mt-8">REST API Mechanics</h3>
               <p className="text-vana-text-secondary mb-4 leading-relaxed">
-                Lumina features a hybrid Web3 ↔ Web2 bridge. Enterprise developers building AI training pipelines do not need to sign Web3 transactions in their server backends.
+                {pDict.hybridBridge}
               </p>
               <ul className="list-disc pl-5 space-y-2 text-vana-text-secondary mb-6">
-                <li><strong>On-chain Authorization:</strong> Purchase dataset limits via the smart contract using your Web3 wallet.</li>
-                <li><strong>API Key Generation:</strong> Connect your authorized wallet to the Lumina Portal to generate a standard Bearer API Key (e.g., <code>db_live_7x89...</code>).</li>
-                <li><strong>Off-chain Streaming:</strong> Use the API Key in your Python or Node.js backend to securely stream the decrypted datasets. If your key is compromised, you can easily <em>Rotate Key</em> in your dashboard without losing your on-chain purchase rights.</li>
+                <li>{pDict.authOnChain}</li>
+                <li>{pDict.authApiKey}</li>
+                <li>{pDict.authOffChain}</li>
               </ul>
 
               <div className="bg-[#111] border border-[#333] rounded-xl overflow-hidden mb-6">
@@ -142,7 +140,7 @@ export default function DocsPage() {
                   <span className="w-3 h-3 rounded-full bg-red-500/80"></span>
                   <span className="w-3 h-3 rounded-full bg-yellow-500/80"></span>
                   <span className="w-3 h-3 rounded-full bg-green-500/80"></span>
-                  <span className="ml-2 text-xs font-mono text-gray-400">cURL / Python Example</span>
+                  <span className="ml-2 text-xs font-mono text-gray-400">{pDict.curlExample}</span>
                 </div>
                 <div className="p-4 overflow-x-auto">
                   <pre className="text-sm font-mono text-gray-300">
@@ -167,57 +165,57 @@ dataset = response.json()<br/>
 
             {/* ARCHITECTURE */}
             <section id="architecture" className="scroll-mt-32 mb-16">
-              <h2 className="text-2xl font-bold border-b border-vana-border pb-2 mb-6">Architecture & Contracts</h2>
+              <h2 className="text-2xl font-bold border-b border-vana-border pb-2 mb-6">{pDict.archAndContracts}</h2>
               <p className="text-vana-text-secondary mb-4">
-                Lumina relies on a robust on-chain/off-chain architecture to ensure trustless operations.
+                {pDict.archIntro}
               </p>
               
               <div className="space-y-4">
                 <div className="p-4 border-l-4 border-vana-primary bg-vana-card">
-                  <h4 className="font-mono font-bold text-white mb-1 flex items-center gap-2">LuminaMarketplace.sol <a href="https://vanascan.io/address/0xA89C2D92421B4a3B4d409668AeCC58B464E5fd32" target="_blank" rel="noopener noreferrer" className="text-xs font-normal text-vana-primary hover:underline bg-vana-primary/10 px-2 py-0.5 rounded-full flex items-center gap-1">View on VanaScan <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg></a></h4>
+                  <h4 className="font-mono font-bold text-white mb-1 flex items-center gap-2">LuminaMarketplace.sol <a href="https://vanascan.io/address/0xA89C2D92421B4a3B4d409668AeCC58B464E5fd32" target="_blank" rel="noopener noreferrer" className="text-xs font-normal text-vana-primary hover:underline bg-vana-primary/10 px-2 py-0.5 rounded-full flex items-center gap-1">{pDict.viewOnVanaScan} <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg></a></h4>
                   <p className="text-sm text-vana-text-secondary">
-                    The core escrow and settlement contract deployed on Vana Mainnet. It handles <code>buyData()</code> execution, automatic 80/20 revenue splitting, and the <code>claimEarnings()</code> withdrawal mechanic.
+                    {pDict.luminaMarketplaceDesc}
                   </p>
                 </div>
                 
                 <div className="p-4 border-l-4 border-vana-green bg-vana-card">
                   <h4 className="font-mono font-bold text-white mb-1">USDC.e (Token)</h4>
                   <p className="text-sm text-vana-text-secondary">
-                    All transactions are denominated and settled in USDC.e to prevent price volatility for both buyers and providers.
+                    {pDict.usdcTokenDesc}
                   </p>
                 </div>
               </div>
 
-              <h3 className="text-lg font-semibold mb-3 mt-8">Security & Threat Prevention (SecOps)</h3>
+              <h3 className="text-lg font-semibold mb-3 mt-8">{pDict.secOpsTitle}</h3>
               <p className="text-vana-text-secondary mb-4 leading-relaxed">
-                Lumina implements military-grade Web3 security standards to protect user funds and dataset integrity without requiring manual human oversight.
+                {pDict.secOpsDesc}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-[#111] border border-[#222] p-4 rounded-xl">
                   <h4 className="font-bold text-white mb-2 flex items-center gap-2">
                     <svg className="w-4 h-4 text-vana-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                    Automated Circuit Breaker
+                    {pDict.circuitBreaker}
                   </h4>
                   <p className="text-xs text-gray-400">
-                    Integrated with Forta/Tenderly, our monitoring bots track mempool transactions 24/7. If an anomaly is detected, the bot automatically triggers the <code>pause()</code> modifier, freezing all smart contract funds instantly.
+                    {pDict.circuitBreakerDesc}
                   </p>
                 </div>
                 <div className="bg-[#111] border border-[#222] p-4 rounded-xl">
                   <h4 className="font-bold text-white mb-2 flex items-center gap-2">
                     <svg className="w-4 h-4 text-vana-green" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-                    Reentrancy Guards
+                    {pDict.reentrancyGuards}
                   </h4>
                   <p className="text-xs text-gray-400">
-                    All financial functions (<code>buyData</code>, <code>claimEarnings</code>) are protected by OpenZeppelin-standard Mutex locks to prevent recursive flash-loan draining attacks.
+                    {pDict.reentrancyGuardsDesc}
                   </p>
                 </div>
                 <div className="bg-[#111] border border-[#222] p-4 rounded-xl sm:col-span-2">
                   <h4 className="font-bold text-white mb-2 flex items-center gap-2">
                     <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                    Gnosis Safe Multi-Sig
+                    {pDict.gnosisSafe}
                   </h4>
                   <p className="text-xs text-gray-400">
-                    The smart contract ownership is governed by a 3/5 Multi-Signature wallet. No single founder or developer can unilaterally alter protocol fees or unpause the contract without team consensus, eliminating the "single point of failure".
+                    {pDict.gnosisSafeDesc}
                   </p>
                 </div>
               </div>
@@ -225,9 +223,9 @@ dataset = response.json()<br/>
 
             {/* DATA QUALITY & ANTI-SYBIL */}
             <section id="poc" className="scroll-mt-32 mb-16">
-              <h2 className="text-2xl font-bold border-b border-vana-border pb-2 mb-6">Data Quality & Anti-Sybil (PoC)</h2>
+              <h2 className="text-2xl font-bold border-b border-vana-border pb-2 mb-6">{pDict.pocTitle}</h2>
               <p className="text-vana-text-secondary mb-6 leading-relaxed">
-                To prevent fraud and maintain the highest quality of training data for AI models, Lumina implements a rigorous Proof of Contribution (PoC) protocol built directly into our indexing engine.
+                {pDict.pocIntro}
               </p>
               
               <div className="space-y-8">
@@ -235,10 +233,10 @@ dataset = response.json()<br/>
                 <div>
                   <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
                     <span className="bg-vana-primary/20 text-vana-primary px-2 py-0.5 rounded text-sm">1</span>
-                    Data Deduplication (Anti-Sybil)
+                    {pDict.poc1}
                   </h3>
                   <p className="text-sm text-gray-400 mb-3">
-                    A major threat to data marketplaces is Sybil attacks—users attempting to sell the same data multiple times by creating new crypto wallets. Lumina solves this using <strong>Provider ID Uniqueness</strong>.
+                    {pDict.poc1Desc}
                   </p>
                   <div className="bg-[#111] p-4 rounded-xl border border-[#222]">
                     <ul className="list-disc pl-4 space-y-2 text-sm text-gray-400">
@@ -254,22 +252,22 @@ dataset = response.json()<br/>
                 <div>
                     <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
                       <span className="bg-vana-primary/20 text-vana-primary px-2 py-0.5 rounded text-sm">2</span>
-                      Dynamic Quality Scoring (Proof of Contribution)
+                      {pDict.poc2}
                     </h3>
                     <p className="text-sm text-gray-400 mb-3">
-                      Not all data is created equal. The Lumina Oracle evaluates incoming data using the Proof of Contribution (PoC) consensus mechanism to assign a Quality Score from 0 to 100 based on three core pillars:
+                      {pDict.poc2Desc}
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="bg-[#111] p-4 rounded-xl border border-[#222]">
-                        <h4 className="font-bold text-white mb-2 text-sm flex items-center gap-2"><span className="text-vana-primary">⏱</span> Historical Depth</h4>
+                        <h4 className="font-bold text-white mb-2 text-sm flex items-center gap-2"><span className="text-vana-primary">✦</span> {pDict.poc2Pillar1Title}</h4>
                         <p className="text-xs text-gray-400 leading-relaxed">{pDict.poc2Pillar1Desc}</p>
                       </div>
                       <div className="bg-[#111] p-4 rounded-xl border border-[#222]">
-                        <h4 className="font-bold text-white mb-2 text-sm flex items-center gap-2"><span className="text-vana-primary">📊</span> Data Density</h4>
+                        <h4 className="font-bold text-white mb-2 text-sm flex items-center gap-2"><span className="text-vana-primary">▤</span> {pDict.poc2Pillar2Title}</h4>
                         <p className="text-xs text-gray-400 leading-relaxed">{pDict.poc2Pillar2Desc}</p>
                       </div>
                       <div className="bg-[#111] p-4 rounded-xl border border-[#222]">
-                        <h4 className="font-bold text-white mb-2 text-sm flex items-center gap-2"><span className="text-vana-primary">🛡️</span> Authenticity Risk</h4>
+                        <h4 className="font-bold text-white mb-2 text-sm flex items-center gap-2"><span className="text-vana-primary">✓</span> {pDict.poc2Pillar3Title}</h4>
                         <p className="text-xs text-gray-400 leading-relaxed">{pDict.poc2Pillar3Desc}</p>
                       </div>
                     </div>
@@ -279,10 +277,10 @@ dataset = response.json()<br/>
                   <div>
                     <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
                       <span className="bg-vana-primary/20 text-vana-primary px-2 py-0.5 rounded text-sm">3</span>
-                      Dynamic Pricing Engine (The Multiplier)
+                      {pDict.poc3}
                     </h3>
                     <p className="text-sm text-gray-400 mb-3">
-                      The Quality Score acts as a direct multiplier on the base price of the dataset to calculate its <strong>Estimated Value</strong>. When B2B buyers purchase data from your category, the smart contract distributes the revenue to you based on this multiplier. This ensures data buyers get exactly the quality they pay for, and high-quality data providers receive premium payouts.
+                      {pDict.poc3Desc}
                     </p>
                     <div className="overflow-x-auto">
                       <table className="w-full text-sm text-left border-collapse">
@@ -295,24 +293,24 @@ dataset = response.json()<br/>
                         </thead>
                         <tbody className="text-gray-300">
                           <tr className="border-b border-[#222]">
-                            <td className="py-3"><span className="text-amber-400 font-bold">💎 Tier A (Premium)</span></td>
+                            <td className="py-3"><span className="text-amber-400 font-bold">💎 {pDict.tierA}</span></td>
                             <td className="py-3 font-mono">80 - 100</td>
-                            <td className="py-3 font-mono text-vana-primary">80% - 100% of Base Price</td>
+                            <td className="py-3 font-mono text-vana-primary">{pDict.base80_100}</td>
                           </tr>
                           <tr className="border-b border-[#222]">
-                            <td className="py-3"><span className="text-gray-200 font-bold">🥇 Tier B (High Quality)</span></td>
+                            <td className="py-3"><span className="text-gray-200 font-bold">🔘 {pDict.tierB}</span></td>
                             <td className="py-3 font-mono">60 - 79</td>
-                            <td className="py-3 font-mono text-vana-primary">60% - 79% of Base Price</td>
+                            <td className="py-3 font-mono text-vana-primary">{pDict.base60_79}</td>
                           </tr>
                           <tr className="border-b border-[#222]">
-                            <td className="py-3"><span className="text-gray-400 font-bold">🥈 Tier C (Standard)</span></td>
+                            <td className="py-3"><span className="text-gray-400 font-bold">🔸 {pDict.tierC}</span></td>
                             <td className="py-3 font-mono">40 - 59</td>
-                            <td className="py-3 font-mono text-vana-primary">40% - 59% of Base Price</td>
+                            <td className="py-3 font-mono text-vana-primary">{pDict.base40_59}</td>
                           </tr>
                           <tr>
-                            <td className="py-3"><span className="text-gray-500 font-bold">🥉 Tier D (Low / Bot Risk)</span></td>
+                            <td className="py-3"><span className="text-gray-500 font-bold">🔻 {pDict.tierD}</span></td>
                             <td className="py-3 font-mono">0 - 39</td>
-                            <td className="py-3 font-mono text-vana-primary">0% - 39% of Base Price</td>
+                            <td className="py-3 font-mono text-vana-primary">{pDict.base0_39}</td>
                           </tr>
                         </tbody>
                       </table>
