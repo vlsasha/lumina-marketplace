@@ -11,7 +11,22 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const datasetIdRaw = searchParams.get('datasetId') || '';
     const datasetId = datasetIdRaw;
-    const baseSourceId = datasetIdRaw.split(' ')[0].toLowerCase();
+    const datasetName = datasetIdRaw.replace(/ \\(Tier [A-Z]\\)$/, '');
+    const sourceMap: Record<string, string> = {
+      'ChatGPT': 'chatgpt',
+      'GitHub': 'github',
+      'Instagram': 'instagram',
+      'LinkedIn': 'linkedin',
+      'Spotify': 'spotify',
+      'YouTube': 'youtube',
+      'Amazon': 'amazon',
+      'Claude': 'claude',
+      'iCloud Notes': 'icloud_notes',
+      'Oura Ring': 'oura',
+      'Strava': 'strava',
+      'WHOOP': 'whoop'
+    };
+    const baseSourceId = sourceMap[datasetName];
     const format = searchParams.get('format') || 'jsonl';
     let buyerId = searchParams.get('buyerId');
     const apiKey = searchParams.get('apiKey');
@@ -70,7 +85,7 @@ export async function GET(req: Request) {
       if (records.length > 0) {
         const keys = Object.keys(records[0].data || {});
         output = keys.join(',') + '\\n';
-        output += records.map(r => keys.map(k => '"' + String(r.data[k]).replace(/"/g, '""') + '"').join(',')).join('\\n');
+        output += records.map(r => keys.map(k => '"' + (typeof r.data[k] === 'object' ? JSON.stringify(r.data[k]) : String(r.data[k])).replace(/"/g, '""') + '"').join(',')).join('\\n');
       }
     }
     else if (format.toLowerCase() === 'parquet') {
@@ -94,4 +109,6 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
+
 
