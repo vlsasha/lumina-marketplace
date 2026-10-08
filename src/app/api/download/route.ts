@@ -11,22 +11,27 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const datasetIdRaw = searchParams.get('datasetId') || '';
     const datasetId = datasetIdRaw;
-    const datasetName = datasetIdRaw.replace(/ \\(Tier [A-Z]\\)$/, '');
+    
+    // Convert to lowercase before map lookup to support legacy data ("instagram (Tier D)")
+    const datasetName = datasetIdRaw.replace(/ \(Tier [A-Z]\)$/i, '').toLowerCase();
     const sourceMap: Record<string, string> = {
-      'ChatGPT': 'chatgpt',
-      'GitHub': 'github',
-      'Instagram': 'instagram',
-      'LinkedIn': 'linkedin',
-      'Spotify': 'spotify',
-      'YouTube': 'youtube',
-      'Amazon': 'amazon',
-      'Claude': 'claude',
-      'iCloud Notes': 'icloud_notes',
-      'Oura Ring': 'oura',
-      'Strava': 'strava',
-      'WHOOP': 'whoop'
+      'chatgpt': 'chatgpt',
+      'github': 'github',
+      'instagram': 'instagram',
+      'linkedin': 'linkedin',
+      'spotify': 'spotify',
+      'youtube': 'youtube',
+      'amazon': 'amazon',
+      'claude': 'claude',
+      'icloud notes': 'icloud_notes',
+      'oura ring': 'oura',
+      'strava': 'strava',
+      'whoop': 'whoop'
     };
-    const baseSourceId = sourceMap[datasetName];
+    
+    // Fallback to datasetName in case it's already an exact ID like "instagram"
+    const baseSourceId = sourceMap[datasetName] || datasetName;
+
     const format = searchParams.get('format') || 'jsonl';
     let buyerId = searchParams.get('buyerId');
     const apiKey = searchParams.get('apiKey');
@@ -109,6 +114,3 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
-
-
-
