@@ -5,7 +5,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { DATA_SOURCES, EARNINGS_RATES } from '@/lib/data-sources';
 import { EarningsTable } from '@/components/EarningsTable';
-import { useAccount, useWriteContract, useReadContract } from 'wagmi';
+import { useAccount, useWriteContract, useReadContract, usePublicClient } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useSession, signIn } from 'next-auth/react';
 import { formatUnits } from 'viem';
@@ -53,7 +53,7 @@ export default function DashboardPage() {
   const sessionObj = useSession();
   const isAuthenticated = isConnected || sessionObj?.status === 'authenticated';
 
-  const { data: balanceData } = useReadContract({
+  const { data: balanceData, refetch: refetchBalance } = useReadContract({
     address: MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`,
     abi: luminaMarketplaceAbi,
     functionName: 'providerBalances',
@@ -118,7 +118,9 @@ export default function DashboardPage() {
   const [optimisticZeroBalance, setOptimisticZeroBalance] = useState(false);
   const [isTxConfirming, setIsTxConfirming] = useState(false);
   
-  const { writeContract, isPending } = useWriteContract();
+  const { writeContractAsync } = useWriteContract();
+  const publicClient = usePublicClient();
+  const [isPending, setIsPending] = useState(false);
 
   useEffect(() => {
     if (privacyModalOpen && address) {
@@ -139,30 +141,32 @@ export default function DashboardPage() {
     }
   }, [privacyModalOpen, address]);
   
-  const handleClaim = () => { 
+  const handleClaim = async () => { 
     if (displayBalance === "0.00") { showToast("No earnings available to claim yet.", "error"); return; }
-    writeContract(
-      {
+    try {
+      setIsPending(true);
+      const hash = await writeContractAsync({
         address: MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`,
         abi: luminaMarketplaceAbi,
         functionName: 'claimEarnings',
-      },
-      {
-        onSuccess: () => {
-          setIsTxConfirming(true);
-          showToast('Transaction submitted! Waiting for confirmation...', 'success');
-          setTimeout(() => {
-            setOptimisticZeroBalance(true);
-            setIsTxConfirming(false);
-            showToast('Earnings successfully claimed to wallet!', 'success');
-          }, 4000); // Simulate block confirmation time
-        },
-        onError: (err) => {
-          console.error(err);
-          showToast('Failed to claim earnings.', 'error');
-        }
+      });
+      setIsPending(false);
+      setIsTxConfirming(true);
+      showToast('Transaction submitted! Waiting for confirmation...', 'success');
+      
+      if (publicClient) {
+        await publicClient.waitForTransactionReceipt({ hash });
       }
-    );
+      
+      await refetchBalance();
+      showToast('Earnings successfully claimed to wallet!', 'success');
+    } catch (err) {
+      console.error(err);
+      showToast('Failed to claim earnings.', 'error');
+    } finally {
+      setIsPending(false);
+      setIsTxConfirming(false);
+    }
   };
 
   // Ensure mock data is fully wiped
