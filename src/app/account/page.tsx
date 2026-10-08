@@ -112,13 +112,15 @@ function ProviderWorkspace({ address }: { address?: `0x${string}` }) {
     
     const fetchClaims = async () => {
       try {
-        const logs = await publicClient.getLogs({
-          address: MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`,
-          event: parseAbiItem('event EarningsClaimed(address indexed provider, uint256 amount)'),
-          args: { provider: address },
-          fromBlock: 'earliest',
-          toBlock: 'latest'
-        });
+        const currentBlock = await publicClient.getBlockNumber();
+          const fromBlock = currentBlock > BigInt(9900) ? currentBlock - BigInt(9900) : BigInt(0);
+          const logs = await publicClient.getLogs({
+            address: MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`,
+            event: parseAbiItem('event EarningsClaimed(address indexed provider, uint256 amount)'),
+            args: { provider: address },
+            fromBlock,
+            toBlock: 'latest'
+          });
         
         let sum = BigInt(0);
         for (const log of logs) {
@@ -131,6 +133,8 @@ function ProviderWorkspace({ address }: { address?: `0x${string}` }) {
         setClaimsLoaded(true);
       } catch (err) {
         console.error("Failed to fetch claims:", err);
+      } finally {
+        setClaimsLoaded(true);
       }
     };
     
@@ -410,5 +414,6 @@ function BuyerWorkspace({ address }: { address?: `0x${string}` }) {
     </div>
   );
 }
+
 
 

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { CustomConnectButton } from './CustomConnectButton';
-import { useAccount, useSwitchChain } from 'wagmi';
+import { useAccount, useSwitchChain, useDisconnect } from 'wagmi';
 import { signOut, signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
@@ -17,6 +17,7 @@ export function Header() {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const { chain, isConnected } = useAccount();
   const { switchChain } = useSwitchChain();
+  const { disconnect } = useDisconnect();
 
   const [price, setPrice] = useState<string | null>(null);
 
@@ -156,17 +157,18 @@ export function Header() {
                     {t.nav.personalCabinet}
                   </Link>
                   
-                  {sessionStatus === 'authenticated' && (
-                    <button 
-                      onClick={() => {
-                        setIsProfileDropdownOpen(false);
-                        signOut();
-                      }}
-                      className="w-full text-left px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-[#222] transition-colors"
-                    >
-                      {t.common.signOut}
-                    </button>
-                  )}
+                  {(sessionStatus === 'authenticated' || isConnected) && (
+                      <button 
+                        onClick={() => {
+                          setIsProfileDropdownOpen(false);
+                          if (sessionStatus === 'authenticated') signOut();
+                          if (isConnected) disconnect();
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-[#222] transition-colors"
+                      >
+                        {t.common.signOut}
+                      </button>
+                    )}
                 </div>
               )}
             </div>
