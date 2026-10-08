@@ -125,10 +125,10 @@ export function DataQueryBuilder() {
         functionName: 'buyData',
         args: [validProviders, amountsArray],
       });
-      fetch('/api/account/purchases', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ buyerId: address, datasetId: (DATA_SOURCES.find(s => s.id === selectedSource)?.name || selectedSource) + ' (Tier ' + selectedTier + ')', transactionHash: hash1, sizeBytes: validProviders.length * 1024 * 5, providerWallets: validProviders }) }); alert('Dataset purchased successfully!');
+      fetch('/api/account/purchases', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ buyerId: address, datasetId: (DATA_SOURCES.find(s => s.id === selectedSource)?.name || selectedSource) + ' (Tier ' + selectedTier + ')', transactionHash: hash1, sizeBytes: validProviders.length * 1024 * 5, providerWallets: validProviders }) }); 
     } catch (err) {
       console.error(err);
-      alert('Payment failed.');
+      console.error('Payment failed UI alert removed');
     } finally {
       setIsPending(false);
     }
