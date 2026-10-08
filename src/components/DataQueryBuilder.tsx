@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { PAGES_DICT } from '@/lib/i18n/pages-dict';
 import { DATA_SOURCES, EARNINGS_RATES } from '@/lib/data-sources';
-import { useAccount, useWriteContract } from 'wagmi';
+import { useAccount, useWriteContract, usePublicClient } from 'wagmi';
 import { useSession } from 'next-auth/react';
 import { MARKETPLACE_CONFIG } from '@/lib/config';
 import { luminaMarketplaceAbi } from '@/lib/abi';
@@ -19,6 +19,7 @@ export function DataQueryBuilder() {
   const { address, isConnected } = useAccount();
   const sessionObj = useSession();
   const { writeContractAsync } = useWriteContract();
+  const publicClient = usePublicClient();
   const [isPending, setIsPending] = useState(false);
   
   const [validProviders, setValidProviders] = useState<`0x${string}`[]>([]);
@@ -106,15 +107,12 @@ export function DataQueryBuilder() {
       const data = await response.json();
       const validProviders = data.providers as `0x${string}`[];
 
-      const totalAmountParsed = parseUnits(totalCost.toFixed(6), MARKETPLACE_CONFIG.paymentToken.decimals);
-      const amountPerProvider = parseUnits((totalCost / validProviders.length).toFixed(6), MARKETPLACE_CONFIG.paymentToken.decimals);
+      
+      const amountPerProviderNum = Math.floor((totalCost / validProviders.length) * 1e6) / 1e6;
+        const amountPerProvider = parseUnits(amountPerProviderNum.toString(), MARKETPLACE_CONFIG.paymentToken.decimals);
       const amountsArray = Array(validProviders.length).fill(amountPerProvider);
-      await writeContractAsync({
-        address: MARKETPLACE_CONFIG.paymentToken.address as `0x${string}`,
-        abi: erc20Abi,
-        functionName: 'approve',
-        args: [MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`, totalAmountParsed],
-      });
+        const totalAmountParsed = amountPerProvider * BigInt(validProviders.length);
+      const hash1 = await writeContractAsync({ address: MARKETPLACE_CONFIG.paymentToken.address as `0x${string}`, abi: erc20Abi, functionName: 'approve', args: [MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`, totalAmountParsed] }); if (publicClient) { await publicClient.waitForTransactionReceipt({ hash: hash1 }); }
       await writeContractAsync({
         address: MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`,
         abi: luminaMarketplaceAbi,
@@ -413,3 +411,6 @@ export function DataQueryBuilder() {
     </div>
   );
 }
+
+
+
