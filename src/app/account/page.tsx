@@ -273,12 +273,26 @@ function BuyerWorkspace({ address }: { address?: `0x${string}` }) {
         <div>
           <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-1">Active API Key</h3>
           <div className="flex items-center gap-3">
-            <code className="text-vana-primary font-mono bg-vana-primary/10 px-3 py-1.5 rounded-lg border border-vana-primary/20 break-all">
-              {isRevealed ? apiKey : apiKey.substring(0, 12) + '••••••••••••'}
-            </code>
-            {!isRevealed && apiKey !== 'Loading...' && (
-              <button onClick={() => setIsRevealed(true)} className="text-xs text-gray-400 hover:text-white underline">Reveal</button>
-            )}
+            <div className="flex items-center gap-2">
+                <code className="text-vana-primary font-mono bg-vana-primary/10 px-3 py-1.5 rounded-lg border border-vana-primary/20 break-all">
+                  {isRevealed ? apiKey : (apiKey === 'Loading...' ? apiKey : apiKey.substring(0, 12) + '••••••••••••')}
+                </code>
+                {!isRevealed && apiKey !== 'Loading...' && apiKey !== 'No active key' && apiKey !== 'Error loading key' && (
+                  <button onClick={() => setIsRevealed(true)} className="text-xs text-gray-400 hover:text-white underline">Reveal</button>
+                )}
+                {isRevealed && !apiKey.endsWith('...') && (
+                  <button onClick={() => {
+                    navigator.clipboard.writeText(apiKey);
+                    const btn = document.getElementById('copy-btn');
+                    if (btn) { btn.innerText = 'Copied!'; setTimeout(() => btn.innerText = 'Copy', 2000); }
+                  }} id="copy-btn" className="px-2 py-1 bg-vana-primary/20 text-vana-primary rounded text-xs hover:bg-vana-primary/30 transition-colors">
+                    Copy
+                  </button>
+                )}
+                {isRevealed && apiKey.endsWith('...') && (
+                  <span className="text-xs text-red-400">Lost (Click Rotate to generate new)</span>
+                )}
+              </div>
           </div>
         </div>
         <button 
@@ -402,7 +416,7 @@ function BuyerWorkspace({ address }: { address?: `0x${string}` }) {
                 </div>
                 <div className="bg-black border border-[#222] rounded p-3 overflow-x-auto">
                   <code className="text-xs text-vana-primary font-mono whitespace-pre">
-{'curl -X GET "https://lumina-vana.vercel.app/api/download?datasetId=' + encodeURIComponent(downloadModal.dataset_id) + '&format=jsonl" \n  -H "Authorization: Bearer ' + (apiKey === "Loading..." ? "YOUR_API_KEY" : apiKey) + '"'}
+{'curl -X GET "https://lumina-vana.vercel.app/api/download?datasetId=' + encodeURIComponent(downloadModal.dataset_id) + '&format=jsonl" \n  -H "Authorization: Bearer ' + (apiKey === "Loading..." || apiKey.endsWith("...") ? "YOUR_API_KEY_HERE" : apiKey) + '"'}
                   </code>
                 </div>
               </div>
