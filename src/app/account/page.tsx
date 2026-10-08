@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { CustomConnectButton } from '@/components/CustomConnectButton';
 import { useAccount, useReadContract } from 'wagmi';
 import { useSession, signIn } from 'next-auth/react';
 import { luminaMarketplaceAbi } from '@/lib/abi';
@@ -73,13 +74,16 @@ export default function AccountPage() {
               </svg>
             </div>
             <h2 className="text-2xl font-bold text-white mb-4">Connect to Access Workspace</h2>
-                        <p className="text-gray-400 mb-8 px-6">
+                                    <p className="text-gray-400 mb-8 px-6">
               Please connect your Vana wallet or sign in with an external provider to view your personalized dashboard.
             </p>
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="w-full sm:w-auto [&>div]:w-full [&_button]:w-full [&_button]:py-3.5 [&_button]:px-6">
+                <CustomConnectButton />
+              </div>
               <button 
                 onClick={() => signIn('google', { callbackUrl: '/account' })}
-                className="flex items-center justify-center gap-3 bg-white text-black font-semibold py-3.5 px-6 rounded-xl hover:bg-gray-100 transition-colors"
+                className="flex items-center justify-center gap-3 bg-white text-black font-semibold py-3.5 px-6 rounded-xl hover:bg-gray-100 transition-colors w-full sm:w-auto"
               >
                 <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
