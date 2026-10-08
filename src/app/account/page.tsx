@@ -129,9 +129,20 @@ function ProviderWorkspace({ address }: { address?: `0x${string}` }) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-[#111111] border border-[#222222] rounded-2xl p-6">
-          <div className="text-gray-400 text-sm mb-2">Available to Claim (USDC.e)</div>
-          <div className="text-3xl font-bold text-white">${displayBalance} <span className="text-sm font-normal text-gray-500">USDC</span></div>
-          <p className="text-xs text-gray-500 mt-2">To claim your earnings, visit the main Provider Dashboard.</p>
+          <div className="flex justify-between items-start mb-4">
+            <div>
+              <div className="text-gray-400 text-sm mb-1">Available to Claim</div>
+              <div className="text-3xl font-bold text-white">${displayBalance} <span className="text-sm font-normal text-gray-500">USDC</span></div>
+            </div>
+            <div className="text-right">
+              <div className="text-gray-400 text-sm mb-1">Total Claimed</div>
+              <div className="text-xl font-bold text-gray-300">$0.00 <span className="text-sm font-normal text-gray-500">USDC</span></div>
+            </div>
+          </div>
+          <div className="w-full bg-[#222] h-1.5 rounded-full mb-4 overflow-hidden">
+            <div className="bg-vana-primary h-full rounded-full" style={{ width: '0%' }}></div>
+          </div>
+          <p className="text-xs text-gray-500">To claim your earnings and view history, visit the main Provider Dashboard.</p>
         </div>
         <div className="bg-[#111111] border border-[#222222] rounded-2xl p-6">
           <div className="text-gray-400 text-sm mb-2">Detailed Analytics</div>
