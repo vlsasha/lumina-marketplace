@@ -279,14 +279,20 @@ function BuyerWorkspace({ address }: { address?: `0x${string}` }) {
                 <code className="text-vana-primary font-mono bg-vana-primary/10 px-3 py-1.5 rounded-lg border border-vana-primary/20 break-all">
                   {apiKey}
                 </code>
-                {apiKey !== 'Loading...' && apiKey !== 'No active key' && apiKey !== 'Error loading key' && (
-                  <button onClick={() => {
-                    navigator.clipboard.writeText(apiKey);
-                    const btn = document.getElementById('copy-btn');
-                    if (btn) { btn.innerText = 'Copied!'; setTimeout(() => btn.innerText = 'Copy', 2000); }
-                  }} id="copy-btn" className="px-3 py-1.5 bg-vana-primary/20 text-vana-primary font-semibold rounded-lg hover:bg-vana-primary/30 transition-colors ml-2">
-                    Copy
-                  </button>
+                {apiKey !== 'Loading...' && apiKey !== 'No active key' && !apiKey.startsWith('DB Error') && (
+                  apiKey.endsWith('...') ? (
+                    <span className="text-xs text-orange-400 ml-2 bg-orange-400/10 px-2 py-1 rounded">
+                      Legacy key (Please click Rotate Key to get a full copyable key)
+                    </span>
+                  ) : (
+                    <button onClick={() => {
+                      navigator.clipboard.writeText(apiKey);
+                      const btn = document.getElementById('copy-btn');
+                      if (btn) { btn.innerText = 'Copied!'; setTimeout(() => btn.innerText = 'Copy', 2000); }
+                    }} id="copy-btn" className="px-3 py-1.5 bg-vana-primary/20 text-vana-primary font-semibold rounded-lg hover:bg-vana-primary/30 transition-colors ml-2">
+                      Copy
+                    </button>
+                  )
                 )}
               </div>
           </div>
