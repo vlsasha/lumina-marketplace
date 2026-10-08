@@ -1,11 +1,9 @@
 import { neon } from '@neondatabase/serverless';
 
-// Create the connection only if the variable exists
 export const sql = process.env.DATABASE_URL 
   ? neon(process.env.DATABASE_URL) 
   : null;
 
-// Helper to initialize the DB table if it doesn't exist
 export async function initDb() {
   if (!sql) return;
 
@@ -26,10 +24,6 @@ export async function initDb() {
       prefix VARCHAR(20) NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       raw_key VARCHAR(255)
-    ) UNIQUE NOT NULL,
-      key_hash VARCHAR(255) NOT NULL,
-      prefix VARCHAR(20) NOT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `;
 
@@ -46,13 +40,10 @@ export async function initDb() {
     )
   `;
 
-  // Auto-migrate: add provider_wallets if missing (for legacy tables)
   try {
     await sql`ALTER TABLE purchases ADD COLUMN IF NOT EXISTS provider_wallets JSONB`;
-    await sql`ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS raw_key VARCHAR(255)`;;
-  } catch (e) {
-    // Ignore if already exists or other error
-  }
+    await sql`ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS raw_key VARCHAR(255)`;
+  } catch (e) {}
 }
 
 export default sql;
