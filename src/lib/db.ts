@@ -24,6 +24,11 @@ export async function initDb() {
       user_id VARCHAR(255) UNIQUE NOT NULL,
       key_hash VARCHAR(255) NOT NULL,
       prefix VARCHAR(20) NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      raw_key VARCHAR(255)
+    ) UNIQUE NOT NULL,
+      key_hash VARCHAR(255) NOT NULL,
+      prefix VARCHAR(20) NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `;
@@ -44,6 +49,7 @@ export async function initDb() {
   // Auto-migrate: add provider_wallets if missing (for legacy tables)
   try {
     await sql`ALTER TABLE purchases ADD COLUMN IF NOT EXISTS provider_wallets JSONB`;
+    await sql`ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS raw_key VARCHAR(255)`;;
   } catch (e) {
     // Ignore if already exists or other error
   }

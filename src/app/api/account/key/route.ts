@@ -11,13 +11,13 @@ export async function GET(req: Request) {
     const userId = searchParams.get('userId');
     if (!userId) return NextResponse.json({ error: 'User ID required' }, { status: 400 });
 
-    const keys = await sql`SELECT prefix, created_at FROM api_keys WHERE user_id = ${userId}`;
+    const keys = await sql`SELECT raw_key, prefix, created_at FROM api_keys WHERE user_id = ${userId}`;
     
     if (keys.length === 0) {
       return NextResponse.json({ key: null });
     }
     
-    return NextResponse.json({ key: `${keys[0].prefix}...` });
+    return NextResponse.json({ key: keys[0].raw_key || `${keys[0].prefix}...` });
   } catch (error) {
     console.error('Failed to get API key:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
@@ -40,11 +40,12 @@ export async function POST(req: Request) {
 
     // Upsert key for user
     await sql`
-      INSERT INTO api_keys (user_id, key_hash, prefix)
-      VALUES (${userId}, ${keyHash}, ${prefix})
+      INSERT INTO api_keys (user_id, key_hash, prefix, raw_key)
+      VALUES (${userId}, ${keyHash}, ${prefix}, ${apiKey})
       ON CONFLICT (user_id) DO UPDATE SET
         key_hash = EXCLUDED.key_hash,
         prefix = EXCLUDED.prefix,
+        raw_key = EXCLUDED.raw_key,
         created_at = CURRENT_TIMESTAMP
     `;
 

@@ -275,22 +275,16 @@ function BuyerWorkspace({ address }: { address?: `0x${string}` }) {
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
                 <code className="text-vana-primary font-mono bg-vana-primary/10 px-3 py-1.5 rounded-lg border border-vana-primary/20 break-all">
-                  {isRevealed ? apiKey : (apiKey === 'Loading...' ? apiKey : apiKey.substring(0, 12) + '••••••••••••')}
+                  {apiKey}
                 </code>
-                {!isRevealed && apiKey !== 'Loading...' && apiKey !== 'No active key' && apiKey !== 'Error loading key' && (
-                  <button onClick={() => setIsRevealed(true)} className="text-xs text-gray-400 hover:text-white underline">Reveal</button>
-                )}
-                {isRevealed && !apiKey.endsWith('...') && (
+                {apiKey !== 'Loading...' && apiKey !== 'No active key' && apiKey !== 'Error loading key' && (
                   <button onClick={() => {
                     navigator.clipboard.writeText(apiKey);
                     const btn = document.getElementById('copy-btn');
                     if (btn) { btn.innerText = 'Copied!'; setTimeout(() => btn.innerText = 'Copy', 2000); }
-                  }} id="copy-btn" className="px-2 py-1 bg-vana-primary/20 text-vana-primary rounded text-xs hover:bg-vana-primary/30 transition-colors">
+                  }} id="copy-btn" className="px-3 py-1.5 bg-vana-primary/20 text-vana-primary font-semibold rounded-lg hover:bg-vana-primary/30 transition-colors ml-2">
                     Copy
                   </button>
-                )}
-                {isRevealed && apiKey.endsWith('...') && (
-                  <span className="text-xs text-red-400">Lost (Click Rotate to generate new)</span>
                 )}
               </div>
           </div>
