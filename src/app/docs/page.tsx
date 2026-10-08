@@ -6,10 +6,12 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useState } from 'react';
 
-const DOCS_SECTIONS = (t: any) => [
+const DOCS_SECTIONS = (pDict: any, t: any) => [
   { id: 'overview', title: t.docs.sections.overview },
+  { id: 'privacy', title: pDict.navPrivacy },
   { id: 'providers', title: t.docs.sections.providers },
   { id: 'buyers', title: t.docs.sections.buyers },
+  { id: 'tokenomics', title: pDict.navTokenomics },
   { id: 'architecture', title: t.docs.sections.architecture },
   { id: 'poc', title: t.docs.sections.poc },
 ];
@@ -35,7 +37,7 @@ export default function DocsPage() {
         <aside className="hidden lg:block w-64 shrink-0 fixed h-[calc(100vh-120px)] overflow-y-auto pr-6 border-r border-vana-border">
           <h2 className="text-xs font-bold text-vana-text-muted uppercase tracking-wider mb-4">{t.docs.title}</h2>
           <nav className="space-y-1">
-            {DOCS_SECTIONS(t).map((section) => (
+            {DOCS_SECTIONS(pDict, t).map((section) => (
               <button
                 key={section.id}
                 onClick={() => scrollToSection(section.id)}
@@ -69,6 +71,35 @@ export default function DocsPage() {
               <p className="text-vana-text-secondary mb-4 leading-relaxed">
                 {pDict.platformDesc2}
               </p>
+            </section>
+
+            {/* PRIVACY & CRYPTO (NEW) */}
+            <section id="privacy" className="scroll-mt-32 mb-16">
+              <h2 className="text-2xl font-bold border-b border-vana-border pb-2 mb-6">{pDict.privacyTitle}</h2>
+              <p className="text-vana-text-secondary mb-6 leading-relaxed">
+                {pDict.privacyDesc1}
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-[#111] border border-[#222] p-5 rounded-xl">
+                  <h4 className="font-bold text-white mb-3 flex items-center gap-2">
+                    <svg className="w-5 h-5 text-vana-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                    {pDict.privacyE2EE}
+                  </h4>
+                  <p className="text-sm text-vana-text-secondary leading-relaxed">
+                    {pDict.privacyE2EEDesc}
+                  </p>
+                </div>
+                <div className="bg-[#111] border border-[#222] p-5 rounded-xl">
+                  <h4 className="font-bold text-white mb-3 flex items-center gap-2">
+                    <svg className="w-5 h-5 text-vana-green" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                    {pDict.privacyTEE}
+                  </h4>
+                  <p className="text-sm text-vana-text-secondary leading-relaxed">
+                    {pDict.privacyTEEDesc}
+                  </p>
+                </div>
+              </div>
             </section>
 
             {/* PROVIDERS */}
@@ -163,6 +194,49 @@ dataset = response.json()<br/>
               </div>
             </section>
 
+            {/* TOKENOMICS & FEES (NEW) */}
+            <section id="tokenomics" className="scroll-mt-32 mb-16">
+              <h2 className="text-2xl font-bold border-b border-vana-border pb-2 mb-6">{pDict.tokenomicsTitle}</h2>
+              <p className="text-vana-text-secondary mb-6 leading-relaxed">
+                {pDict.feeDesc}
+              </p>
+              
+              <div className="flex flex-col gap-3 mb-8">
+                <div className="flex items-center p-4 bg-[#111] rounded-xl border border-vana-primary/30 relative overflow-hidden">
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-vana-primary"></div>
+                  <div className="flex-1">
+                    <h4 className="font-bold text-white text-lg">{pDict.fee80}</h4>
+                    <p className="text-sm text-vana-text-secondary">{pDict.fee80Desc}</p>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="p-4 bg-[#111] rounded-xl border border-[#333] relative overflow-hidden">
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-gray-500"></div>
+                    <h4 className="font-bold text-white mb-1">{pDict.fee10}</h4>
+                    <p className="text-xs text-vana-text-secondary">{pDict.fee10Desc}</p>
+                  </div>
+                  <div className="p-4 bg-[#111] rounded-xl border border-[#333] relative overflow-hidden">
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-vana-green"></div>
+                    <h4 className="font-bold text-white mb-1">{pDict.fee5Oracle}</h4>
+                    <p className="text-xs text-vana-text-secondary">{pDict.fee5OracleDesc}</p>
+                  </div>
+                  <div className="p-4 bg-[#111] rounded-xl border border-[#333] relative overflow-hidden">
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-purple-500"></div>
+                    <h4 className="font-bold text-white mb-1">{pDict.fee5Liquidity}</h4>
+                    <p className="text-xs text-vana-text-secondary">{pDict.fee5LiquidityDesc}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-5 border-l-4 border-vana-primary bg-vana-card rounded-r-xl">
+                <h4 className="font-mono font-bold text-white mb-2">{pDict.vanaVsUsdc}</h4>
+                <p className="text-sm text-vana-text-secondary leading-relaxed">
+                  {pDict.vanaVsUsdcDesc}
+                </p>
+              </div>
+            </section>
+
             {/* ARCHITECTURE */}
             <section id="architecture" className="scroll-mt-32 mb-16">
               <h2 className="text-2xl font-bold border-b border-vana-border pb-2 mb-6">{pDict.archAndContracts}</h2>
@@ -228,7 +302,7 @@ dataset = response.json()<br/>
                 {pDict.pocIntro}
               </p>
               
-              <div className="space-y-8">
+              <div className="space-y-8 mb-10">
                 {/* Deduplication */}
                 <div>
                   <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
@@ -324,6 +398,22 @@ dataset = response.json()<br/>
                     </div>
                   </div>
               </div>
+
+              {/* DISPUTE RESOLUTION (NEW) */}
+              <h3 className="text-xl font-bold border-t border-vana-border pt-8 pb-4">{pDict.disputeTitle}</h3>
+              <p className="text-vana-text-secondary mb-6 leading-relaxed">
+                {pDict.disputeDesc}
+              </p>
+              <div className="bg-red-500/10 border border-red-500/20 p-5 rounded-xl">
+                <h4 className="font-bold text-red-400 mb-2 flex items-center gap-2">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                  {pDict.slashingTitle}
+                </h4>
+                <p className="text-sm text-gray-300 leading-relaxed">
+                  {pDict.slashingDesc}
+                </p>
+              </div>
+
             </section>
 
           </div>
