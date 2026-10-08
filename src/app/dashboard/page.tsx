@@ -145,10 +145,10 @@ export default function DashboardPage() {
         functionName: 'claimEarnings',
       },
       {
-        onSuccess: () => alert('Earnings claimed successfully!'),
+        onSuccess: () => showToast('Earnings claimed successfully!', 'success'),
         onError: (err) => {
           console.error(err);
-          alert('Failed to claim earnings. Make sure you have a balance.');
+          showToast('Failed to claim earnings. Make sure you have a balance.', 'error');
         }
       }
     );
@@ -794,6 +794,7 @@ function StatCard({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+
 
 
 
