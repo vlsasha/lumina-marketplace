@@ -119,7 +119,7 @@ export function DataQueryBuilder() {
         functionName: 'buyData',
         args: [validProviders, amountsArray],
       });
-      alert('Dataset purchased successfully!');
+      fetch('/api/account/purchases', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ buyerId: address, datasetId: selectedSource + ' (Tier ' + selectedTier + ')', transactionHash: hash1, sizeBytes: validProviders.length * 1024 * 5 }) }); alert('Dataset purchased successfully!');
     } catch (err) {
       console.error(err);
       alert('Payment failed.');
@@ -411,6 +411,8 @@ export function DataQueryBuilder() {
     </div>
   );
 }
+
+
 
 
 
