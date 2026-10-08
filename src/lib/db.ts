@@ -36,6 +36,21 @@ export async function initDb() {
       transaction_hash VARCHAR(255),
       format VARCHAR(10),
       size_bytes INTEGER,
+      purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      provider_wallets JSONB
+    )
+  `;
+
+  // Auto-migrate: add provider_wallets if missing (for legacy tables)
+  try {
+    await sql`ALTER TABLE purchases ADD COLUMN IF NOT EXISTS provider_wallets JSONB`;
+  } catch (e) {
+    // Ignore if already exists or other error
+  } NOT NULL,
+      dataset_id VARCHAR(255) NOT NULL,
+      transaction_hash VARCHAR(255),
+      format VARCHAR(10),
+      size_bytes INTEGER,
       purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `;

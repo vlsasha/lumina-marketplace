@@ -402,7 +402,7 @@ function BuyerWorkspace({ address }: { address?: `0x${string}` }) {
                 </div>
                 <div className="bg-black border border-[#222] rounded p-3 overflow-x-auto">
                   <code className="text-xs text-vana-primary font-mono whitespace-pre">
-{'curl -X GET "https://api.lumina.vana/v1/datasets/' + downloadModal.dataset_id + '" \\n  -H "Authorization: Bearer ' + (apiKey === "Loading..." ? "YOUR_API_KEY" : apiKey) + '"'}
+{'curl -X GET "https://lumina-vana.vercel.app/api/download?datasetId=' + encodeURIComponent(downloadModal.dataset_id) + '&format=jsonl" \n  -H "Authorization: Bearer ' + (apiKey === "Loading..." ? "YOUR_API_KEY" : apiKey) + '"'}
                   </code>
                 </div>
               </div>

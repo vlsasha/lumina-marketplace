@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import sql, { initDb } from '@/lib/db';
+import crypto from 'crypto';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 
@@ -34,10 +35,20 @@ export async function GET(req: Request) {
 
     const format = searchParams.get('format') || 'jsonl';
     let buyerId = searchParams.get('buyerId');
-    const apiKey = searchParams.get('apiKey');
+    const authHeader = req.headers.get('authorization');
+    let apiKey = searchParams.get('apiKey');
+    if (!apiKey && authHeader && authHeader.startsWith('Bearer ')) {
+      apiKey = authHeader.substring(7);
+    }
 
     if (apiKey) {
-      // Validate API key logic
+      const keyHash = crypto.createHash('sha256').update(apiKey).digest('hex');
+      const keyResult = await sql`SELECT user_id FROM api_keys WHERE key_hash = ${keyHash}`;
+      if (keyResult.length > 0) {
+        buyerId = keyResult[0].user_id;
+      } else {
+        return NextResponse.json({ error: 'Invalid API Key' }, { status: 401 });
+      }
     } else {
       const session = await getServerSession(authOptions);
       if (session?.user?.email && !buyerId) {
@@ -100,19 +111,19 @@ export async function GET(req: Request) {
 
     if (format.toLowerCase() === 'jsonl') {
       contentType = 'application/x-ndjson';
-      output = records.map(r => JSON.stringify(r.data)).join('\\n');
+      output = records.map(r => JSON.stringify(r.data)).join('\n');
     } 
     else if (format.toLowerCase() === 'csv') {
       contentType = 'text/csv';
       if (records.length > 0) {
         const keys = Object.keys(records[0].data || {});
-        output = keys.join(',') + '\\n';
-        output += records.map(r => keys.map(k => '"' + (typeof r.data[k] === 'object' ? JSON.stringify(r.data[k]) : String(r.data[k])).replace(/"/g, '""') + '"').join(',')).join('\\n');
+        output = keys.join(',') + '\n';
+        output += records.map(r => keys.map(k => '"' + (typeof r.data[k] === 'object' ? JSON.stringify(r.data[k]) : String(r.data[k])).replace(/"/g, '""') + '"').join(',')).join('\n');
       }
     }
     else if (format.toLowerCase() === 'parquet') {
       contentType = 'application/octet-stream';
-      output = "PARQUET_MOCK_DATA\\n" + records.map(r => JSON.stringify(r.data)).join('\\n');
+      output = "PARQUET_MOCK_DATA\\n" + records.map(r => JSON.stringify(r.data)).join('\n');
     }
     else {
       return NextResponse.json({ error: 'Unsupported format' }, { status: 400 });
