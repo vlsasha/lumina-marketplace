@@ -37,7 +37,8 @@ export async function initDb() {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       provider_account_id VARCHAR(255),
       quality_score INTEGER,
-      UNIQUE(wallet_address, source_id)
+      UNIQUE(wallet_address, source_id),
+      UNIQUE(source_id, provider_account_id)
     )
   `;
 
@@ -79,6 +80,7 @@ export async function initDb() {
     await sql`ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS raw_key VARCHAR(255)`;
     await sql`ALTER TABLE user_connections ADD COLUMN IF NOT EXISTS provider_account_id VARCHAR(255)`;
     await sql`ALTER TABLE user_connections ADD COLUMN IF NOT EXISTS quality_score INTEGER`;
+    try { await sql`ALTER TABLE user_connections ADD CONSTRAINT unique_provider_account UNIQUE(source_id, provider_account_id)`; } catch (e) {}
   } catch (e) {}
 }
 
