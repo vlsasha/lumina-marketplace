@@ -30,6 +30,7 @@ export function DataQueryBuilder() {
   
   const [volume, setVolume] = useState<number>(0);
   const [selectedSource, setSelectedSource] = useState<string | null>(null);
+  const [purchasedDatasets, setPurchasedDatasets] = useState<string[]>([]);
   const [selectedTier, setSelectedTier] = useState('A');
 
   useEffect(() => {
@@ -62,6 +63,9 @@ export function DataQueryBuilder() {
   const handleSourceToggle = (id: string) => {
     setSelectedSource(prev => prev === id ? null : id);
   };
+
+  const currentDatasetId = selectedSource ? (DATA_SOURCES.find(s => s.id === selectedSource)?.name || selectedSource) + ' (Tier ' + selectedTier + ')' : '';
+  const isAlreadyPurchased = purchasedDatasets.includes(currentDatasetId) || purchasedDatasets.includes(selectedSource + ' (Tier ' + selectedTier + ')');
 
   const basePrice = selectedSource ? (EARNINGS_RATES.find(r => r.id === selectedSource)?.price || 0) : 0;
   
@@ -321,12 +325,8 @@ export function DataQueryBuilder() {
               </div>
             </div>
 
-            <button 
-              onClick={handlePurchase}
-              disabled={isPending || totalCost === 0}
-              className="w-full py-4 px-4 bg-vana-primary hover:bg-opacity-90 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-vana-primary/25 hover:-translate-y-0.5 disabled:opacity-50 flex items-center justify-center gap-2"
-            >
-              {isPending ? (
+            <button onClick={handlePurchase} disabled={isPending || totalCost === 0 || isAlreadyPurchased} className="w-full py-4 px-4 bg-vana-primary hover:bg-opacity-90 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-vana-primary/25 hover:-translate-y-0.5 disabled:opacity-50 flex items-center justify-center gap-2">
+              {isAlreadyPurchased ? (<>Already Purchased</>) : isPending ? (
                 <>
                   <svg className="animate-spin h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -411,6 +411,7 @@ export function DataQueryBuilder() {
     </div>
   );
 }
+
 
 
 
