@@ -59,7 +59,13 @@ export async function GET(request: Request) {
       // Determine what dataset ID to look up (approximate, since we only know the source name and tier)
       // Actually, we can just look up ALL purchases for this buyer where the dataset name includes the source name.
       // But more simply, we can just check all provider_wallets they ever bought for ANY dataset.
-      const purchases = await sql`SELECT provider_wallets FROM purchases WHERE buyer_id = ${buyerId}`;
+      
+      // We only want to filter out wallets that the user has already bought FOR THIS SPECIFIC source/dataset!
+      // The dataset_id in the DB looks like "ChatGPT (Tier D)" or "Instagram (Tier A)".
+      // We can use ILIKE to match the source name.
+      const sourceQuery = `%${sources[0]}%`;
+      const purchases = await sql`SELECT provider_wallets FROM purchases WHERE buyer_id = ${buyerId} AND dataset_id ILIKE ${sourceQuery}`;
+
       const purchasedWallets = new Set();
       purchases.forEach(p => {
         if (p.provider_wallets && Array.isArray(p.provider_wallets)) {
@@ -77,10 +83,19 @@ export async function GET(request: Request) {
       providers.push('0xC1d3007A33d86Fd7390B087304AD3083FC87438C');
     }
 
+    
     return NextResponse.json({
       providers,
-      count
+      count,
+      debug: {
+        sourcesParam,
+        buyerId,
+        tierParam,
+        // removed due to scope
+        // removed due to scope
+      }
     });
+
   } catch (error) {
     console.error('Failed to fetch providers', error);
     return NextResponse.json({ providers: ['0xC1d3007A33d86Fd7390B087304AD3083FC87438C'], count: 1 });
