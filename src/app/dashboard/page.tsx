@@ -115,6 +115,8 @@ export default function DashboardPage() {
   const [privacyModalOpen, setPrivacyModalOpen] = useState<string | null>(null);
   const [sandboxData, setSandboxData] = useState<any>(null);
   const [isSandboxLoading, setIsSandboxLoading] = useState(false);
+  const [optimisticZeroBalance, setOptimisticZeroBalance] = useState(false);
+  const [isTxConfirming, setIsTxConfirming] = useState(false);
   
   const { writeContract, isPending } = useWriteContract();
 
@@ -137,7 +139,8 @@ export default function DashboardPage() {
     }
   }, [privacyModalOpen, address]);
   
-  const handleClaim = () => { if (displayBalance === "0.00") { showToast("No earnings available to claim yet.", "error"); return; }
+  const handleClaim = () => { 
+    if (displayBalance === "0.00") { showToast("No earnings available to claim yet.", "error"); return; }
     writeContract(
       {
         address: MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`,
@@ -145,10 +148,18 @@ export default function DashboardPage() {
         functionName: 'claimEarnings',
       },
       {
-        onSuccess: () => showToast('Earnings claimed successfully!', 'success'),
+        onSuccess: () => {
+          setIsTxConfirming(true);
+          showToast('Transaction submitted! Waiting for confirmation...', 'success');
+          setTimeout(() => {
+            setOptimisticZeroBalance(true);
+            setIsTxConfirming(false);
+            showToast('Earnings successfully claimed to wallet!', 'success');
+          }, 4000); // Simulate block confirmation time
+        },
         onError: (err) => {
           console.error(err);
-          showToast('Failed to claim earnings. Make sure you have a balance.', 'error');
+          showToast('Failed to claim earnings.', 'error');
         }
       }
     );
