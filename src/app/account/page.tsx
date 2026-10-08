@@ -225,10 +225,16 @@ function BuyerWorkspace({ address }: { address?: `0x${string}` }) {
   };
 
   useEffect(() => {
-    // Fetch mock API key
-    setTimeout(() => {
-      setApiKey('db_live_' + Math.random().toString(36).substring(2, 10));
-    }, 1000);
+    // Fetch real API key
+    if (address) {
+      fetch(`/api/account/key?userId=${address}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.key) setApiKey(data.key);
+          else setApiKey('No active key');
+        })
+        .catch(() => setApiKey('Error loading key'));
+    }
 
     // Fetch purchases
     if (address) {
@@ -272,10 +278,22 @@ function BuyerWorkspace({ address }: { address?: `0x${string}` }) {
           </div>
         </div>
         <button 
-          onClick={() => {
+          onClick={async () => {
             setApiKey('Loading...');
             setIsRevealed(false);
-            setTimeout(() => setApiKey('db_live_' + Math.random().toString(36).substring(2, 10)), 800);
+            if (!address) return;
+            try {
+              const res = await fetch('/api/account/key', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: address })
+              });
+              const data = await res.json();
+              if (data.apiKey) setApiKey(data.apiKey);
+            } catch (err) {
+              console.error(err);
+              setApiKey('Error generating key');
+            }
           }}
           className="px-4 py-2 bg-[#222] hover:bg-[#333] text-white text-sm font-semibold rounded-lg transition-colors whitespace-nowrap"
         >
