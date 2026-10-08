@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CustomConnectButton } from '@/components/CustomConnectButton';
-import { useAccount, useReadContract } from 'wagmi';
+import { useAccount, useReadContract, usePublicClient } from 'wagmi';
 import { useSession, signIn } from 'next-auth/react';
 import { luminaMarketplaceAbi } from '@/lib/abi';
 import { MARKETPLACE_CONFIG } from '@/lib/config';
-import { formatUnits } from 'viem';
+import { formatUnits, parseAbiItem } from 'viem';
 import Link from 'next/link';
 
 type Role = 'provider' | 'buyer';
@@ -103,6 +103,40 @@ export default function AccountPage() {
 }
 
 function ProviderWorkspace({ address }: { address?: `0x${string}` }) {
+  const publicClient = usePublicClient();
+  const [totalClaimed, setTotalClaimed] = useState("0.00");
+  const [claimsLoaded, setClaimsLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!address || !publicClient) return;
+    
+    const fetchClaims = async () => {
+      try {
+        const logs = await publicClient.getLogs({
+          address: MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`,
+          event: parseAbiItem('event EarningsClaimed(address indexed provider, uint256 amount)'),
+          args: { provider: address },
+          fromBlock: 'earliest',
+          toBlock: 'latest'
+        });
+        
+        let sum = BigInt(0);
+        for (const log of logs) {
+          if (log.args && log.args.amount) {
+            sum += log.args.amount;
+          }
+        }
+        
+        setTotalClaimed(Number(formatUnits(sum, MARKETPLACE_CONFIG.paymentToken.decimals)).toFixed(2));
+        setClaimsLoaded(true);
+      } catch (err) {
+        console.error("Failed to fetch claims:", err);
+      }
+    };
+    
+    fetchClaims();
+  }, [address, publicClient]);
+
   const { data: balanceData } = useReadContract({
     address: MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`,
     abi: luminaMarketplaceAbi,
@@ -136,7 +170,7 @@ function ProviderWorkspace({ address }: { address?: `0x${string}` }) {
             </div>
             <div className="text-right">
               <div className="text-gray-400 text-sm mb-1">Total Claimed</div>
-              <div className="text-xl font-bold text-gray-300">$0.00 <span className="text-sm font-normal text-gray-500">USDC</span></div>
+              <div className="text-xl font-bold text-gray-300">${claimsLoaded ? totalClaimed : "..."} <span className="text-sm font-normal text-gray-500">USDC</span></div>
             </div>
           </div>
           <div className="w-full bg-[#222] h-1.5 rounded-full mb-4 overflow-hidden">
@@ -358,4 +392,5 @@ function BuyerWorkspace({ address }: { address?: `0x${string}` }) {
     </div>
   );
 }
+
 
