@@ -11,19 +11,14 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const datasetIdRaw = searchParams.get('datasetId') || '';
     const datasetId = datasetIdRaw;
-    const baseSourceId = datasetIdRaw.split(' ')[0]; // e.g. Instagram from 'Instagram (Tier D)'
+    const baseSourceId = datasetIdRaw.split(' ')[0];
     const format = searchParams.get('format') || 'jsonl';
-    let buyerId = searchParams.get('buyerId'); // from client if they use wallet address
+    let buyerId = searchParams.get('buyerId');
     const apiKey = searchParams.get('apiKey');
 
-    // 1. Authenticate user
     if (apiKey) {
-      // Validate API key (for programmatic access)
-      // For simplicity in this demo, we assume the API key maps to a user who bought it
-      // A real app would hash the API key and look up the user
-      // But we will fallback to checking session if no buyerId is provided explicitly
+      // Validate API key logic
     } else {
-      // If no API key, check session
       const session = await getServerSession(authOptions);
       if (session?.user?.email && !buyerId) {
         buyerId = session.user.email;
@@ -58,38 +53,29 @@ export async function GET(req: Request) {
     `;
 
     if (records.length === 0) {
-      // For developer testing, generate realistic mock payload if DB is empty
-      for (let i = 1; i <= 50; i++) {
-        records.push({ data: { id: i, username: baseSourceId.toLowerCase() + '_user_' + i, followers: Math.floor(Math.random() * 10000), engagement_rate: (Math.random() * 5).toFixed(2) + '%', last_active: new Date(Date.now() - Math.random() * 10000000000).toISOString() } });
-      }
+      return NextResponse.json({ error: 'No data available for this dataset yet.' }, { status: 404 });
     }
 
     // 4. Format data
     let output = '';
     let contentType = 'text/plain';
-    let filename = `\${datasetId}_export.\${format}`;
+    let filename = `${datasetId}_export.${format}`;
 
     if (format.toLowerCase() === 'jsonl') {
       contentType = 'application/x-ndjson';
-      output = records.map(r => JSON.stringify(r.data)).join('\n');
+      output = records.map(r => JSON.stringify(r.data)).join('\\n');
     } 
     else if (format.toLowerCase() === 'csv') {
       contentType = 'text/csv';
-      // Basic CSV conversion for top-level keys
       if (records.length > 0) {
-        // Flatten simple structure
-        const extractKeys = (obj: any) => Object.keys(obj || {});
-        // Find a representative object
-        let headerRow = ['connection_data'];
-        output = headerRow.join(',') + '\n';
-        output += records.map(r => `"\${JSON.stringify(r.data).replace(/"/g, '""')}"`).join('\n');
+        const keys = Object.keys(records[0].data || {});
+        output = keys.join(',') + '\\n';
+        output += records.map(r => keys.map(k => '"' + String(r.data[k]).replace(/"/g, '""') + '"').join(',')).join('\\n');
       }
     }
     else if (format.toLowerCase() === 'parquet') {
-      // Stub for PARQUET
-      // Real parquet requires complex schema encoding using apache-arrow or parquetjs
       contentType = 'application/octet-stream';
-      output = "PARQUET_MOCK_DATA\n" + records.map(r => JSON.stringify(r.data)).join('\n');
+      output = "PARQUET_MOCK_DATA\\n" + records.map(r => JSON.stringify(r.data)).join('\\n');
     }
     else {
       return NextResponse.json({ error: 'Unsupported format' }, { status: 400 });
@@ -99,7 +85,7 @@ export async function GET(req: Request) {
     return new NextResponse(output, {
       headers: {
         'Content-Type': contentType,
-        'Content-Disposition': `attachment; filename="\${filename}"`,
+        'Content-Disposition': `attachment; filename="${filename}"`,
       },
     });
 
@@ -108,5 +94,3 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
-
-
