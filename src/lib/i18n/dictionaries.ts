@@ -6,10 +6,6 @@ export const locales: { code: Locale; name: string }[] = [
     "name": "EN - English"
   },
   {
-    "code": "ru",
-    "name": "RU - Русский"
-  },
-  {
     "code": "es",
     "name": "ES - Español"
   },
@@ -20,6 +16,10 @@ export const locales: { code: Locale; name: string }[] = [
   {
     "code": "de",
     "name": "DE - Deutsch"
+  },
+  {
+    "code": "ru",
+    "name": "RU - Русский"
   },
   {
     "code": "zh",
