@@ -107,6 +107,9 @@ export function DataQueryBuilder() {
     const sourceObj = DATA_SOURCES.find(s => s.id === selectedSource);
     
     // We must pass price as a number, amounts as bigint
+    const pricePerProvider = parseUnits((totalCost / validProviders.length).toString(), 18);
+    const amountsArray = new Array(validProviders.length).fill(pricePerProvider);
+
     addToCart({
       sourceId: selectedSource,
       sourceName: sourceObj?.name || selectedSource,
