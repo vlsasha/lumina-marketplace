@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import { FloatingCart } from '@/components/FloatingCart';
 import '@rainbow-me/rainbowkit/styles.css';
 import { Providers } from './providers';
 

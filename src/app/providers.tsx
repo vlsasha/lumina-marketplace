@@ -8,7 +8,6 @@ import {
 } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 import { LanguageProvider } from '@/lib/i18n/LanguageContext';
-import { CartProvider } from '@/lib/context/CartContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
 
@@ -92,7 +91,6 @@ const CustomAvatar = ({ address, ensImage, size }: any) => {
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <LanguageProvider>
-      <CartProvider>
       <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
@@ -112,7 +110,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
-                </CartProvider>
-    </LanguageProvider>
+          </LanguageProvider>
   );
 }
