@@ -10,6 +10,7 @@ import { useAccount, useWriteContract, usePublicClient } from 'wagmi';
 import { MARKETPLACE_CONFIG } from '@/lib/config';
 import { luminaMarketplaceAbi } from '@/lib/abi';
 import { parseUnits } from 'viem';
+import { useCart } from '@/lib/context/CartContext';
 
 const erc20Abi = [{type: 'function', name: 'approve', inputs: [{ name: 'spender', type: 'address' }, { name: 'amount', type: 'uint256' }], outputs: [{ type: 'bool' }], stateMutability: 'nonpayable'}] as const;
 
@@ -20,6 +21,7 @@ export function DataQueryBuilder() {
   const { address, isConnected } = useAccount();
   const { writeContractAsync } = useWriteContract();
   const publicClient = usePublicClient();
+  const { addToCart } = useCart();
   const [isPending, setIsPending] = useState(false);
   
   const [validProviders, setValidProviders] = useState<`0x${string}`[]>([]);
