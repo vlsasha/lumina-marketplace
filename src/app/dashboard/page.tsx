@@ -121,6 +121,9 @@ export default function DashboardPage() {
   const [isPending, setIsPending] = useState(false);
 
   useEffect(() => {
+    // Lazy cron: verify any pending purchases in the background
+    fetch('/api/cron/verify-purchases').catch(()=>console.log('cron skip'));
+
     if (privacyModalOpen && address) {
       setIsSandboxLoading(true);
       fetch(`/api/connections/preview?wallet=${address}&source=${privacyModalOpen.toLowerCase()}`)

@@ -17,6 +17,9 @@ export default function AccountPage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    // Lazy cron: verify any pending purchases in the background
+    fetch('/api/cron/verify-purchases').catch(()=>console.log('cron skip'));
+
     if (isConnected) {
       setIsLoggedIn(true);
     } else {
