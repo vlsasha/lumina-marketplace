@@ -119,13 +119,16 @@ export function DataQueryBuilder() {
       const amountsArray = Array(validProviders.length).fill(amountPerProvider);
         const totalAmountParsed = amountPerProvider * BigInt(validProviders.length);
       const hash1 = await writeContractAsync({ address: MARKETPLACE_CONFIG.paymentToken.address as `0x${string}`, abi: erc20Abi, functionName: 'approve', args: [MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`, totalAmountParsed] }); if (publicClient) { await publicClient.waitForTransactionReceipt({ hash: hash1 }); }
-      await writeContractAsync({
-        address: MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`,
-        abi: luminaMarketplaceAbi,
-        functionName: 'buyData',
-        args: [validProviders, amountsArray],
-      });
-      fetch('/api/account/purchases', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ buyerId: address, datasetId: (DATA_SOURCES.find(s => s.id === selectedSource)?.name || selectedSource) + ' (Tier ' + selectedTier + ')', transactionHash: hash1, sizeBytes: validProviders.length * 1024 * 5, providerWallets: validProviders }) }); 
+      const hash2 = await writeContractAsync({
+          address: MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`,
+          abi: luminaMarketplaceAbi,
+          functionName: 'buyData',
+          args: [validProviders, amountsArray],
+        });
+        if (publicClient) {
+          await publicClient.waitForTransactionReceipt({ hash: hash2 });
+        }
+        await fetch('/api/account/purchases', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ buyerId: address, datasetId: (DATA_SOURCES.find(s => s.id === selectedSource)?.name || selectedSource) + ' (Tier ' + selectedTier + ')', transactionHash: hash2, sizeBytes: validProviders.length * 1024 * 5, providerWallets: validProviders }) }); 
     } catch (err) {
       console.error(err);
       console.error('Payment failed UI alert removed');
