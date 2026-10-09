@@ -343,8 +343,8 @@ export async function POST(req: Request) {
           age_group = ${ageGroup}
       `;
     } catch (e: any) {
-      if (e.message && e.message.includes('unique constraint "unique_provider_account"')) {
-        return NextResponse.json({ error: 'This account is already registered in the marketplace.' }, { status: 409 });
+      if (e.message && (e.message.includes('unique') || e.message.includes('duplicate'))) {
+        return NextResponse.json({ error: 'This data account (Instagram/etc) is already tied to another wallet.' }, { status: 409 });
       }
       throw e;
     }
