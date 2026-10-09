@@ -80,6 +80,8 @@ export async function initDb() {
     await sql`ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS raw_key VARCHAR(255)`;
     await sql`ALTER TABLE user_connections ADD COLUMN IF NOT EXISTS provider_account_id VARCHAR(255)`;
     await sql`ALTER TABLE user_connections ADD COLUMN IF NOT EXISTS quality_score INTEGER`;
+    await sql`ALTER TABLE user_connections ADD COLUMN IF NOT EXISTS region VARCHAR(255)`;
+    await sql`ALTER TABLE user_connections ADD COLUMN IF NOT EXISTS age_group VARCHAR(255)`;
     try { await sql`ALTER TABLE user_connections ADD CONSTRAINT unique_provider_account UNIQUE(source_id, provider_account_id)`; } catch (e) {}
   } catch (e) {}
 }
