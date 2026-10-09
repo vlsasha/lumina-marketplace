@@ -7,9 +7,25 @@ export async function GET(req: Request) {
   try {
     if (!sql) return NextResponse.json({ error: 'No DB' });
     await initDb();
-    const purchases = await sql`SELECT * FROM purchases`;
-    return NextResponse.json({ purchases });
+    
+    const buyerId = '0x8E3f4BFB720582bF7223FDB6A1a678957b38835A';
+    const datasetId = 'Instagram (Tier D)';
+    const txHash = '0x134e4abdad219371303bbe0125d7995110a2cd16b3b9ecfd338d40841a3859f6';
+    const format = 'JSONL, CSV';
+    const sizeBytes = 10240;
+    const providerWallets = ['0x8E3f4BFB720582bF7223FDB6A1a678957b38835A', '0xC1d3007A33d86Fd7390B087304AD3083FC87438C'];
+    
+    // Check if it already exists
+    const existing = await sql`SELECT id FROM purchases WHERE transaction_hash = ${txHash}`;
+    if (existing.length === 0) {
+      await sql`
+        INSERT INTO purchases (buyer_id, dataset_id, transaction_hash, format, size_bytes, provider_wallets)
+        VALUES (${buyerId}, ${datasetId}, ${txHash}, ${format}, ${sizeBytes}, ${providerWallets})
+      `;
+      return NextResponse.json({ success: true, message: 'Inserted missing purchase' });
+    }
+    return NextResponse.json({ success: true, message: 'Already exists' });
   } catch (error) {
-    return NextResponse.json({ error: 'Failed' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed', details: String(error) }, { status: 500 });
   }
 }
