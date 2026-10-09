@@ -60,7 +60,7 @@ export async function GET(req: Request) {
     // 2. Verify purchase and collect purchased wallets
     const purchases = await sql`
       SELECT provider_wallets FROM purchases 
-      WHERE buyer_id = ${buyerId} AND dataset_id = ${datasetId}
+      WHERE buyer_id = ${buyerId} AND dataset_id = ${datasetId} AND status = 'completed'
     `;
 
     if (purchases.length === 0) {

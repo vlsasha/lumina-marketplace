@@ -1,0 +1,11 @@
+require('dotenv').config({ path: '.env.local' });
+const { neon } = require('@neondatabase/serverless');
+
+const sql = neon(process.env.POSTGRES_URL);
+
+async function run() {
+  await sql`ALTER TABLE purchases ADD COLUMN IF NOT EXISTS status VARCHAR(20) DEFAULT 'completed'`;
+  console.log('Added status column');
+  process.exit(0);
+}
+run();

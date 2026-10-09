@@ -13,7 +13,7 @@ export async function GET(req: Request) {
     const purchases = await sql`
       SELECT id, dataset_id, transaction_hash, format, size_bytes, purchased_at
       FROM purchases
-      WHERE buyer_id = ${userId}
+      WHERE buyer_id = ${userId} AND status = 'completed'
       ORDER BY purchased_at DESC
     `;
     
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     await initDb();
     
     const body = await req.json();
-    const { buyerId, datasetId, transactionHash, sizeBytes, providerWallets } = body;
+    const { buyerId, datasetId, transactionHash, sizeBytes, providerWallets, status = 'completed' } = body;
     
     if (!buyerId || !datasetId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -40,11 +40,21 @@ export async function POST(req: Request) {
     
     // Duplicates logic removed: we allow delta purchasing!
     
-    const result = await sql`
-      INSERT INTO purchases (buyer_id, dataset_id, transaction_hash, format, size_bytes, provider_wallets)
-      VALUES (${buyerId}, ${datasetId}, ${transactionHash}, ${format}, ${sizeBytes}, ${providerWallets ? JSON.stringify(providerWallets) : '[]'})
-      RETURNING *
-    `;
+
+    const existing = await sql`SELECT id FROM purchases WHERE transaction_hash = ${transactionHash}`;
+    let result;
+    if (existing.length > 0) {
+      result = await sql`
+        UPDATE purchases SET status = ${status} WHERE transaction_hash = ${transactionHash} RETURNING *
+      `;
+    } else {
+      result = await sql`
+        INSERT INTO purchases (buyer_id, dataset_id, transaction_hash, format, size_bytes, provider_wallets, status)
+        VALUES (${buyerId}, ${datasetId}, ${transactionHash}, ${format}, ${sizeBytes}, ${providerWallets ? JSON.stringify(providerWallets) : '[]'}, ${status})
+        RETURNING *
+      `;
+    }
+
     
     return NextResponse.json({ success: true, purchase: result[0] });
   } catch (error) {

@@ -123,10 +123,41 @@ export function DataQueryBuilder() {
           functionName: 'buyData',
           args: [validProviders, amountsArray],
         });
+        
+        // INSTANT POST - UX FIX
+        await fetch('/api/account/purchases', { 
+          method: 'POST', 
+          headers: { 'Content-Type': 'application/json' }, 
+          body: JSON.stringify({ 
+            buyerId: address, 
+            datasetId: (DATA_SOURCES.find(s => s.id === selectedSource)?.name || selectedSource) + ' (Tier ' + selectedTier + ')', 
+            transactionHash: hash2, 
+            sizeBytes: validProviders.length * 1024 * 5, 
+            providerWallets: validProviders,
+            status: 'pending'
+          }) 
+        }); 
+        
+        // Show success alert immediately
+        alert(locale === 'ru' ? 'Транзакция отправлена! Датасет появится в Workspace через 1-2 минуты.' : 'Transaction sent! Dataset will appear in your Workspace in 1-2 minutes.');
+        
         if (publicClient) {
           await publicClient.waitForTransactionReceipt({ hash: hash2 });
+          // Ping again to mark completed if user stays on page
+          await fetch('/api/account/purchases', { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({ 
+              buyerId: address, 
+              datasetId: (DATA_SOURCES.find(s => s.id === selectedSource)?.name || selectedSource) + ' (Tier ' + selectedTier + ')', 
+              transactionHash: hash2, 
+              sizeBytes: validProviders.length * 1024 * 5, 
+              providerWallets: validProviders,
+              status: 'completed'
+            }) 
+          });
         }
-        await fetch('/api/account/purchases', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ buyerId: address, datasetId: (DATA_SOURCES.find(s => s.id === selectedSource)?.name || selectedSource) + ' (Tier ' + selectedTier + ')', transactionHash: hash2, sizeBytes: validProviders.length * 1024 * 5, providerWallets: validProviders }) }); 
+   
     } catch (err) {
       console.error(err);
       console.error('Payment failed UI alert removed');
