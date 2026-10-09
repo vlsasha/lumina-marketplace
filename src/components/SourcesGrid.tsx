@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { DATA_SOURCES } from '@/lib/data-sources';
 import { SOURCES_DICT } from '@/lib/i18n/sources-dict';
 import { useAccount } from 'wagmi';
-import { useSession } from 'next-auth/react';
 import { SourceCard } from './SourceCard';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
@@ -29,8 +28,7 @@ export function SourcesGrid() {
 
   
   const { address, isConnected } = useAccount();
-  const sessionObj = useSession();
-  const isAuthenticated = isConnected || sessionObj?.status === 'authenticated';
+    const isAuthenticated = isConnected;
   const [connections, setConnections] = useState<any[]>([]);
 
   useEffect(() => {
