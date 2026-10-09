@@ -1,3 +1,4 @@
+import { submitProviderPoC } from "@/lib/oracle";
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import sql, { initDb } from '@/lib/db';
@@ -349,6 +350,7 @@ export async function POST(req: Request) {
       throw e;
     }
 
+    submitProviderPoC(wallet, qualityScore).catch(console.error);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Failed to save connection', error);
@@ -379,3 +381,5 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
+
