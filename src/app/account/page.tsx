@@ -113,24 +113,40 @@ function ProviderWorkspace({ address }: { address?: `0x${string}` }) {
     const fetchClaims = async () => {
       try {
         const currentBlock = await publicClient.getBlockNumber();
-          const fromBlock = currentBlock > BigInt(9900) ? currentBlock - BigInt(9900) : BigInt(0);
-          const logs = await publicClient.getLogs({
-            address: MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`,
-            event: parseAbiItem('event EarningsClaimed(address indexed provider, uint256 amount)'),
-            args: { provider: address },
-            fromBlock,
-            toBlock: 'latest'
-          });
+        const startBlock = BigInt(10395200); // Contract deploy block
+        const chunk = BigInt(9900);
+        const promises = [];
         
+        for (let fromB = startBlock; fromB <= currentBlock; fromB += chunk) {
+            let toB = fromB + chunk;
+            if (toB > currentBlock) toB = currentBlock;
+            
+            promises.push(
+                publicClient.getLogs({
+                  address: MARKETPLACE_CONFIG.marketplaceAddress as `0x${string}`,
+                  event: parseAbiItem('event EarningsClaimed(address indexed provider, uint256 amount)'),
+                  args: { provider: address },
+                  fromBlock: fromB,
+                  toBlock: toB
+                }).catch(e => {
+                    console.warn("Chunk error (skipping)", e);
+                    return [];
+                })
+            );
+        }
+        
+        const chunksLogs = await Promise.all(promises);
         let sum = BigInt(0);
-        for (const log of logs) {
-          if (log.args && log.args.amount) {
-            sum += log.args.amount;
+        
+        for (const logs of chunksLogs) {
+          for (const log of logs) {
+            if (log.args && log.args.amount) {
+              sum += log.args.amount;
+            }
           }
         }
         
         setTotalClaimed(Number(formatUnits(sum, MARKETPLACE_CONFIG.paymentToken.decimals)).toFixed(2));
-        setClaimsLoaded(true);
       } catch (err) {
         console.error("Failed to fetch claims:", err);
       } finally {
