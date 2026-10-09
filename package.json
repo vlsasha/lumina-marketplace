@@ -18,7 +18,6 @@
     "@tanstack/react-query": "^5.103.1",
     "ethers": "^6.17.0",
     "next": "^15.0.0",
-    "next-auth": "^4.24.15",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "resend": "^6.32.0",

@@ -5,7 +5,6 @@ import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { PAGES_DICT } from '@/lib/i18n/pages-dict';
 import { DATA_SOURCES, EARNINGS_RATES } from '@/lib/data-sources';
 import { useAccount, useWriteContract, usePublicClient } from 'wagmi';
-import { useSession } from 'next-auth/react';
 import { MARKETPLACE_CONFIG } from '@/lib/config';
 import { luminaMarketplaceAbi } from '@/lib/abi';
 import { parseUnits } from 'viem';
@@ -17,7 +16,6 @@ export function DataQueryBuilder() {
   const pDict = PAGES_DICT[locale as keyof typeof PAGES_DICT]?.pricing || PAGES_DICT.en.pricing;
   const { t } = useLanguage();
   const { address, isConnected } = useAccount();
-  const sessionObj = useSession();
   const { writeContractAsync } = useWriteContract();
   const publicClient = usePublicClient();
   const [isPending, setIsPending] = useState(false);

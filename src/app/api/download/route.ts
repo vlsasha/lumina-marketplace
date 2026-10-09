@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import sql, { initDb } from '@/lib/db';
 import crypto from 'crypto';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
 
 export async function GET(req: Request) {
   try {
@@ -49,12 +47,7 @@ export async function GET(req: Request) {
       } else {
         return NextResponse.json({ error: 'Invalid API Key' }, { status: 401 });
       }
-    } else {
-      const session = await getServerSession(authOptions);
-      if (session?.user?.email && !buyerId) {
-        buyerId = session.user.email;
-      }
-    }
+}
 
     if (!buyerId) {
       return NextResponse.json({ error: 'Unauthorized. Provide buyerId/apiKey or login.' }, { status: 401 });
