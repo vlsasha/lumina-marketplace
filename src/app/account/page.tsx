@@ -331,7 +331,21 @@ function BuyerWorkspace({ address }: { address?: `0x${string}` }) {
         <h3 className="text-white font-bold mb-0 p-6 border-b border-[#222]">My Datasets (Purchased)</h3>
         
         {loading ? (
-          <div className="p-12 text-center text-gray-500">Loading datasets...</div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[1, 2].map(i => (
+              <div key={i} className="animate-pulse bg-[#111] border border-[#222] rounded-xl p-6">
+                <div className="h-4 bg-[#333] rounded w-3/4 mb-4"></div>
+                <div className="h-3 bg-[#222] rounded w-1/2 mb-2"></div>
+                <div className="h-3 bg-[#222] rounded w-1/3 mb-6"></div>
+                <div className="flex gap-2">
+                  <div className="h-8 bg-[#222] rounded w-24"></div>
+                  <div className="h-8 bg-[#222] rounded w-24"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+
         ) : purchases.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <p className="text-gray-400 mb-4">You haven't purchased any datasets yet.</p>
