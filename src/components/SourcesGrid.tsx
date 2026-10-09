@@ -12,6 +12,8 @@ export function SourcesGrid() {
   const sDict = SOURCES_DICT[locale as keyof typeof SOURCES_DICT] || SOURCES_DICT.en;
   const { t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState('status');
 
   const getCategoryTranslation = (cat: string) => {
     switch (cat) {
@@ -103,6 +105,31 @@ export function SourcesGrid() {
           
           {/* Main Left Content */}
           <div className="flex-1 w-full min-w-0">
+            {/* Advanced Filters Bar */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="flex-1 relative">
+                <input 
+                  type="text" 
+                  placeholder={locale === 'ru' ? "Поиск коннекторов..." : "Search data sources..."}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-[#111] border border-[#333] rounded-xl pl-10 pr-4 py-2.5 text-white focus:border-vana-primary outline-none transition-colors"
+                />
+                <svg className="absolute left-3 top-3 w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              </div>
+              <div className="w-full sm:w-48">
+                <select 
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="w-full bg-[#111] border border-[#333] rounded-xl px-4 py-2.5 text-white focus:border-vana-primary outline-none transition-colors appearance-none"
+                >
+                  <option value="status">{locale === 'ru' ? 'Сначала подключенные' : 'Connected First'}</option>
+                  <option value="name">{locale === 'ru' ? 'По алфавиту (А-Я)' : 'Alphabetical (A-Z)'}</option>
+                  <option value="popular">{locale === 'ru' ? 'По популярности' : 'By Popularity'}</option>
+                </select>
+              </div>
+            </div>
+
             {/* Filter Pills */}
             <div className="flex flex-wrap gap-2 mb-8 justify-center xl:justify-start">
               {categories.map((category) => (
