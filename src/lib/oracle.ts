@@ -5,7 +5,7 @@ import { luminaMarketplaceAbi } from './abi';
 const RPC_URL = 'https://rpc.vana.org';
 
 export async function submitProviderPoC(providerAddress: string, score: number) {
-  const privateKey = process.env.PRIVATE_KEY;
+  const privateKey = process.env.PRIVATE_KEY || process.env.APP_PRIVATE_KEY;
   if (!privateKey) {
     console.warn("Oracle: No PRIVATE_KEY found, cannot submit PoC");
     return;
