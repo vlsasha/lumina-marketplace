@@ -95,6 +95,28 @@ export function DataQueryBuilder() {
     }
   }, [availableInventory, volume]);
 
+  const handleAddToCart = () => {
+    if (!isConnected) {
+      toast.error('Please connect your wallet first!');
+      return;
+    }
+    if (!selectedSource) {
+      toast.error('Please select a data source to acquire.');
+      return;
+    }
+    const sourceObj = DATA_SOURCES.find(s => s.id === selectedSource);
+    
+    // We must pass price as a number, amounts as bigint
+    addToCart({
+      sourceId: selectedSource,
+      sourceName: sourceObj?.name || selectedSource,
+      tier: selectedTier === 'A' ? 1 : selectedTier === 'B' ? 2 : selectedTier === 'C' ? 3 : 4,
+      providers: validProviders,
+      amounts: amountsArray,
+      price: totalCost
+    });
+  };
+
   const handlePurchase = async () => {
     if (!isConnected) {
       toast.error('Please connect your wallet first!');
@@ -363,24 +385,40 @@ export function DataQueryBuilder() {
               </div>
             </div>
 
-            <button onClick={handlePurchase} disabled={isPending || totalCost === 0 || isAlreadyPurchased || totalUsersAvailable === 0} className="w-full py-4 px-4 bg-vana-primary hover:bg-opacity-90 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-vana-primary/25 hover:-translate-y-0.5 disabled:opacity-50 flex items-center justify-center gap-2">
-              {totalUsersAvailable === 0 ? (<>No New Data Available</>) : isAlreadyPurchased ? (<>Already Purchased</>) : isPending ? (
-                <>
-                  <svg className="animate-spin h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  {pDict.processing}
-                </>
-              ) : (
-                <>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                  {pDict.purchaseDataset}
-                </>
-              )}
-            </button>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button 
+                onClick={handleAddToCart} 
+                disabled={isPending || totalCost === 0 || isAlreadyPurchased || totalUsersAvailable === 0} 
+                className="flex-1 py-4 px-4 border-2 border-[#CDFF64] hover:bg-[#CDFF64]/10 text-[#CDFF64] font-bold rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Add to Cart
+              </button>
+              
+              <button 
+                onClick={handlePurchase} 
+                disabled={isPending || totalCost === 0 || isAlreadyPurchased || totalUsersAvailable === 0} 
+                className="flex-1 py-4 px-4 bg-[#4F46E5] hover:bg-[#4338CA] text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-[#4F46E5]/25 hover:-translate-y-0.5 disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {totalUsersAvailable === 0 ? (<>No New Data Available</>) : isAlreadyPurchased ? (<>Already Purchased</>) : isPending ? (
+                  <>
+                    <svg className="animate-spin h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Processing...
+                  </>
+                ) : (
+                  <>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    Purchase Dataset
+                  </>
+                )}
+              </button>
+            </div>
             
             <div className="mt-6 flex items-start gap-3">
               <svg className="w-5 h-5 text-vana-green shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
