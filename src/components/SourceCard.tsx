@@ -227,11 +227,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
               </p>
 
 
-              <div className="w-full flex items-center gap-4 my-6 opacity-40">
-                <div className="flex-1 h-px bg-gray-600"></div>
-                <span className="text-xs font-medium text-gray-300 uppercase tracking-wider">OR</span>
-                <div className="flex-1 h-px bg-gray-600"></div>
-              </div>
+              
 
               <button 
                 onClick={() => {
