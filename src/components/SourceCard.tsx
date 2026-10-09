@@ -63,7 +63,7 @@ export function SourceCard({ source, onConnect }: SourceCardProps) {
       const data = await res.json();
 
       if (!res.ok || data.error) {
-        alert(`Vana Error: ${data.error || 'Unknown error'}`);
+        toast.error(`Vana Error: ${data.error || 'Unknown error'}`);
         setIsConnecting(false);
         return;
       }

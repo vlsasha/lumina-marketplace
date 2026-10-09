@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
+import toast from 'react-hot-toast';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { PAGES_DICT } from '@/lib/i18n/pages-dict';
 import { DATA_SOURCES, EARNINGS_RATES } from '@/lib/data-sources';
@@ -93,11 +95,11 @@ export function DataQueryBuilder() {
 
   const handlePurchase = async () => {
     if (!isConnected) {
-      alert('Please connect your wallet first!');
+      toast.error('Please connect your wallet first!');
       return;
     }
     if (!selectedSource) {
-      alert('Please select a data source to acquire.');
+      toast.error('Please select a data source to acquire.');
       return;
     }
     try {
@@ -139,7 +141,7 @@ export function DataQueryBuilder() {
         }); 
         
         // Show success alert immediately
-        alert(locale === 'ru' ? 'Транзакция отправлена! Датасет появится в Workspace через 1-2 минуты.' : 'Transaction sent! Dataset will appear in your Workspace in 1-2 minutes.');
+        toast.success(locale === 'ru' ? 'Транзакция отправлена! Датасет скоро появится в Workspace.' : 'Transaction sent! Dataset will appear in your Workspace soon.', { duration: 5000 });
         
         if (publicClient) {
           await publicClient.waitForTransactionReceipt({ hash: hash2 });

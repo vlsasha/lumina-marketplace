@@ -210,7 +210,7 @@ function BuyerWorkspace({ address }: { address?: `0x${string}` }) {
       
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
-        alert(errorData.error || 'Failed to download dataset.');
+        toast.error(errorData.error || 'Failed to download dataset.');
         setLoading(false);
         return;
       }
@@ -226,7 +226,7 @@ function BuyerWorkspace({ address }: { address?: `0x${string}` }) {
       URL.revokeObjectURL(url);
     } catch (e) {
       console.error(e);
-      alert('Network error downloading dataset.');
+      toast.error('Network error downloading dataset.');
     } finally {
       setLoading(false);
     }
@@ -250,7 +250,7 @@ function BuyerWorkspace({ address }: { address?: `0x${string}` }) {
       fetch(`/api/account/purchases?userId=${address}`)
         .then(res => res.json())
         .then(data => {
-            if (data.error) { alert('DB Error loading purchases: ' + data.details); }
+            if (data.error) { toast.error('DB Error loading purchases: ' + data.details); }
             if (data.purchases) setPurchases(data.purchases);
             setLoading(false);
           })

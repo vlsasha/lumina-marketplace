@@ -9,6 +9,7 @@ import {
 import { WagmiProvider } from 'wagmi';
 import { LanguageProvider } from '@/lib/i18n/LanguageContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'react-hot-toast';
 
 
 import { mainnet } from 'wagmi/chains';
