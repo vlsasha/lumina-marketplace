@@ -425,6 +425,6 @@ export const EARNINGS_RATES = [
   { id: 'icloud_notes', metric: 'Knowledge Base + Sync', price: 3.00, monthlyYield: 1.00 },
   { id: 'youtube', metric: 'Psychographic Watch Profile', price: 1.50, monthlyYield: 0.50 },
   { id: 'instagram', metric: 'Social Engagement Graph', price: 1.50, monthlyYield: 0.50 },
-  { id: 'spotify', metric: 'Audio Affinity Profile', price: 1.50, monthlyYield: 0.50 },
+  { id: 'spotify', metric: 'Playlists, Profile & Saved Tracks', price: 1.50, monthlyYield: 0.50 },
   { id: 'strava', metric: 'Endurance & Route Log', price: 2.00, monthlyYield: 1.00 }
 ];

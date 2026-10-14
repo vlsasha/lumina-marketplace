@@ -217,12 +217,92 @@ function getSampleData(sourceId: string, scope?: string) {
         { name: 'Blockchain', endorsements: 12 },
       ],
     },
-    spotify: {
-      profile: { display_name: 'Lumina User', followers: 42 },
-      savedTracks: [
-        { name: 'Digital Love', artist: 'Daft Punk', album: 'Discovery' },
-        { name: 'Midnight City', artist: 'M83', album: 'Hurry Up' },
+        spotify: {
+      results: {
+        'spotify.playlists': {
+          data: {
+            data: {
+              playlists: [
+                {
+                  collaborative: false,
+                  description: 'My favorite workout tracks',
+                  id: '37i9dQZF1DX76Wlfdnj7AP',
+                  name: 'Beast Mode',
+                  public: true,
+                  total_tracks: 45,
+                  uri: 'spotify:playlist:37i9dQZF1DX76Wlfdnj7AP'
+                }
+              ],
+              total: 1
+            }
+          }
+        },
+        'spotify.profile': {
+          data: {
+            data: {
+              country: 'US',
+              display_name: 'SchicklingLynn',
+              email: '***@***.***',
+              followers: 42,
+              id: 'schicklinglynn',
+              product: 'premium',
+              uri: 'spotify:user:schicklinglynn'
+            }
+          }
+        },
+        'spotify.savedTracks': {
+          data: {
+            data: {
+              savedTracks: [
+                {
+                  added_at: '2026-07-17T12:42:22Z',
+                  album: {
+                    artists: [
+                      {
+                        name: 'LACAZETTE'
+                      }
+                    ],
+                    name: 'LID'
+                  },
+                  artists: [
+                    {
+                      name: 'LACAZETTE'
+                    }
+                  ],
+                  duration_ms: 144516,
+                  explicit: true,
+                  name: 'LID',
+                  uri: 'spotify:track:4nV2TbyTbGljX58MKwPxvm'
+                }
+              ],
+              total: 1
+            }
+          }
+        }
+      },
+      playlists: [
+        {
+          name: 'Beast Mode',
+          total_tracks: 45,
+          public: true,
+          uri: 'spotify:playlist:37i9dQZF1DX76Wlfdnj7AP'
+        }
       ],
+      profile: { display_name: 'SchicklingLynn', followers: 42, country: 'US' },
+      savedTracks: [
+        {
+          added_at: '2026-07-17T12:42:22Z',
+          album: {
+            artists: [{ name: 'LACAZETTE' }],
+            name: 'LID'
+          },
+          artists: [{ name: 'LACAZETTE' }],
+          duration_ms: 144516,
+          explicit: true,
+          name: 'LID',
+          uri: 'spotify:track:4nV2TbyTbGljX58MKwPxvm'
+        }
+      ]
     },
     youtube: {
       profile: { channelTitle: 'Lumina Channel', subscriberCount: 500 },

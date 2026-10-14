@@ -112,6 +112,9 @@ export default function DashboardPage() {
   const [dataPreview, setDataPreview] = useState<Record<string, unknown> | null>(null);
   const [privacyModalOpen, setPrivacyModalOpen] = useState<string | null>(null);
   const [sandboxData, setSandboxData] = useState<any>(null);
+  const [sandboxTabs, setSandboxTabs] = useState<Record<string, any> | null>(null);
+  const [activeSandboxTab, setActiveSandboxTab] = useState<string>('');
+  const [copiedJson, setCopiedJson] = useState(false);
   const [isSandboxLoading, setIsSandboxLoading] = useState(false);
   const [optimisticZeroBalance, setOptimisticZeroBalance] = useState(false);
   const [isTxConfirming, setIsTxConfirming] = useState(false);
@@ -129,16 +132,33 @@ export default function DashboardPage() {
       fetch(`/api/connections/preview?wallet=${address}&source=${privacyModalOpen.toLowerCase()}`)
         .then(res => res.json())
         .then(data => {
-          if (data.preview) setSandboxData(data.preview);
-          else setSandboxData({ error: 'Could not load preview data' });
+          if (data.tabs && Object.keys(data.tabs).length > 0) {
+            setSandboxTabs(data.tabs);
+            const tabKeys = Object.keys(data.tabs);
+            const initialTab = tabKeys[0];
+            setActiveSandboxTab(initialTab);
+            setSandboxData(data.tabs[initialTab]);
+          } else if (data.preview) {
+            setSandboxTabs(null);
+            setActiveSandboxTab('');
+            setSandboxData(data.preview);
+          } else {
+            setSandboxTabs(null);
+            setActiveSandboxTab('');
+            setSandboxData({ error: 'Could not load preview data' });
+          }
           setIsSandboxLoading(false);
         })
         .catch(() => {
+          setSandboxTabs(null);
+          setActiveSandboxTab('');
           setSandboxData({ error: 'Failed to fetch' });
           setIsSandboxLoading(false);
         });
     } else {
       setSandboxData(null);
+      setSandboxTabs(null);
+      setActiveSandboxTab('');
     }
   }, [privacyModalOpen, address]);
   
@@ -744,8 +764,55 @@ export default function DashboardPage() {
             </div>
             
             <div className="p-6">
+              {/* Vana Desktop Style Scope Tabs */}
+              {sandboxTabs && Object.keys(sandboxTabs).length > 1 && (
+                <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-1">
+                  {Object.keys(sandboxTabs).map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => {
+                        setActiveSandboxTab(tab);
+                        setSandboxData(sandboxTabs[tab]);
+                      }}
+                      className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                        activeSandboxTab === tab
+                          ? 'bg-[#222] text-white border border-[#444] shadow-sm'
+                          : 'text-gray-400 hover:text-white hover:bg-[#1a1a1a] border border-transparent'
+                      }`}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+              )}
+
               <div className="space-y-4">
-                  <div className="bg-black border border-[#222] rounded-lg p-4 font-mono text-xs overflow-auto max-h-[400px]">
+                <div className="bg-black border border-[#222] rounded-xl overflow-hidden">
+                  {/* Top Bar with Copy JSON Button like Vana Desktop */}
+                  <div className="flex items-center justify-between px-4 py-2.5 bg-[#161616] border-b border-[#222]">
+                    <span className="text-xs font-mono text-gray-400 flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-vana-green inline-block"></span>
+                      {activeSandboxTab || privacyModalOpen}
+                    </span>
+                    <button
+                      onClick={() => {
+                        const jsonText = JSON.stringify(sandboxData, null, 2);
+                        navigator.clipboard.writeText(jsonText);
+                        setCopiedJson(true);
+                        setTimeout(() => setCopiedJson(false), 2000);
+                        showToast('JSON copied to clipboard!', 'success');
+                      }}
+                      className="flex items-center gap-1.5 text-xs text-gray-300 hover:text-white px-2.5 py-1 rounded bg-[#222] hover:bg-[#2a2a2a] border border-[#333] transition-colors"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      {copiedJson ? 'Copied!' : 'Copy JSON'}
+                    </button>
+                  </div>
+
+                  <div className="p-4 font-mono text-xs overflow-auto max-h-[380px]">
                     {isSandboxLoading ? (
                       <div className="text-gray-500 flex items-center justify-center py-8">
                         <svg className="animate-spin h-5 w-5 mr-3 text-vana-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -755,7 +822,7 @@ export default function DashboardPage() {
                         Decrypting data from your Personal Server...
                       </div>
                     ) : sandboxData ? (
-                      <pre className="text-vana-green leading-relaxed whitespace-pre-wrap">
+                      <pre className="text-gray-200 leading-relaxed whitespace-pre-wrap">
                         {JSON.stringify(sandboxData, null, 2)}
                       </pre>
                     ) : (
@@ -763,10 +830,11 @@ export default function DashboardPage() {
                     )}
                   </div>
                 </div>
+              </div>
                 
-                <p className="text-xs text-gray-500 mt-6 leading-relaxed">
-                  * Lumina automatically intercepts raw JSON payloads from your data sources and applies zero-knowledge redaction. PII like emails and precise names are obfuscated before being packaged for B2B buyers.
-                </p>
+              <p className="text-xs text-gray-500 mt-4 leading-relaxed">
+                * Lumina automatically intercepts raw JSON payloads from your data sources and applies zero-knowledge redaction. PII like emails and precise identifiers are obfuscated before being packaged for B2B buyers.
+              </p>
             </div>
             
             <div className="p-4 border-t border-[#222] bg-black/50 text-right">

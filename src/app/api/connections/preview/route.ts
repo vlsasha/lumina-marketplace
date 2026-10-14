@@ -38,40 +38,66 @@ export async function GET(req: Request) {
 
     const rawData = dataResult[0].data;
 
-    // Extract a safe preview snippet
-    // We'll mask personal info like emails and names if they exist at top level,
-    // and just return a formatted JSON string of the structure.
-    
     let previewObj: any = {};
-    
-    if (rawData?.data?.results) {
-      // Just take the keys of the results to show what files were pulled
-      const files = Object.keys(rawData.data.results);
-      previewObj.files_included = files;
-      
-      // Grab a snippet from the first file
-      if (files.length > 0) {
-        const firstFile = rawData.data.results[files[0]];
-        // Try to find an array of items or profile data
-        if (firstFile?.data?.data) {
-           const payload = firstFile.data.data;
-           if (Array.isArray(payload)) {
-             previewObj.sample_items_count = payload.length;
-             previewObj.sample_data = payload.slice(0, 2); // only show first 2 items
-           } else {
-             // Mask email/phone in objects
-             const masked = { ...payload };
-             if (masked.email) masked.email = '***@***.***';
-             if (masked.phone) masked.phone = '+1***';
-             previewObj.sample_data = masked;
-           }
-        }
+    const tabs: Record<string, any> = {};
+
+    const sanitizePayload = (payload: any): any => {
+      if (!payload || typeof payload !== 'object') return payload;
+      if (Array.isArray(payload)) {
+        return payload.map(item => sanitizePayload(item));
       }
+      const copy: any = { ...payload };
+      for (const k of Object.keys(copy)) {
+        if (/email/i.test(k) && typeof copy[k] === 'string') copy[k] = '***@***.***';
+        if (/phone/i.test(k) && typeof copy[k] === 'string') copy[k] = '+1***';
+        if (typeof copy[k] === 'object') copy[k] = sanitizePayload(copy[k]);
+      }
+      return copy;
+    };
+
+    const results = rawData?.data?.results || rawData?.results;
+
+    if (results && typeof results === 'object') {
+      const files = Object.keys(results);
+      previewObj.files_included = files;
+
+      for (const [key, value] of Object.entries(results as Record<string, any>)) {
+        // e.g. 'spotify.savedTracks' -> 'SavedTracks', 'spotify.playlists' -> 'Playlists'
+        const rawScope = key.includes('.') ? key.split('.').slice(1).join('.') : key;
+        const tabTitle = rawScope.charAt(0).toUpperCase() + rawScope.slice(1);
+        const payload = value?.data?.data || value?.data || value;
+        tabs[tabTitle] = sanitizePayload(payload);
+      }
+
+      const firstKey = Object.keys(tabs)[0];
+      if (firstKey) {
+        previewObj.sample_data = tabs[firstKey];
+      }
+    } else if (rawData?.data && typeof rawData.data === 'object' && !Array.isArray(rawData.data)) {
+      for (const [key, value] of Object.entries(rawData.data as Record<string, any>)) {
+        if (['source', 'timestamp', 'scope', 'cached', 'error'].includes(key)) continue;
+        const tabTitle = key.charAt(0).toUpperCase() + key.slice(1);
+        tabs[tabTitle] = sanitizePayload(value);
+      }
+      const firstKey = Object.keys(tabs)[0];
+      if (firstKey) previewObj.sample_data = tabs[firstKey];
+    } else if (typeof rawData === 'object' && !Array.isArray(rawData)) {
+      for (const [key, value] of Object.entries(rawData as Record<string, any>)) {
+        if (['source', 'timestamp', 'scope', 'cached', 'error'].includes(key)) continue;
+        const tabTitle = key.charAt(0).toUpperCase() + key.slice(1);
+        tabs[tabTitle] = sanitizePayload(value);
+      }
+      const firstKey = Object.keys(tabs)[0];
+      if (firstKey) previewObj.sample_data = tabs[firstKey];
     } else {
       previewObj = { raw: rawData };
     }
 
-    return NextResponse.json({ preview: previewObj });
+    return NextResponse.json({ 
+      preview: previewObj, 
+      tabs: Object.keys(tabs).length > 0 ? tabs : null,
+      source 
+    });
 
   } catch (error) {
     console.error('Failed to get preview:', error);

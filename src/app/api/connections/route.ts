@@ -225,7 +225,7 @@ export async function POST(req: Request) {
           let json = null;
           if (dbResult && dbResult.length > 0) json = dbResult[0].data;
           
-          const profile = json?.data?.results?.['spotify.profile']?.data?.data || json;
+          const profile = json?.data?.results?.['spotify.profile']?.data?.data || json?.results?.['spotify.profile']?.data?.data || json?.profile || json;
           if (profile?.id) {
             providerAccountId = 'spotify_' + profile.id;
           }
@@ -243,19 +243,19 @@ export async function POST(req: Request) {
             }
           }
           // Score based on followers
-            const followers = profile.followers || 0;
+            const followers = profile?.followers?.total || profile?.followers || 0;
             if (followers >= 100) qualityScore += 30;
             else if (followers >= 10) qualityScore += 15;
             
             // Score based on saved tracks
-            const tracksData = json?.data?.results?.['spotify.savedTracks']?.data?.data;
-            const tracks = tracksData?.total || tracksData?.savedTracks?.length || 0;
+            const tracksData = json?.data?.results?.['spotify.savedTracks']?.data?.data || json?.results?.['spotify.savedTracks']?.data?.data || json?.savedTracks;
+            const tracks = tracksData?.total || (Array.isArray(tracksData?.savedTracks) ? tracksData.savedTracks.length : (Array.isArray(tracksData) ? tracksData.length : 0));
             if (tracks >= 500) qualityScore += 40;
             else if (tracks >= 100) qualityScore += 20;
             
             // Score based on playlists
-            const playlistData = json?.data?.results?.['spotify.playlists']?.data?.data;
-            const playlists = playlistData?.total || playlistData?.playlists?.length || 0;
+            const playlistData = json?.data?.results?.['spotify.playlists']?.data?.data || json?.results?.['spotify.playlists']?.data?.data || json?.playlists;
+            const playlists = playlistData?.total || (Array.isArray(playlistData?.playlists) ? playlistData.playlists.length : (Array.isArray(playlistData) ? playlistData.length : 0));
             if (playlists >= 10) qualityScore += 30;
             else if (playlists >= 3) qualityScore += 15;
         } catch (e) {

@@ -33,7 +33,7 @@ export const PAGES_DICT = {
         "icloud_notes": "Knowledge Base + Sync",
         "youtube": "Psychographic Watch Profile",
         "instagram": "Social Engagement Graph",
-        "spotify": "Audio Affinity Profile",
+        "spotify": "Playlists, Profile & Saved Tracks",
         "strava": "Endurance & Route Log"
       }
     },
@@ -191,7 +191,7 @@ export const PAGES_DICT = {
         "icloud_notes": "База знаний + Синхронизация",
         "youtube": "Психографический профиль зрителя",
         "instagram": "Граф социального взаимодействия",
-        "spotify": "Профиль музыкальных предпочтений",
+        "spotify": "Плейлисты, профиль и сохраненные треки",
         "strava": "Журнал тренировок и маршрутов"
       }
     },
@@ -349,7 +349,7 @@ export const PAGES_DICT = {
         "icloud_notes": "Base de Conocimientos",
         "youtube": "Perfil Psicográfico de Visualización",
         "instagram": "Gráfico de Compromiso Social",
-        "spotify": "Perfil de Afinidad de Audio",
+        "spotify": "Playlists, Perfil y Canciones Guardadas",
         "strava": "Registro de Rutas y Resistencia"
       }
     },
@@ -507,7 +507,7 @@ export const PAGES_DICT = {
         "icloud_notes": "Base de Conhecimentos",
         "youtube": "Perfil Psicográfico de Visualização",
         "instagram": "Gráfico de Engajamento Social",
-        "spotify": "Perfil de Afinidade de Áudio",
+        "spotify": "Playlists, Perfil e Faixas Salvas",
         "strava": "Registro de Rotas e Resistência"
       }
     },
@@ -665,7 +665,7 @@ export const PAGES_DICT = {
         "icloud_notes": "Wissensbasis",
         "youtube": "Zuschauer-Profil",
         "instagram": "Social Engagement Graph",
-        "spotify": "Musikprofil",
+        "spotify": "Playlists, Profil & Gespeicherte Tracks",
         "strava": "Routen- & Ausdauer-Log"
       }
     },
@@ -823,7 +823,7 @@ export const PAGES_DICT = {
         "icloud_notes": "知识库和同步",
         "youtube": "心理学观看特征",
         "instagram": "社交互动图",
-        "spotify": "音频偏好特征",
+        "spotify": "播放列表、个人资料与已存曲目",
         "strava": "耐力和路线日志"
       }
     },
@@ -981,7 +981,7 @@ export const PAGES_DICT = {
         "icloud_notes": "지식 베이스 및 동기화",
         "youtube": "시청자 심리 프로필",
         "instagram": "소셜 참여 그래프",
-        "spotify": "오디오 선호도 프로필",
+        "spotify": "플레이리스트, 프로필 및 저장된 곡",
         "strava": "운동 및 경로 기록"
       }
     },
